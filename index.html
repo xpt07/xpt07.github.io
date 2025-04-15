@@ -1,7 +1,213 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>GuiCodes | Portfolio of Guilherme</title>
+    <style>
+        /* Global Styles */
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        header {
+            background-color: #4a90e2;
+            color: #fff;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+            header h1 {
+                margin: 0;
+                font-size: 3rem;
+            }
+
+            header p {
+                margin: 0.5rem 0 0;
+                font-size: 1.2rem;
+            }
+
+        /* Navigation */
+        nav {
+            background: #333;
+        }
+
+            nav ul {
+                display: flex;
+                justify-content: center;
+                margin: 0;
+                padding: 0;
+                list-style: none;
+            }
+
+            nav li {
+                margin: 0;
+            }
+
+            nav a {
+                display: block;
+                padding: 1rem 1.5rem;
+                color: #fff;
+                text-decoration: none;
+                text-transform: uppercase;
+                font-size: 0.9rem;
+            }
+
+                nav a:hover {
+                    background-color: #575757;
+                }
+
+        /* Container */
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 2rem 1rem;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+
+        /* Section Headings */
+        h2 {
+            color: #4a90e2;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #4a90e2;
+            display: inline-block;
+        }
+
+        /* Project Cards */
+        .project {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+            .project h3 {
+                margin-top: 0;
+                color: #333;
+            }
+
+            .project ul {
+                list-style-type: disc;
+                padding-left: 1.5rem;
+            }
+
+            .project p {
+                margin: 0.5rem 0;
+            }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #333;
+            color: #fff;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav a {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
 <body>
-    <h1>Hello World</h1>
-    <p>I'm hosted with GitHub Pages.</p>
+    <!-- Header Section -->
+    <header>
+        <h1>GuiCodes</h1>
+        <p>Crafting code into experiences</p>
+    </header>
+
+    <!-- Navigation Menu -->
+    <nav>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- About Section -->
+    <section id="about" class="container">
+        <h2>About Me</h2>
+        <p>
+            Hi, I'm Guilherme—a passionate developer with a focus on graphics, systems, and innovative programming projects. I enjoy building everything from interactive networked chatrooms to custom physics engines and advanced rendering solutions.
+        </p>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="container">
+        <h2>Projects</h2>
+
+        <!-- Networked Chatroom Project -->
+        <div class="project" id="chatroom">
+            <h3>Networked Chatroom</h3>
+            <p>
+                A real-time chatroom application built using ImGui for the user interface and Winsock for robust network communication. The project features a client-server architecture supporting multiple simultaneous connections, direct messaging, and broadcast messaging with graceful connection and disconnection handling.
+            </p>
+            <ul>
+                <li>Client-Server Architecture</li>
+                <li>Direct &amp; Broadcast Messaging</li>
+                <li>Graceful Connection and Disconnection Handling</li>
+                <li>Real-time UI with ImGui</li>
+            </ul>
+            <p><strong>Technologies:</strong> C++, Winsock, ImGui, Multi-threading</p>
+        </div>
+
+        <!-- Rasterizer Project -->
+        <div class="project" id="rasterizer">
+            <h3>Rasterizer</h3>
+            <p>
+                A custom-built rasterizer that converts 3D models into 2D images. This project provided hands-on experience with the fundamentals of a graphics pipeline and optimization techniques for real-time rendering.
+            </p>
+            <p><strong>Technologies:</strong> C++, Graphics Programming</p>
+        </div>
+
+        <!-- CPU Ray-Tracing Project -->
+        <div class="project" id="raytracing">
+            <h3>CPU Ray-Tracing</h3>
+            <p>
+                A CPU-based ray-tracing engine that simulates realistic lighting effects including shadows, reflections, and refractions. This project deepened my understanding of geometric algorithms and physics-based rendering principles.
+            </p>
+            <p><strong>Technologies:</strong> C++, Mathematical Algorithms</p>
+        </div>
+
+        <!-- Custom Physics Engine Project -->
+        <div class="project" id="physics-engine">
+            <h3>Custom Physics Engine</h3>
+            <p>
+                An entirely custom physics engine that implements collision detection, rigid body dynamics, and realistic simulations. This project emphasizes algorithmic efficiency and mathematical precision for simulating real-world physics.
+            </p>
+            <p><strong>Technologies:</strong> C++, Physics Simulation</p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="container">
+        <h2>Contact</h2>
+        <p>
+            Interested in collaborating or learning more about my work? Feel free to reach out:
+            <a href="mailto:guilherme@example.com">guilherme@example.com</a>
+        </p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Guilherme. All Rights Reserved.</p>
+    </footer>
 </body>
 </html>
