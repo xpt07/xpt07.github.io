@@ -13,7 +13,6 @@
             color: #333;
             line-height: 1.6;
         }
-
         /* Header */
         header {
             background-color: #4a90e2;
@@ -31,7 +30,6 @@
                 margin: 0.5rem 0 0;
                 font-size: 1.2rem;
             }
-
         /* Navigation */
         nav {
             background: #333;
@@ -61,7 +59,6 @@
                 nav a:hover {
                     background-color: #575757;
                 }
-
         /* Container */
         .container {
             max-width: 1000px;
@@ -71,7 +68,6 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.05);
             margin-bottom: 2rem;
         }
-
         /* Section Headings */
         h2 {
             color: #4a90e2;
@@ -79,28 +75,43 @@
             border-bottom: 2px solid #4a90e2;
             display: inline-block;
         }
-
-        /* Project Cards */
-        .project {
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid #e0e0e0;
+        /* Project Grid */
+        .project-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 2rem;
         }
 
-            .project h3 {
-                margin-top: 0;
-                color: #333;
+        .project-box {
+            flex: 1 1 calc(45% - 2rem);
+            max-width: 300px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+            border-radius: 5px;
+            overflow: hidden;
+            transition: transform 0.2s ease;
+        }
+
+            .project-box:hover {
+                transform: scale(1.05);
             }
 
-            .project ul {
-                list-style-type: disc;
-                padding-left: 1.5rem;
+            .project-box img {
+                width: 100%;
+                height: auto;
+                display: block;
             }
 
-            .project p {
-                margin: 0.5rem 0;
+            .project-box h3 {
+                padding: 1rem;
+                margin: 0;
+                background-color: #4a90e2;
+                color: #fff;
+                text-transform: uppercase;
+                font-size: 1.2rem;
             }
-
         /* Footer */
         footer {
             text-align: center;
@@ -108,7 +119,6 @@
             background-color: #333;
             color: #fff;
         }
-
         /* Responsive Design */
         @media (max-width: 768px) {
             header h1 {
@@ -121,6 +131,10 @@
 
             nav a {
                 text-align: center;
+            }
+
+            .project-box {
+                flex: 1 1 100%;
             }
         }
     </style>
@@ -145,54 +159,34 @@
     <section id="about" class="container">
         <h2>About Me</h2>
         <p>
-            Hi, I'm Guilherme a passionate developer with a focus on graphics, systems, and innovative programming projects. I enjoy building everything from interactive networked chatrooms to custom physics engines and advanced rendering solutions.
+            Hi, I'm Guilherme—a passionate developer with a focus on graphics, systems, and innovative programming projects. I enjoy building everything from interactive networked chatrooms to custom physics engines and advanced rendering solutions.
         </p>
     </section>
 
-    <!-- Projects Section -->
+    <!-- Projects Section with Project Boxes -->
     <section id="projects" class="container">
         <h2>Projects</h2>
-
-        <!-- Networked Chatroom Project -->
-        <div class="project" id="chatroom">
-            <h3>Networked Chatroom</h3>
-            <p>
-                A real-time chatroom application built using ImGui for the user interface and Winsock for robust network communication. The project features a client-server architecture supporting multiple simultaneous connections, direct messaging, and broadcast messaging with graceful connection and disconnection handling.
-            </p>
-            <ul>
-                <li>Client-Server Architecture</li>
-                <li>Direct &amp; Broadcast Messaging</li>
-                <li>Graceful Connection and Disconnection Handling</li>
-                <li>Real-time UI with ImGui</li>
-            </ul>
-            <p><strong>Technologies:</strong> C++, Winsock, ImGui, Multi-threading</p>
-        </div>
-
-        <!-- Rasterizer Project -->
-        <div class="project" id="rasterizer">
-            <h3>Rasterizer</h3>
-            <p>
-                A custom-built rasterizer that converts 3D models into 2D images. This project provided hands-on experience with the fundamentals of a graphics pipeline and optimization techniques for real-time rendering.
-            </p>
-            <p><strong>Technologies:</strong> C++, Graphics Programming</p>
-        </div>
-
-        <!-- CPU Ray-Tracing Project -->
-        <div class="project" id="raytracing">
-            <h3>CPU Ray-Tracing</h3>
-            <p>
-                A CPU-based ray-tracing engine that simulates realistic lighting effects including shadows, reflections, and refractions. This project deepened my understanding of geometric algorithms and physics-based rendering principles.
-            </p>
-            <p><strong>Technologies:</strong> C++, Mathematical Algorithms</p>
-        </div>
-
-        <!-- Custom Physics Engine Project -->
-        <div class="project" id="physics-engine">
-            <h3>Custom Physics Engine</h3>
-            <p>
-                An entirely custom physics engine that implements collision detection, rigid body dynamics, and realistic simulations. This project emphasizes algorithmic efficiency and mathematical precision for simulating real-world physics.
-            </p>
-            <p><strong>Technologies:</strong> C++, Physics Simulation</p>
+        <div class="project-grid">
+            <!-- Networked Chatroom Project -->
+            <a class="project-box" href="chatroom.html">
+                <img src="images/chatroom.png" alt="Networked Chatroom">
+                <h3>Networked Chatroom</h3>
+            </a>
+            <!-- Rasterizer Project -->
+            <a class="project-box" href="rasterizer.html">
+                <img src="images/rasterizer.png" alt="Rasterizer">
+                <h3>Rasterizer</h3>
+            </a>
+            <!-- CPU Ray-Tracing Project -->
+            <a class="project-box" href="raytracing.html">
+                <img src="images/raytracing.png" alt="CPU Ray-Tracing">
+                <h3>CPU Ray-Tracing</h3>
+            </a>
+            <!-- Custom Physics Engine Project -->
+            <a class="project-box" href="physics-engine.html">
+                <img src="images/physics-engine.png" alt="Custom Physics Engine">
+                <h3>Physics Engine</h3>
+            </a>
         </div>
     </section>
 
