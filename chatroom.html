@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Networked Chatroom | GuiCodes</title>
+    <style>
+        /* Global Styles */
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            padding-bottom: 2rem;
+        }
+
+        header {
+            background-color: #4a90e2;
+            color: #fff;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+            header h1 {
+                margin: 0;
+                font-size: 2.8rem;
+            }
+
+        nav {
+            background: #333;
+            text-align: center;
+        }
+
+            nav a {
+                display: inline-block;
+                padding: 1rem;
+                color: #fff;
+                text-decoration: none;
+                text-transform: uppercase;
+                font-size: 0.9rem;
+            }
+
+                nav a:hover {
+                    background-color: #575757;
+                }
+
+        main {
+            max-width: 1000px;
+            margin: auto;
+            padding: 2rem 1rem;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+
+        section {
+            margin-bottom: 2rem;
+        }
+
+        h2, h3 {
+            color: #4a90e2;
+            border-bottom: 2px solid #4a90e2;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            list-style-type: disc;
+            margin-left: 2rem;
+        }
+
+        .code-highlight {
+            background: #eee;
+            padding: 0.5rem;
+            font-family: monospace;
+            border-radius: 3px;
+            overflow-x: auto;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #333;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            nav a {
+                padding: 0.75rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>Networked Chatroom</h1>
+        <p>Robust client-server messaging with GUI integration</p>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="#overview">Overview</a>
+        <a href="#features">Features</a>
+        <a href="#tech">Technical Details</a>
+        <a href="#challenges">Challenges</a>
+        <a href="#demo">Demo</a>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Overview -->
+        <section id="overview">
+            <h2>Overview</h2>
+            <p>
+                This Networked Chatroom project is a full-stack C++ application developed to demonstrate real-time communication over a client-server architecture. The project is split into two parts:
+            </p>
+            <ul>
+                <li><strong>Server Side:</strong> Handles multiple client connections using the Winsock API, routes both broadcast and direct (private) messages, manages connection states, and maintains an up-to-date list of connected users.</li>
+                <li><strong>Client Side:</strong> Features an interactive graphical user interface (GUI) built with ImGui, integrated with DirectX, to display messages, manage user input, and initiate both group and private conversations.</li>
+            </ul>
+        </section>
+
+        <!-- Key Features -->
+        <section id="features">
+            <h2>Key Features</h2>
+            <ul>
+                <li>Robust <strong>Client-Server Architecture</strong> using Winsock for network communication.</li>
+                <li>Support for <strong>Broadcast Messaging</strong> as well as <strong>Private Messaging</strong> using an “@username:” syntax.</li>
+                <li>Concurrent handling of multiple clients with multi-threading and synchronization (mutex, atomic variables).</li>
+                <li><strong>Dynamic User List</strong>: The server continuously broadcasts an updated list of active users.</li>
+                <li>Interactive <strong>GUI Client</strong> developed using ImGui for a responsive, modern interface.</li>
+            </ul>
+        </section>
+
+        <!-- Technical Details -->
+        <section id="tech">
+            <h2>Technical Details</h2>
+            <p>
+                The project is implemented in C++ and leverages several key technologies:
+            </p>
+            <ul>
+                <li>
+                    <strong>Winsock API</strong>: Used for low-level network communication. The server code efficiently accepts connections, maintains client states, and manages message routing.
+                    (See server implementation :contentReference[oaicite:0]{index=0}&#8203;:contentReference[oaicite:1]{index=1})
+                </li>
+                <li>
+                    <strong>Multi-threading &amp; Synchronization</strong>: Utilizes <code>std::thread</code>, <code>std::mutex</code>, and <code>std::atomic</code> to manage concurrent connections and ensure thread safety.
+                </li>
+                <li>
+                    <strong>ImGui + DirectX</strong>: The client application creates an intuitive GUI for real-time chat interactions, including support for private chats and real-time user list updates.
+                    (See client implementation :contentReference[oaicite:2]{index=2}&#8203;:contentReference[oaicite:3]{index=3})
+                </li>
+                <li>
+                    <strong>Message Protocol</strong>: Implements command parsing for private messaging (using the “@” prefix) and server commands like user list updates (“USERLIST:”).
+                </li>
+            </ul>
+        </section>
+
+        <!-- Code Highlights -->
+        <section id="code-highlights">
+            <h2>Code Highlights</h2>
+            <p>
+                Here are some key portions of the implementation:
+            </p>
+            <h3>Server-Side: Client Handling and Messaging</h3>
+            <p>
+                The server listens for incoming connections, requests a username, and starts a new thread for each client. Each client thread handles both broadcast and private messages, ensuring that messages are routed appropriately and disconnections are gracefully handled.
+            </p>
+            <div class="code-highlight">
+                // Broadcast a message to all clients except the sender<br>
+                void broadcast_message(const std::string&amp; message, SOCKET sender_socket) { ... }
+            </div>
+            <p>
+                This shows careful use of thread locking to prevent race conditions and ensure scalability. (See full server code :contentReference[oaicite:4]{index=4}&#8203;:contentReference[oaicite:5]{index=5})
+            </p>
+
+            <h3>Client-Side: GUI Integration</h3>
+            <p>
+                The client code integrates ImGui for rendering a real-time chat interface. It uses separate threads for sending and receiving messages while maintaining a smooth GUI update cycle.
+            </p>
+            <div class="code-highlight">
+                // Render the main chat window with user list<br>
+                void render_main_chat(char input_buffer[256]) { ... }
+            </div>
+            <p>
+                This implementation highlights your ability to blend low-level networking with high-level GUI rendering for a seamless user experience. (See full client code :contentReference[oaicite:6]{index=6}&#8203;:contentReference[oaicite:7]{index=7})
+            </p>
+        </section>
+
+        <!-- Challenges & Lessons Learned -->
+        <section id="challenges">
+            <h2>Challenges &amp; Lessons Learned</h2>
+            <ul>
+                <li>Ensuring thread-safety while managing concurrent client connections and avoiding race conditions.</li>
+                <li>Parsing and handling both broadcast and private messages effectively using a simple command protocol.</li>
+                <li>Integrating a low-level network backend with a modern GUI framework while maintaining performance and usability.</li>
+                <li>Managing graceful disconnection and keeping the user list updated in real-time.</li>
+            </ul>
+        </section>
+
+        <!-- Demo & Instructions -->
+        <section id="demo">
+            <h2>Demo &amp; Instructions</h2>
+            <p>
+                <strong>To run the project:</strong>
+            </p>
+            <ol>
+                <li>Compile the server code (<code>WinSockReverseServer.cpp</code>) using your preferred C++ compiler on Windows.</li>
+                <li>Run the server executable. It will listen for connections on port 65432.</li>
+                <li>Compile the client code (<code>WinSockReverseClient.cpp</code>) and run the executable. The client GUI will launch and connect to the server.</li>
+                <li>Use the prompt to enter a username and start sending messages. Use <code>@username: message</code> to send private messages.</li>
+            </ol>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Guilherme. All Rights Reserved.</p>
+    </footer>
+</body>
+</html>
