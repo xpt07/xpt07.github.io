@@ -1,211 +1,184 @@
+
+
 <!DOCTYPE html>
-<html lang="en">
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en-US"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en-US"> <![endif]-->
+<!--[if gt IE 8]><!--> 
+<html class="no-js" lang="en-US">  <!--<![endif]-->
+	
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>GuiCodes | Portfolio of Guilherme</title>
-    <style>
-        /* Global Styles */
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
-            line-height: 1.6;
-        }
-        /* Header */
-        header {
-            background-color: #4a90e2;
-            color: #fff;
-            padding: 2rem 1rem;
-            text-align: center;
-        }
+	
+		<!-- TITLE OF SITE --> 
+        <title> Maha CV/Resume </title>
+  
+        <!-- Meta -->
+        <meta charset="utf-8">
+        <meta name="description" content="BARBERSHOP - Shoping Page Template" />
+        <meta name="keywords" content="landing, landing page, mordan, app, app landing page, template, responsive, bootstrap" />
+        <meta name="developer" content="Santush Deb Nath">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="robots" content="noindex">
+		
+		<!-- CSS Global Compulsory -->
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/demo.css" />
 
-            header h1 {
-                margin: 0;
-                font-size: 3rem;
-            }
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+			<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+			<script src="js/respond.min.js"></script>
+		<![endif]-->
+		
+		<!-- FONTS -->
+		<!-- GOOGLE FONTS -->
+        <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700|Libre+Baskerville:400,700" rel="stylesheet">
+		
+		<!-- JS -->
+		<script type="text/javascript" src="js/modernizr.js"></script>
+		
+		<!-- FAVICONS -->
+		<link rel="shortcut icon" href="images/favicon.ico">
+		<link rel="apple-touch-icon" href="images/apple-touch-icon.html">
+		<link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.html">
+		<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.html">
+	
+	</head>
+	<body>
+	
+		<header class="header">
+			<div class="header-bg">
+				<div class="section-container">
+					<!-- START CONTAINER -->
+					<div class="container text-center">
+						<div class="logo_header bottom-margin">
+							<!-- LOGO -->
+							<img src="images/logo.png" alt="" />
+							<!-- <h3 style="color: #00bfa5; font-weight: 600;font-size:25px;">ZENO</h3> -->
+						</div>
+						<div class="group">
+								<h1 class="section-heading"></h1><!-- END TITLE -->
+								<p class="sub-heading">Maha CV/Resume</p>
+							</div>					
 
-            header p {
-                margin: 0.5rem 0 0;
-                font-size: 1.2rem;
-            }
-        /* Navigation */
-        nav {
-            background: #333;
-        }
+					</div><!-- END CONTAINER -->
+				</div>
+			</div>
+		</header>
 
-            nav ul {
-                display: flex;
-                justify-content: center;
-                margin: 0;
-                padding: 0;
-                list-style: none;
-            }
+		<!-- START SECTION 1 -->
+		<section id="layout-1" class="section">
+			<div class="section-container">
+				<!-- START CONTAINER -->
+				<div class="container">
+					<div class="row">
 
-            nav li {
-                margin: 0;
-            }
+						<div class="inner-section">
+							<div class="ldx-section-title">
+								<h2>Dark Version</h2>
+							</div>
 
-            nav a {
-                display: block;
-                padding: 1rem 1.5rem;
-                color: #fff;
-                text-decoration: none;
-                text-transform: uppercase;
-                font-size: 0.9rem;
-            }
+							<!-- <h3 class="version_name col-xs-12">NORMAL LAYOUT</h3> -->
+							<div class="col-md-4 col-sm-6 col-xs-12 version-image">
+								<!-- Version -->
+								<div class="versions">
+									<a href="home-one.html" target="_blank" class="link">
+										<img src="assets/images/h1w.png" class="img-responsive" alt="Layout - STYLE 1" />
+										<!-- <p>FULL VIEW</p> -->
+									</a>
+									<span>Style One</span>
+								</div>
+							</div>
+							<div class="col-md-4 col-sm-6 col-xs-12 version-image">
+								<!-- Version -->
+								<div class="versions">
+									<a href="home-two.html" target="_blank" class="link">
+										<img src="assets/images/h2w.png" class="img-responsive" alt="Layout - STYLE 2" />
+										<!-- <p>FULL VIEW</p> -->
+									</a>
+									<span>Style Two</span>
+								</div>
+							</div>
+							<div class="col-md-4 col-sm-6 col-xs-12 version-image">
+								<!-- Version -->
+								<div class="versions">
+									<a href="home-rtl.html" target="_blank" class="link">
+										<img src="assets/images/h3w.png" class="img-responsive" alt="Layout - STYLE 2" />
+										<!-- <p>FULL VIEW</p> -->
+									</a>
+									<span>RTL Version</span>
+								</div>
+							</div>
+						</div>
 
-                nav a:hover {
-                    background-color: #575757;
-                }
-        /* Container */
-        .container {
-            max-width: 1000px;
-            margin: auto;
-            padding: 2rem 1rem;
-            background: #fff;
-            box-shadow: 0 0 10px rgba(0,0,0,0.05);
-            margin-bottom: 2rem;
-        }
-        /* Section Headings */
-        h2 {
-            color: #4a90e2;
-            margin-bottom: 1rem;
-            border-bottom: 2px solid #4a90e2;
-            display: inline-block;
-        }
-        /* Project Grid */
-        .project-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            gap: 2rem;
-        }
+						<div class="inner-section">
+							<div class="ldx-section-title">
+								<h2>White Version</h2>
+							</div>
 
-        .project-box {
-            flex: 1 1 calc(45% - 2rem);
-            max-width: 300px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            text-align: center;
-            border-radius: 5px;
-            overflow: hidden;
-            transition: transform 0.2s ease;
-        }
+							<!-- <h3 class="version_name col-xs-12">NORMAL LAYOUT</h3> -->
+							<div class="col-md-4 col-sm-6 col-xs-12 version-image">
+								<!-- Version -->
+								<div class="versions">
+									<a href="home-one-w.html" target="_blank" class="link">
+										<img src="assets/images/h1.png" class="img-responsive" alt="Layout - STYLE 1" />
+										<!-- <p>FULL VIEW</p> -->
+									</a>
+									<span>Style One</span>
+								</div>
+							</div>
+							<div class="col-md-4 col-sm-6 col-xs-12 version-image">
+								<!-- Version -->
+								<div class="versions">
+									<a href="home-two-w.html" target="_blank" class="link">
+										<img src="assets/images/h2.png" class="img-responsive" alt="Layout - STYLE 2" />
+										<!-- <p>FULL VIEW</p> -->
+									</a>
+									<span>Style Two</span>
+								</div>
+							</div>
+							<div class="col-md-4 col-sm-6 col-xs-12 version-image">
+								<!-- Version -->
+								<div class="versions">
+									<a href="home-rtl-w.html" target="_blank" class="link">
+										<img src="assets/images/h3.png" class="img-responsive" alt="Layout - STYLE 2" />
+										<!-- <p>FULL VIEW</p> -->
+									</a>
+									<span>RTL Version</span>
+								</div>
+							</div>					
+						</div>					
 
-            .project-box:hover {
-                transform: scale(1.05);
-            }
+						<div class="button-form links col-xs-12 text-center">
+							<a href="#" target="_blank" class="btn btn-fill">Purchase Now</a>
+							<a href="documentation/index.html" target="_blank" class="btn btn-fill">Documentation</a>			
+						</div>
 
-            .project-box img {
-                width: 100%;
-                height: auto;
-                display: block;
-            }
+					</div><!-- END ROW -->
+				</div><!-- END CONTAINER -->
+			</div>
+		</section>
+		<!-- END SECTION 1 -->
 
-            .project-box h3 {
-                padding: 1rem;
-                margin: 0;
-                background-color: #4a90e2;
-                color: #fff;
-                text-transform: uppercase;
-                font-size: 1.2rem;
-            }
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 1rem;
-            background-color: #333;
-            color: #fff;
-        }
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2.5rem;
-            }
+		
+		<footer>
+			<div class="container text-center">
+				<div class="header-strips-one"></div>
+				<a href="templateshub.net">Templates Hub</a>
+			</div> 
+		</footer>
+		
+		<!-- JS -->
+		<script type="text/javascript" src="js/jquery.1.9.1.min.js"></script>
+		<script type="text/javascript" src="js/jquery-migrate-1.2.1.min.js"></script>
+		<script type="text/javascript" src="js/jquery.easing.js"></script>
+        <script type="text/javascript" src="js/smoothscroll.js"></script>
+        <script type="text/javascript" src="js/jquery.nicescroll.min.js"></script>
+	
+		<!-- Demo -->
+		<script type="text/javascript" src="js/jquery.scrollTo.min.js"></script>
+		<script type="text/javascript" src="js/demo.js"></script>
+		
+	</body>
 
-            nav ul {
-                flex-direction: column;
-            }
-
-            nav a {
-                text-align: center;
-            }
-
-            .project-box {
-                flex: 1 1 100%;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Header Section -->
-    <header>
-        <h1>GuiCodes</h1>
-        <p>Crafting code into experiences</p>
-    </header>
-
-    <!-- Navigation Menu -->
-    <nav>
-        <ul>
-            <li><a href="#about.html">About</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
-
-    <!-- About Section (Snippet) -->
-    <section id="about" class="container">
-        <h2>About Me</h2>
-        <p>
-            Hi, I'm Guilherme—a passionate developer with a focus on graphics, systems, and innovative programming projects. I enjoy building everything from interactive networked chatrooms to custom physics engines and advanced rendering solutions.
-        </p>
-        <!-- A call-to-action button to visit the full About Me page -->
-        <p>
-            <a href="about.html" style="display:inline-block; margin-top:1rem; padding:0.75rem 1.5rem; background-color:#4a90e2; color:#fff; text-decoration:none; border-radius:5px;">Learn More</a>
-        </p>
-    </section>
-
-    <!-- Projects Section with Project Boxes -->
-    <section id="projects" class="container">
-        <h2>Projects</h2>
-        <div class="project-grid">
-            <!-- Networked Chatroom Project -->
-            <a class="project-box" href="chatroom.html">
-                <img src="images/chatroom.png" alt="Networked Chatroom">
-                <h3>Networked Chatroom</h3>
-            </a>
-            <!-- Rasterizer Project -->
-            <a class="project-box" href="rasterizer.html">
-                <img src="images/rasterizer.png" alt="Rasterizer">
-                <h3>Rasterizer</h3>
-            </a>
-            <!-- CPU Ray-Tracing Project -->
-            <a class="project-box" href="raytracing.html">
-                <img src="images/raytracing.png" alt="CPU Ray-Tracing">
-                <h3>CPU Ray-Tracing</h3>
-            </a>
-            <!-- Custom Physics Engine Project -->
-            <a class="project-box" href="physics-engine.html">
-                <img src="images/physics-engine.png" alt="Custom Physics Engine">
-                <h3>Physics Engine</h3>
-            </a>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="container">
-        <h2>Contact</h2>
-        <p>
-            Interested in collaborating or learning more about my work? Feel free to reach out:
-            <a href="mailto:guilhermenoronha789@gmail.com">guilhermenoronha789@gmail.com</a>
-        </p>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2025 Guilherme. All Rights Reserved.</p>
-    </footer>
-</body>
 </html>
