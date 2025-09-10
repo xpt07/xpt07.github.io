@@ -2,13 +2,12 @@
 <html lang="en">
 <head>
     <title>Networked Chatroom — GuiCodes</title>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="Networked Chatroom — multi-threaded client/server chat with ImGui UI">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- FAV + ICONS (reuse your paths) -->
+    <!-- Favicon -->
     <link rel="shortcut icon" href="../assets/images/favicon.ico">
 
     <!-- Google Font -->
@@ -25,10 +24,10 @@
     <link rel="stylesheet" href="../assets/css/styles.css">
     <link rel="stylesheet" href="../assets/css/responsive.css">
 
-    <!-- Color -->
-    <link rel="stylesheet" href="../assets/css/colors/blue.css" title="blue">
+    <link rel="stylesheet" href="../assets/css/colors/purple.css" title="purple">
 
     <style>
+        /* Light, theme-respecting touches for a project page */
         .project-hero {
             padding: 110px 0 60px;
             background: url('../assets/images/bg/hero.jpg') center/cover no-repeat;
@@ -48,16 +47,11 @@
             }
 
         .mh-section-title {
-            margin-bottom: 24px;
-        }
-
-        .mh-meta a.btn {
-            margin-right: 10px;
-            margin-bottom: 10px;
+            margin: 18px 0;
         }
 
         pre.code, code.inline {
-            font-family: Menlo, Consolas, monospace;
+            font-family: Menlo,Consolas,monospace
         }
 
         pre.code {
@@ -65,7 +59,7 @@
             color: #ddd;
             padding: 16px;
             border-radius: 6px;
-            overflow: auto;
+            overflow: auto
         }
 
         .badge-tech {
@@ -74,19 +68,24 @@
             border: 1px solid rgba(255,255,255,.2);
             border-radius: 999px;
             margin: 0 .35rem .35rem 0;
-            font-size: .8rem;
+            font-size: .8rem
+        }
+
+        .mh-experience-deatils li {
+            list-style: disc;
+            margin-left: 1rem
         }
     </style>
 </head>
 <body class="dark-vertion black-bg">
 
-    <!-- Header -->
+    <!-- Header / Nav -->
     <header class="black-bg mh-header mh-fixed-nav nav-scroll mh-xs-mobile-nav">
         <div class="overlay"></div>
         <div class="container">
             <nav class="navbar navbar-expand-lg mh-nav nav-btn">
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
-                        data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar"
+                        aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbar">
@@ -101,7 +100,7 @@
         </div>
     </header>
 
-    <!-- Project Hero -->
+    <!-- Hero -->
     <section class="project-hero mh-home" id="mh-home">
         <div class="container">
             <div class="row section-separator vertical-middle-content home-padding">
@@ -111,7 +110,9 @@
                             <span>Project</span>
                         </div>
                         <h2 class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">Networked Chatroom</h2>
-                        <h4 class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">Multi-threaded client/server chat • C++ • Winsock • ImGui</h4>
+                        <h4 class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">
+                            Robust client–server messaging with GUI integration
+                        </h4>
                         <div class="mh-meta wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.4s">
                             <span class="badge-tech">C++</span>
                             <span class="badge-tech">Winsock</span>
@@ -132,57 +133,97 @@
     <main class="mh-about" id="content">
         <div class="container">
             <div class="row section-separator">
-
-                <!-- Overview -->
+                <!-- Main column -->
                 <div class="col-sm-12 col-md-8">
                     <div class="mh-about-inner">
+
+                        <!-- Overview (kept intact) -->
                         <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.1s">Overview</h3>
                         <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">
-                            A full-stack C++ chat application demonstrating a robust client–server architecture.
-                            The server manages multiple clients concurrently over Winsock; the client provides a modern GUI via ImGui/DirectX,
-                            supporting broadcast and private messaging.
+                            This Networked Chatroom project is a full-stack C++ application developed to demonstrate real-time communication over a client-server architecture. The project is split into two parts:
                         </p>
+                        <ul class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.25s">
+                            <li><strong>Server Side:</strong> Handles multiple client connections using the Winsock API, routes both broadcast and direct (private) messages, manages connection states, and maintains an up-to-date list of connected users.</li>
+                            <li><strong>Client Side:</strong> Features an interactive graphical user interface (GUI) built with ImGui, integrated with DirectX, to display messages, manage user input, and initiate both group and private conversations.</li>
+                        </ul>
 
+                        <!-- Key Features (kept intact; fixed @ encoding) -->
                         <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">Key Features</h3>
                         <ul class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.35s">
-                            <li>Multi-client server with thread-per-connection and safe synchronization.</li>
-                            <li>Broadcast and private messages using a simple <code class="inline">@username:</code> convention.</li>
-                            <li>Live user list broadcast from the server.</li>
-                            <li>Responsive ImGui client with real-time message view and input.</li>
+                            <li>Robust <strong>Client–Server Architecture</strong> using Winsock for network communication.</li>
+                            <li>Support for <strong>Broadcast Messaging</strong> as well as <strong>Private Messaging</strong> using an <code class="inline">@username:</code> syntax.</li>
+                            <li>Concurrent handling of multiple clients with multi-threading and synchronization (mutex, atomic variables).</li>
+                            <li><strong>Dynamic User List:</strong> The server continuously broadcasts an updated list of active users.</li>
+                            <li>Interactive <strong>GUI Client</strong> developed using ImGui for a responsive, modern interface.</li>
                         </ul>
 
-                        <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.4s">Technical Notes</h3>
-                        <ul class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.45s">
-                            <li><strong>Networking:</strong> Winsock, non-blocking sockets; clean session handling.</li>
-                            <li><strong>Concurrency:</strong> <code class="inline">std::thread</code>, mutex/atomics; graceful shutdown.</li>
-                            <li><strong>GUI:</strong> ImGui with DirectX rendering; separate IO and render loops.</li>
-                            <li><strong>Protocol:</strong> @mentions for DMs; <code class="inline">USERLIST:</code> server pushes.</li>
+                        <!-- Technical Details (kept intact; removed broken oaicite tokens) -->
+                        <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.4s">Technical Details</h3>
+                        <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.45s">
+                            The project is implemented in C++ and leverages several key technologies:
+                        </p>
+                        <ul class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.5s">
+                            <li><strong>Winsock API:</strong> Used for low-level network communication. The server code efficiently accepts connections, maintains client states, and manages message routing.</li>
+                            <li><strong>Multi-threading &amp; Synchronization:</strong> Utilizes <code class="inline">std::thread</code>, <code class="inline">std::mutex</code>, and <code class="inline">std::atomic</code> to manage concurrent connections and ensure thread safety.</li>
+                            <li><strong>ImGui + DirectX:</strong> The client application creates an intuitive GUI for real-time chat interactions, including support for private chats and real-time user list updates.</li>
+                            <li><strong>Message Protocol:</strong> Implements command parsing for private messaging (using the <code class="inline">@</code> prefix) and server commands like user list updates (<code class="inline">USERLIST:</code>).</li>
                         </ul>
 
-                        <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.5s">Code Highlights</h3>
-                        <pre class="code wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.55s">// Broadcast a message to all clients except the sender
-void broadcast_message(const std::string& msg, SOCKET sender) {
-    std::lock_guard<std::mutex> lock(clients_mtx);
-    for (auto& [sock, user] : clients) {
-        if (sock != sender) send_line(sock, msg);
-    }
-}</pre>
+                        <!-- Code Highlights (kept intact) -->
+                        <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.55s">Code Highlights</h3>
+                        <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.6s">
+                            Here are some key portions of the implementation:
+                        </p>
+                        <h4 class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.65s">Server-Side: Client Handling and Messaging</h4>
+                        <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.7s">
+                            The server listens for incoming connections, requests a username, and starts a new thread for each client. Each client thread handles both broadcast and private messages, ensuring that messages are routed appropriately and disconnections are gracefully handled.
+                        </p>
+                        <pre class="code wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.75s">
+// Broadcast a message to all clients except the sender
+void broadcast_message(const std::string& message, SOCKET sender_socket) { ... }
+            </pre>
+                        <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.8s">
+                            This shows careful use of thread locking to prevent race conditions and ensure scalability.
+                        </p>
 
-                        <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.6s">Challenges & Lessons</h3>
-                        <ul class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.65s">
-                            <li>Avoiding race conditions across reader/writer threads.</li>
-                            <li>Designing a minimal but expressive message protocol.</li>
-                            <li>Balancing real-time rendering with network IO on the client.</li>
+                        <h4 class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.85s">Client-Side: GUI Integration</h4>
+                        <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.9s">
+                            The client code integrates ImGui for rendering a real-time chat interface. It uses separate threads for sending and receiving messages while maintaining a smooth GUI update cycle.
+                        </p>
+                        <pre class="code wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.95s">
+// Render the main chat window with user list
+void render_main_chat(char input_buffer[256]) { ... }
+            </pre>
+                        <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="1.0s">
+                            This implementation highlights your ability to blend low-level networking with high-level GUI rendering for a seamless user experience.
+                        </p>
+
+                        <!-- Challenges & Lessons Learned (kept intact) -->
+                        <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">Challenges &amp; Lessons Learned</h3>
+                        <ul class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.25s">
+                            <li>Ensuring thread-safety while managing concurrent client connections and avoiding race conditions.</li>
+                            <li>Parsing and handling both broadcast and private messages effectively using a simple command protocol.</li>
+                            <li>Integrating a low-level network backend with a modern GUI framework while maintaining performance and usability.</li>
+                            <li>Managing graceful disconnection and keeping the user list updated in real-time.</li>
                         </ul>
 
-                        <div class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.7s">
+                        <!-- Demo & Instructions (kept intact) -->
+                        <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">Demo &amp; Instructions</h3>
+                        <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.35s"><strong>To run the project:</strong></p>
+                        <ol class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.4s">
+                            <li>Compile the server code (<code class="inline">WinSockReverseServer.cpp</code>) using your preferred C++ compiler on Windows.</li>
+                            <li>Run the server executable. It will listen for connections on port <code class="inline">65432</code>.</li>
+                            <li>Compile the client code (<code class="inline">WinSockReverseClient.cpp</code>) and run the executable. The client GUI will launch and connect to the server.</li>
+                            <li>Use the prompt to enter a username and start sending messages. Click on the usernames on the left to open private windows and send private messages.</li>
+                        </ol>
+
+                        <div class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.5s">
                             <a class="btn btn-fill" href="../index.html#mh-portfolio"><i class="fa fa-arrow-left"></i> Back to Portfolio</a>
-                            <!-- <a class="btn btn-border" href="https://github.com/your/repo" target="_blank" rel="noopener"><i class="fa fa-github"></i> Source</a> -->
                         </div>
                     </div>
                 </div>
 
-                <!-- Sidebar / Project Facts -->
+                <!-- Sidebar / Project Info -->
                 <div class="col-sm-12 col-md-4">
                     <div class="mh-about-inner">
                         <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.1s">Project Info</h3>
@@ -209,7 +250,7 @@ void broadcast_message(const std::string& msg, SOCKET sender) {
 
     <!--
     ===================
-       FOOTER
+       FOOTER 1
     ===================
     -->
     <footer class="mh-footer" id="mh-contact">
@@ -319,7 +360,6 @@ void broadcast_message(const std::string& msg, SOCKET sender) {
     <script src="../assets/plugins/js/jquery.fancybox.min.js"></script>
     <script src="../assets/plugins/js/wow.min.js"></script>
     <script src="../assets/js/custom-scripts.js"></script>
-
     <script>new WOW().init();</script>
 </body>
 </html>
