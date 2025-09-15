@@ -30,7 +30,8 @@
         /* Light, theme-respecting touches for a project page */
         .project-hero {
             padding: 110px 0 60px;
-            background: url('../assets/images/bg/hero.jpg') center/cover no-repeat;
+            /* Replace PATH_TO_HERO_IMAGE with the actual hero image for the chatroom */
+            background: url('PATH_TO_HERO_IMAGE') center/cover no-repeat;
             position: relative;
         }
 
@@ -123,7 +124,7 @@
                     </div>
                 </div>
                 <div class="col-sm-4 text-center wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.4s">
-                    <img src="../assets/images/portfolio/g1.jpg" alt="Networked Chatroom" class="img-fluid rounded">
+                    <img src="PATH_TO_HERO_IMAGE" alt="Networked Chatroom hero image" class="img-fluid rounded">
                 </div>
             </div>
         </div>
@@ -236,10 +237,18 @@ void render_main_chat(char input_buffer[256]) { ... }
 
                         <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">Screenshots</h3>
                         <div class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.35s">
-                            <a href="../assets/images/portfolio/g1.jpg" data-fancybox="gallery">
-                                <img src="../assets/images/portfolio/g1.jpg" alt="Chatroom screenshot" class="img-fluid rounded mb-3">
+                            <!-- Main chat window screenshot -->
+                            <a href="PATH_TO_MAIN_CHAT_IMAGE" data-fancybox="gallery">
+                                <img src="PATH_TO_MAIN_CHAT_IMAGE" alt="Main chat window showing user list and chat messages" class="img-fluid rounded mb-3">
                             </a>
-                            <!-- Add more screenshots -->
+                            <!-- Private chat window screenshot -->
+                            <a href="PATH_TO_PRIVATE_CHAT_IMAGE" data-fancybox="gallery">
+                                <img src="PATH_TO_PRIVATE_CHAT_IMAGE" alt="Private chat window showing a direct conversation" class="img-fluid rounded mb-3">
+                            </a>
+                            <!-- Architecture diagram -->
+                            <a href="PATH_TO_ARCHITECTURE_IMAGE" data-fancybox="gallery">
+                                <img src="PATH_TO_ARCHITECTURE_IMAGE" alt="Client–server architecture diagram" class="img-fluid rounded mb-3">
+                            </a>
                         </div>
                     </div>
                 </div>
