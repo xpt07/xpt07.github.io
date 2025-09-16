@@ -38,6 +38,7 @@
                 position: absolute;
                 inset: 0;
                 background: rgba(0,0,0,.55);
+                pointer-events: none;
             }
 
             .project-hero .container {
@@ -45,8 +46,17 @@
                 z-index: 1;
             }
 
+        .mh-header {
+            position: relative;
+            z-index: 10;
+        }
+
         .mh-section-title {
             margin: 18px 0;
+        }
+
+        .mh-header .overlay {
+            pointer-events: none;
         }
 
         pre.code, code.inline {
@@ -122,7 +132,7 @@
                     </div>
                 </div>
                 <div class="col-sm-4 text-center wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.4s">
-                    <img src="..\assets\images\portfolio\hero-chatroom.png" alt="Networked Chatroom hero image" class="img-fluid rounded">
+                    <img src="../assets/images/portfolio/hero-chatroom.png" alt="Networked Chatroom hero image" class="img-fluid rounded">
                 </div>
             </div>
         </div>
@@ -236,16 +246,16 @@ void render_main_chat(char input_buffer[256]) { ... }
                         <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">Screenshots</h3>
                         <div class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.35s">
                             <!-- Main chat window screenshot -->
-                            <a href="..\assets\images\portfolio\main-chat.png" data-fancybox="gallery">
-                                <img src="..\assets\images\portfolio\main-chat.png" alt="Main chat window showing user list and chat messages" class="img-fluid rounded mb-3">
+                            <a href="../assets/images/portfolio/main-chat.png" data-fancybox="gallery">
+                                <img src="../assets/images/portfolio/main-chat.png" alt="Main chat window showing user list and chat messages" class="img-fluid rounded mb-3">
                             </a>
                             <!-- Private chat window screenshot -->
-                            <a href="..\assets\images\portfolio\private-chat.png" data-fancybox="gallery">
-                                <img src="..\assets\images\portfolio\private-chat.png" alt="Private chat window showing a direct conversation" class="img-fluid rounded mb-3">
+                            <a href="../assets/images/portfolio/private-chat.png" data-fancybox="gallery">
+                                <img src="../assets/images/portfolio/private-chat.png" alt="Private chat window showing a direct conversation" class="img-fluid rounded mb-3">
                             </a>
                             <!-- Architecture diagram -->
-                            <a href="..\assets\images\portfolio\diagram.png" data-fancybox="gallery">
-                                <img src="..\assets\images\portfolio\diagram.png" alt="Client–server architecture diagram" class="img-fluid rounded mb-3">
+                            <a href="../assets/images/portfolio/diagram.png" data-fancybox="gallery">
+                                <img src="../assets/images/portfolio/diagram.png" alt="Client–server architecture diagram" class="img-fluid rounded mb-3">
                             </a>
                         </div>
                     </div>
