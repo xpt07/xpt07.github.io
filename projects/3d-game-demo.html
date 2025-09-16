@@ -28,7 +28,7 @@
     <style>
         .project-hero {
             padding: 110px 0 60px;
-            background: url('../assets/images/portfolio/PATH_TO_HERO_GAME_SCENE') center/cover no-repeat;
+            background: url('../assets/images/portfolio/trex-nighttime.png') center/cover no-repeat;
             position: relative;
         }
 
@@ -42,24 +42,24 @@
 
             .project-hero .container {
                 position: relative;
-                z-index: 1
+                z-index: 1;
             }
 
         .mh-header {
             position: relative;
-            z-index: 10
+            z-index: 10;
         }
 
             .mh-header .overlay {
-                pointer-events: none
+                pointer-events: none;
             }
 
         .mh-section-title {
-            margin: 18px 0
+            margin: 18px 0;
         }
 
         pre.code, code.inline {
-            font-family: Menlo,Consolas,monospace
+            font-family: Menlo,Consolas,monospace;
         }
 
         pre.code {
@@ -67,7 +67,7 @@
             color: #ddd;
             padding: 16px;
             border-radius: 6px;
-            overflow: auto
+            overflow: auto;
         }
 
         .badge-tech {
@@ -76,51 +76,51 @@
             border: 1px solid rgba(255,255,255,.2);
             border-radius: 999px;
             margin: 0 .35rem .35rem 0;
-            font-size: .8rem
+            font-size: .8rem;
         }
         /* Inline figure helpers */
         .figure-inline {
             display: block;
             margin: 12px auto 18px;
-            max-width: 860px
+            max-width: 860px;
         }
 
             .figure-inline img {
                 width: 100%;
                 height: auto;
-                border-radius: 8px
+                border-radius: 8px;
             }
 
         .caption {
             display: block;
             font-size: .9rem;
             opacity: .85;
-            margin-top: .35rem
+            margin-top: .35rem;
         }
 
         .float-rt {
             float: right;
             max-width: 44%;
-            margin: 4px 0 12px 18px
+            margin: 4px 0 12px 18px;
         }
 
         .float-lt {
             float: left;
             max-width: 44%;
-            margin: 4px 18px 12px 0
+            margin: 4px 18px 12px 0;
         }
 
         @media (max-width:992px) {
             .float-rt, .float-lt {
                 float: none;
                 max-width: 100%;
-                margin: 8px 0
+                margin: 8px 0;
             }
         }
 
         .mh-experience-deatils li {
             list-style: disc;
-            margin-left: 1rem
+            margin-left: 1rem;
         }
     </style>
 </head>
@@ -170,7 +170,7 @@
                     </div>
                 </div>
                 <div class="col-sm-4 text-center wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.4s">
-                    <img src="../assets/images/portfolio/PATH_TO_HERO_GAME_SCENE" alt="Hero screenshot from the DirectX level" class="img-fluid rounded">
+                    <img src="../assets/images/portfolio/trex-nighttime.png" alt="Hero screenshot from the DirectX level (night variant)" class="img-fluid rounded">
                 </div>
             </div>
         </div>
@@ -188,42 +188,45 @@
                         <!-- At a glance -->
                         <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.05s">At a Glance</h3>
                         <ul class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.1s">
-                            <li>Built a small first-person level with textured & lit meshes, alpha-tested foliage, and an HDRI skybox. <!-- :contentReference[oaicite:0]{index=0} --></li>
-                            <li>Implemented data-driven level loading from a simple <code class="inline">level.txt</code> format (meshes, lighting, skybox, camera). <!-- :contentReference[oaicite:1]{index=1} --></li>
-                            <li>Animated T-Rex driven by a lightweight state machine (Idle → Run → Attack) reacting to player distance. <!-- :contentReference[oaicite:2]{index=2} --></li>
-                            <li>Responsive camera: WASD movement, mouse-look, clamped pitch, and a subtle walking “bounce”. <!-- :contentReference[oaicite:3]{index=3} --></li>
+                            <li>First-person slice with textured & lit meshes, alpha-tested foliage, and an HDRI skybox.</li>
+                            <li>Data-driven level loading from a simple <code class="inline">level.txt</code> (meshes, lighting, skybox, camera).</li>
+                            <li>Animated T-Rex driven by a lightweight state machine (Idle → Run → Attack) reacting to player distance.</li>
+                            <li>WASD + mouse-look camera with clamped pitch and a subtle walking “bounce”.</li>
                         </ul>
 
                         <!-- Overview with images in prose -->
                         <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.15s">Overview</h3>
                         <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">
-                            The demo showcases a compact DirectX 11 pipeline: opaque and alpha-tested meshes rendered with per-pixel lighting,
-                            an animated character, and a skybox that tracks the camera to seal the horizon.
-                            The scene targets two moods—night and day—by swapping skylight intensity and ambient terms in the light buffer. <!-- :contentReference[oaicite:4]{index=4} -->
+                            The demo implements a compact DirectX 11 pipeline: opaque and alpha-tested meshes with per-pixel lighting,
+                            an animated character, and a skybox that follows the camera to seal the horizon.
+                            The scene supports both night and day moods by updating skylight intensity and ambient terms in the light buffer.
                         </p>
 
                         <figure class="figure-inline float-rt wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.25s">
-                            <a href="../assets/images/portfolio/PATH_TO_NIGHT_SCENE" data-fancybox="gallery">
-                                <img src="../assets/images/portfolio/PATH_TO_NIGHT_SCENE" alt="Night-time lighting pass in the level">
+                            <a href="../assets/images/portfolio/trex-nighttime.png" data-fancybox="gallery">
+                                <img src="../assets/images/portfolio/trex-nighttime.png" alt="Night-time lighting pass in the level">
                             </a>
-                            <figcaption class="caption">Night-time look with low-intensity skylight and cool ambient fill. <!-- :contentReference[oaicite:5]{index=5} --></figcaption>
+                            <figcaption class="caption">Night-time look with low-intensity skylight and cool ambient fill.</figcaption>
                         </figure>
 
                         <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">
-                            Lighting combines ambient, diffuse and specular components in the pixel shader (half-vector specular, shininess 32).
-                            This keeps materials legible while avoiding overblown highlights in night scenes. <!-- :contentReference[oaicite:6]{index=6} -->
+                            Lighting combines ambient, diffuse and specular components in the pixel shader (half-vector specular, shininess 32),
+                            keeping materials readable without blowing out highlights in low-light scenes.
                         </p>
 
+                        <!-- The SAME image is used for daytime, T-Rex shot, and interaction -->
                         <figure class="figure-inline float-lt wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.35s">
-                            <a href="../assets/images/portfolio/PATH_TO_DAY_SCENE" data-fancybox="gallery">
-                                <img src="../assets/images/portfolio/PATH_TO_DAY_SCENE" alt="Day-time lighting pass in the level">
+                            <a href="../assets/images/portfolio/trex-hero.png" data-fancybox="gallery">
+                                <img src="../assets/images/portfolio/trex-hero.png" alt="Day-time scene with T-Rex mid-run">
                             </a>
-                            <figcaption class="caption">Day-time variant using warmer skylight colour and higher intensity. <!-- :contentReference[oaicite:7]{index=7} --></figcaption>
+                            <figcaption class="caption">
+                                Day-time variant and T-Rex interaction (same capture): warmer skylight, higher intensity; T-Rex mid-run responding to player distance.
+                            </figcaption>
                         </figure>
 
                         <p class="wow fadeInUp" style="clear:both" data-wow-duration="0.8s" data-wow-delay="0.4s">
-                            Content is loaded from a human-readable level file: meshes, animation type, skybox texture/radius, and lighting vectors are declared as key-value pairs,
-                            parsed at start-up to construct the world without recompilation. <!-- :contentReference[oaicite:8]{index=8} -->
+                            Content is declared in a human-readable level file: meshes, animation type, skybox texture/radius, and lighting vectors are
+                            parsed at start-up to build the world without recompilation.
                         </p>
 
                         <!-- Key systems -->
@@ -231,38 +234,38 @@
 
                         <h4 class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.5s">1) Data-Driven Level Loading</h4>
                         <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.55s">
-                            A minimal format (<code class="inline">level.txt</code>) declares objects such as <em>T-Rex</em>, <em>Skybox</em>, and <em>Lighting</em>.
-                            Vectors are parsed from comma-separated triples, and properties are mapped onto components (mesh path, initial position, HDRI, skylight parameters). <!-- :contentReference[oaicite:9]{index=9} -->
+                            A minimal <code class="inline">level.txt</code> declares objects such as <em>T-Rex</em>, <em>Skybox</em>, and <em>Lighting</em>.
+                            Vectors are parsed from comma-separated triples, and properties are mapped to components (mesh path, initial position, HDRI, skylight parameters).
                         </p>
 
                         <h4 class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.6s">2) Rendering & Materials</h4>
                         <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.65s">
-                            Opaque meshes receive standard ambient+diffuse lighting. Alpha-tested meshes (e.g., foliage) discard transparent fragments in the pixel shader to keep crisp silhouettes. <!-- :contentReference[oaicite:10]{index=10} -->
+                            Opaque meshes receive standard ambient+diffuse lighting. Alpha-tested meshes (e.g., foliage) discard transparent fragments in the pixel shader for crisp silhouettes.
                         </p>
 
                         <h4 class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.7s">3) Character Animation & Interaction</h4>
                         <figure class="figure-inline float-rt wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.75s">
-                            <a href="../assets/images/portfolio/PATH_TO_TREX_SHOT" data-fancybox="gallery">
-                                <img src="../assets/images/portfolio/PATH_TO_TREX_SHOT" alt="Animated T-Rex reacting to player proximity">
+                            <a href="../assets/images/portfolio/trex-hero.png" data-fancybox="gallery">
+                                <img src="../assets/images/portfolio/trex-hero.png" alt="T-Rex interaction (same frame as day-time capture)">
                             </a>
-                            <figcaption class="caption">State-driven T-Rex: idle → run → attack based on camera distance. <!-- :contentReference[oaicite:11]{index=11} --></figcaption>
+                            <figcaption class="caption">Same capture reused: state-driven T-Rex (idle → run → attack) based on camera distance.</figcaption>
                         </figure>
                         <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.75s">
-                            The T-Rex uses a simple controller to switch between <em>Idle</em>, <em>Run</em> and <em>Attack</em> as the player approaches.
-                            Skinning is performed in the vertex shader by blending up to four bone matrices per vertex. <!-- :contentReference[oaicite:12]{index=12} -->
+                            Skinning is performed in the vertex shader by blending up to four bone matrices per vertex; a simple controller switches states as the player approaches.
                         </p>
 
                         <h4 class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.8s">4) Camera & Feel</h4>
                         <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.85s">
-                            First-person controls combine WASD translation with mouse-look. Pitch is clamped, the cursor recenters every frame, and a sine-based “walking bounce” adds subtle locomotion feedback. <!-- :contentReference[oaicite:13]{index=13} -->
+                            First-person controls combine WASD translation with mouse-look. Pitch is clamped, the cursor recenters every frame,
+                            and a sine-based walking “bounce” adds subtle locomotion feedback.
                         </p>
 
                         <h4 class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.9s">5) Skybox</h4>
                         <figure class="figure-inline wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.95s">
-                            <a href="../assets/images/portfolio/PATH_TO_SKYBOX" data-fancybox="gallery">
-                                <img src="../assets/images/portfolio/PATH_TO_SKYBOX" alt="HDRI skydome">
+                            <a href="../assets/images/portfolio/trex-skybox.jpg" data-fancybox="gallery">
+                                <img src="../assets/images/portfolio/trex-skybox.jpg" alt="HDRI skydome">
                             </a>
-                            <figcaption class="caption">HDRI skydome rendered last with depth disabled; sphere follows the camera position. <!-- :contentReference[oaicite:14]{index=14} --></figcaption>
+                            <figcaption class="caption">HDRI skydome rendered last with depth disabled; sphere follows the camera position.</figcaption>
                         </figure>
 
                         <!-- Code highlights -->
@@ -280,15 +283,13 @@ float  spe = pow(max(dot(N, H), 0.0), 32.0);
 float3 color = AmbientColour
              + SkylightColour * (dif * LightIntensity)
              + SkylightColour * (spe * LightIntensity * 0.5);
-            </pre>
-                        <!-- :contentReference[oaicite:15]{index=15} -->
+                        </pre>
 
                         <h5 class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="1.15s">Alpha Testing for Foliage</h5>
                         <pre class="code wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="1.2s">
 // Keep crisp leaves/grass edges
 if (color.a < 0.5f) discard;
-            </pre>
-                        <!-- :contentReference[oaicite:16]{index=16} -->
+                        </pre>
 
                         <h5 class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="1.25s">Skinned Vertex Transform (4-bone blend)</h5>
                         <pre class="code wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="1.3s">
@@ -298,13 +299,13 @@ T += bones[input.BoneIDs[1]] * input.BoneWeights[1];
 T += bones[input.BoneIDs[2]] * input.BoneWeights[2];
 T += bones[input.BoneIDs[3]] * input.BoneWeights[3];
 output.Pos = mul(input.Pos, T);
-            </pre>
-                        <!-- :contentReference[oaicite:17]{index=17} -->
+                        </pre>
+
                         <!-- Evaluation -->
                         <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="1.35s">Evaluation & Outlook</h3>
                         <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="1.4s">
                             The level integrates rendering, animation, input, and data-driven content into a cohesive playable slice.
-                            Future extensions include instancing for larger scenes, deferred shading, and adding shadow/normal mapping for greater depth. <!-- :contentReference[oaicite:18]{index=18} -->
+                            Next steps: instancing for larger scenes, deferred shading, and shadow/normal mapping for greater depth.
                         </p>
 
                         <!-- CTA -->
@@ -326,25 +327,19 @@ output.Pos = mul(input.Pos, T);
                             <li><i class="fa fa-picture-o"></i> Textured & alpha-tested meshes</li>
                             <li><i class="fa fa-male"></i> Skinned animation (T-Rex)</li>
                             <li><i class="fa fa-magic"></i> HDRI skybox</li>
-                            <li><i class="fa fa-gamepad"></i> WASD + Mouse-look camera</li>
+                            <li><i class="fa fa-gamepad"></i> WASD + mouse-look camera</li>
                         </ul>
 
                         <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">Screenshots</h3>
                         <div class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.25s">
-                            <a href="../assets/images/portfolio/PATH_TO_HERO_GAME_SCENE" data-fancybox="gallery">
-                                <img src="../assets/images/portfolio/PATH_TO_HERO_GAME_SCENE" alt="Game scene" class="img-fluid rounded mb-3">
+                            <a href="../assets/images/portfolio/trex-nighttime.png" data-fancybox="gallery">
+                                <img src="../assets/images/portfolio/trex-nighttime.png" alt="Night scene" class="img-fluid rounded mb-3">
                             </a>
-                            <a href="../assets/images/portfolio/PATH_TO_NIGHT_SCENE" data-fancybox="gallery">
-                                <img src="../assets/images/portfolio/PATH_TO_NIGHT_SCENE" alt="Night scene" class="img-fluid rounded mb-3">
+                            <a href="../assets/images/portfolio/trex-hero.png" data-fancybox="gallery">
+                                <img src="../assets/images/portfolio/trex-hero.png" alt="Day scene & interaction (same capture)" class="img-fluid rounded mb-3">
                             </a>
-                            <a href="../assets/images/portfolio/PATH_TO_DAY_SCENE" data-fancybox="gallery">
-                                <img src="../assets/images/portfolio/PATH_TO_DAY_SCENE" alt="Day scene" class="img-fluid rounded mb-3">
-                            </a>
-                            <a href="../assets/images/portfolio/PATH_TO_TREX_SHOT" data-fancybox="gallery">
-                                <img src="../assets/images/portfolio/PATH_TO_TREX_SHOT" alt="T-Rex animation" class="img-fluid rounded mb-3">
-                            </a>
-                            <a href="../assets/images/portfolio/PATH_TO_SKYBOX" data-fancybox="gallery">
-                                <img src="../assets/images/portfolio/PATH_TO_SKYBOX" alt="Skybox" class="img-fluid rounded mb-3">
+                            <a href="../assets/images/portfolio/trex-skybox.jpg" data-fancybox="gallery">
+                                <img src="../assets/images/portfolio/trex-skybox.jpg" alt="Skybox" class="img-fluid rounded mb-3">
                             </a>
                         </div>
                     </div>
