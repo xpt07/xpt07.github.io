@@ -6,28 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="Rasterizer — optimising a CPU rasterizer with loop unrolling, branchless logic and incremental barycentric coordinates">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Favicon -->
     <link rel="shortcut icon" href="../assets/images/favicon.png">
-
-    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-
-    <!-- Vendor CSS -->
     <link rel="stylesheet" href="../assets/icons/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../assets/plugins/css/bootstrap.min.css">
     <link rel="stylesheet" href="../assets/plugins/css/animate.css">
     <link rel="stylesheet" href="../assets/plugins/css/owl.css">
     <link rel="stylesheet" href="../assets/plugins/css/jquery.fancybox.min.css">
-
-    <!-- Site CSS -->
     <link rel="stylesheet" href="../assets/css/styles.css">
     <link rel="stylesheet" href="../assets/css/responsive.css">
-
     <link rel="stylesheet" href="../assets/css/colors/purple.css" title="purple">
 
     <style>
-        /* Hero banner styling */
         .project-hero {
             padding: 110px 0 60px;
             background: url('../assets/images/portfolio/ras-scene2.png') center/cover no-repeat;
@@ -52,12 +42,12 @@
             z-index: 10;
         }
 
+            .mh-header .overlay {
+                pointer-events: none;
+            }
+
         .mh-section-title {
             margin: 18px 0;
-        }
-
-        .mh-header .overlay {
-            pointer-events: none;
         }
 
         pre.code, code.inline {
@@ -202,11 +192,19 @@
                         <!-- Performance Results -->
                         <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.7s">Performance Results</h3>
                         <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.75s">
-                            Benchmarking across 100 cycles per scene revealed substantial speedups.  In <strong>Scene 1</strong> (a grid of 40 cubes), average frame time dropped from 6288 ms to 5827 ms—an improvement of 7.33%.  <strong>Scene 2</strong> (a grid plus a moving sphere) saw a smaller gain of 3.55%, reflecting its vertex‑bound nature.  <strong>Scene 3</strong> (a 10×10 grid with a high‑polygon sphere) gained 4.17%, as the heavy polygon count increased per‑pixel workload.  These results underscore that loop unrolling and branchless logic are most effective when rasterisation dominates, while vertex‑bound scenes benefit less.
+                            Benchmarking across 100 cycles per scene revealed substantial speedups.  In <strong>Scene 1</strong>, the base rasterizer averaged 6288 ms per frame while loop unrolling and branchless logic reduced this to 5827 ms, a 7.33&nbsp;% improvement.  Adding incremental barycentric coordinates lowered the average further to 3489 ms, representing a dramatic 44.5&nbsp;% reduction.  <strong>Scene 2</strong> saw a modest 3.55&nbsp;% gain from loop unrolling (2171 ms down to 2094 ms), but the barycentric optimisation slashed the average to 1242 ms, a 42.8&nbsp;% improvement.  <strong>Scene 3</strong> followed the same pattern: loop unrolling improved performance by about 4.17&nbsp;%, from 9796 ms to 9388 ms, whereas incremental barycentric coordinates cut the average to 5720 ms, a 41.6&nbsp;% boost.  These results illustrate that while loop unrolling and branchless logic yield consistent but moderate gains, incremental barycentric coordinates deliver the most significant speedups across all scenes.
                         </p>
-                        <!-- Inline performance chart -->
+                        <!-- Inline performance charts for each scene -->
                         <div class="text-center wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.8s">
-                            <img src="../assets/images/portfolio/PATH_TO_PERFORMANCE_GRAPH" alt="Performance comparison chart for Scenes 1–3" class="img-fluid rounded mb-3" style="max-width: 80%;">
+                            <img src="../assets/images/portfolio/ras-graph-scene1.png"
+                                 alt="Performance graph for Scene 1 comparing base rasterizer, loop unrolling and incremental barycentric coordinates"
+                                 class="img-fluid rounded mb-3" style="max-width: 80%;">
+                            <img src="../assets/images/portfolio/ras-graph-scene2.png"
+                                 alt="Performance graph for Scene 2 comparing base rasterizer, loop unrolling and incremental barycentric coordinates"
+                                 class="img-fluid rounded mb-3" style="max-width: 80%;">
+                            <img src="../assets/images/portfolio/ras-graph-scene3.png"
+                                 alt="Performance graph for Scene 3 comparing base rasterizer, loop unrolling and incremental barycentric coordinates"
+                                 class="img-fluid rounded mb-3" style="max-width: 80%;">
                         </div>
 
                         <!-- Code Highlights -->
@@ -292,21 +290,25 @@ void normalise(vec4& v) {
 
                         <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">Screenshots</h3>
                         <div class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.35s">
-                            <!-- Scene 1 screenshot -->
-                            <a href="../assets/images/portfolio/ras-scene1.png data-fancybox="gallery">
+                            <!-- Scene screenshots -->
+                            <a href="../assets/images/portfolio/ras-scene1.png" data-fancybox="gallery">
                                 <img src="../assets/images/portfolio/ras-scene1.png" alt="Scene 1: grid of rotating cubes" class="img-fluid rounded mb-3">
                             </a>
-                            <!-- Scene 2 screenshot -->
                             <a href="../assets/images/portfolio/ras-scene2.png" data-fancybox="gallery">
                                 <img src="../assets/images/portfolio/ras-scene2.png" alt="Scene 2: cube grid with moving sphere" class="img-fluid rounded mb-3">
                             </a>
-                            <!-- Scene 3 screenshot -->
                             <a href="../assets/images/portfolio/ras-scene3.png" data-fancybox="gallery">
                                 <img src="../assets/images/portfolio/ras-scene3.png" alt="Scene 3: 10×10 cube grid with high‑polygon sphere" class="img-fluid rounded mb-3">
                             </a>
-                            <!-- Performance graph -->
-                            <a href="../assets/images/portfolio/PATH_TO_PERFORMANCE_GRAPH" data-fancybox="gallery">
-                                <img src="../assets/images/portfolio/PATH_TO_PERFORMANCE_GRAPH" alt="Performance comparison chart for Scenes 1–3" class="img-fluid rounded mb-3">
+                            <!-- Performance graphs -->
+                            <a href="../assets/images/portfolio/ras-graph-scene1.jpg" data-fancybox="gallery">
+                                <img src="../assets/images/portfolio/ras-graph-scene1.jpg" alt="Scene 1 performance graph" class="img-fluid rounded mb-3">
+                            </a>
+                            <a href="../assets/images/portfolio/ras-graph-scene2.jpg" data-fancybox="gallery">
+                                <img src="../assets/images/portfolio/ras-graph-scene2.jpg" alt="Scene 2 performance graph" class="img-fluid rounded mb-3">
+                            </a>
+                            <a href="../assets/images/portfolio/ras-graph-scene3.jpg" data-fancybox="gallery">
+                                <img src="../assets/images/portfolio/ras-graph-scene3.jpg" alt="Scene 3 performance graph" class="img-fluid rounded mb-3">
                             </a>
                         </div>
                     </div>
@@ -327,23 +329,16 @@ void normalise(vec4& v) {
                         <div class="row">
                             <div class="col-sm-12 col-md-4">
                                 <div class="mh-address-footer-item dark-bg shadow-1 wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">
-                                    <div class="each-icon">
-                                        <i class="fa fa-location-arrow"></i>
-                                    </div>
+                                    <div class="each-icon"><i class="fa fa-location-arrow"></i></div>
                                     <div class="each-info">
                                         <h4>Address</h4>
-                                        <address>
-                                            49 Queens Road, Coventry, <br>
-                                            England
-                                        </address>
+                                        <address>49 Queens Road, Coventry,<br>England</address>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="mh-address-footer-item dark-bg shadow-1 wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.5s">
-                                    <div class="each-icon">
-                                        <i class="fa fa-envelope-o"></i>
-                                    </div>
+                                    <div class="each-icon"><i class="fa fa-envelope-o"></i></div>
                                     <div class="each-info">
                                         <h4>Email</h4>
                                         <a href="mailto:guilhermenoronha543@icloud.com">guilhermenoronha543@icloud.com</a><br>
@@ -352,9 +347,7 @@ void normalise(vec4& v) {
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="mh-address-footer-item dark-bg shadow-1 wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.7s">
-                                    <div class="each-icon">
-                                        <i class="fa fa-phone"></i>
-                                    </div>
+                                    <div class="each-icon"><i class="fa fa-phone"></i></div>
                                     <div class="each-info">
                                         <h4>Phone</h4>
                                         <a href="callto:+44 7751134587">+44 7751134587</a><br>
@@ -370,11 +363,11 @@ void normalise(vec4& v) {
                                 <div class="col-md-6 col-sm-12">
                                     <input name="name" class="contact-name form-control" id="name" type="text" placeholder="First Name" required>
                                 </div>
-                                <div class col-md-6 col-sm-12>
-                                    <input name="name" class="contact-email form-control" id="L_name" type="text" placeholder="Last Name" required>
+                                <div class="col-md-6 col-sm-12">
+                                    <input name="L_name" class="contact-email form-control" id="L_name" type="text" placeholder="Last Name" required>
                                 </div>
                                 <div class="col-sm-12">
-                                    <input name="name" class="contact-subject form-control" id="email" type="email" placeholder="Your Email" required>
+                                    <input name="email" class="contact-subject form-control" id="email" type="email" placeholder="Your Email" required>
                                 </div>
                                 <div class="col-sm-12">
                                     <textarea class="contact-message" id="message" rows="6" placeholder="Your Message" required></textarea>
@@ -386,9 +379,7 @@ void normalise(vec4& v) {
                         </form>
                     </div>
                     <div class="col-sm-12 col-md-6 wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.5s">
-                        <div class="mh-map">
-                            <div id="mh-map" class="shadow-1"></div>
-                        </div>
+                        <div class="mh-map"><div id="mh-map" class="shadow-1"></div></div>
                     </div>
                     <div class="col-sm-12 mh-copyright wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">
                         <div class="row">
@@ -401,7 +392,7 @@ void normalise(vec4& v) {
                                 <ul class="social-icon">
                                     <li><a href="#"><i class="fa fa-facebook"></i></a></li>
                                     <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                    <li><a href="#"><i class fa fa-github"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-github"></i></a></li>
                                     <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
                                 </ul>
                             </div>
