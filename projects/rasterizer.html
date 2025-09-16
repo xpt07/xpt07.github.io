@@ -1,0 +1,408 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <title>Rasterizer — GuiCodes</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Rasterizer — optimising a CPU rasterizer with loop unrolling, branchless logic and incremental barycentric coordinates">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../assets/images/favicon.png">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <!-- Vendor CSS -->
+    <link rel="stylesheet" href="../assets/icons/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../assets/plugins/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/plugins/css/animate.css">
+    <link rel="stylesheet" href="../assets/plugins/css/owl.css">
+    <link rel="stylesheet" href="../assets/plugins/css/jquery.fancybox.min.css">
+
+    <!-- Site CSS -->
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/responsive.css">
+
+    <link rel="stylesheet" href="../assets/css/colors/purple.css" title="purple">
+
+    <style>
+        /* Hero banner styling */
+        .project-hero {
+            padding: 110px 0 60px;
+            background: url('../assets/images/portfolio/PATH_TO_HERO_RASTERIZER_IMAGE') center/cover no-repeat;
+            position: relative;
+        }
+
+            .project-hero::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: rgba(0,0,0,.55);
+                pointer-events: none; /* allow clicks through overlay */
+            }
+
+            .project-hero .container {
+                position: relative;
+                z-index: 1;
+            }
+
+        .mh-section-title {
+            margin: 18px 0;
+        }
+
+        pre.code, code.inline {
+            font-family: Menlo,Consolas,monospace;
+        }
+
+        pre.code {
+            background: #111;
+            color: #ddd;
+            padding: 16px;
+            border-radius: 6px;
+            overflow: auto;
+        }
+
+        .badge-tech {
+            display: inline-block;
+            padding: .35rem .6rem;
+            border: 1px solid rgba(255,255,255,.2);
+            border-radius: 999px;
+            margin: 0 .35rem .35rem 0;
+            font-size: .8rem;
+        }
+
+        .mh-experience-deatils li {
+            list-style: disc;
+            margin-left: 1rem;
+        }
+    </style>
+</head>
+<body class="dark-vertion black-bg">
+
+    <!-- Header / Nav -->
+    <header class="black-bg mh-header mh-fixed-nav nav-scroll mh-xs-mobile-nav">
+        <div class="overlay" style="pointer-events:none;"></div>
+        <div class="container">
+            <nav class="navbar navbar-expand-lg mh-nav nav-btn">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar"
+                        aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbar">
+                    <ul class="navbar-nav mr-auto ml-auto">
+                        <li class="nav-item"><a class="nav-link" href="../index.html#mh-home">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../index.html#mh-portfolio">Portfolio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../index.html#mh-contact">Contact</a></li>
+                    </ul>
+                    <a class="btn btn-fill" href="../index.html#mh-portfolio"><i class="fa fa-arrow-left"></i> Back to Portfolio</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="project-hero mh-home" id="mh-home">
+        <div class="container">
+            <div class="row section-separator vertical-middle-content home-padding">
+                <div class="col-sm-8">
+                    <div class="mh-header-info">
+                        <div class="mh-promo wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.1s">
+                            <span>Project</span>
+                        </div>
+                        <h2 class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">Optimised Rasterizer</h2>
+                        <h4 class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">
+                            C++ software rasterizer with performance-focused enhancements
+                        </h4>
+                        <div class="mh-meta wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.4s">
+                            <span class="badge-tech">C++</span>
+                            <span class="badge-tech">Graphics</span>
+                            <span class="badge-tech">Optimisation</span>
+                            <span class="badge-tech">Loop Unrolling</span>
+                            <span class="badge-tech">Branchless Logic</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 text-center wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.4s">
+                    <img src="../assets/images/portfolio/PATH_TO_HERO_RASTERIZER_IMAGE" alt="Rasterizer output showing shaded cubes and sphere" class="img-fluid rounded">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content -->
+    <main class="mh-about" id="content">
+        <div class="container">
+            <div class="row section-separator">
+                <!-- Main column -->
+                <div class="col-sm-12 col-md-8">
+                    <div class="mh-about-inner">
+
+                        <!-- Overview -->
+                        <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.1s">Overview</h3>
+                        <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">
+                            This project implements a CPU-based rasterizer written in C++.  The base rasterizer performs common geometric transformations (translation, rotation, scaling and perspective), rasterises triangles with depth buffering, and applies a simple lighting model.  The primary goal was to optimise the base rasteriser’s performance: loop unrolling, branchless logic and incremental barycentric coordinates were introduced to reduce computational overhead and branch mispredictions.
+                        </p>
+                        <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.25s">
+                            Performance improvements were measured across three different scenes: a grid of 40 rotating cubes, a grid of cubes with a moving sphere, and a 10×10 array of cubes with a high‑polygon sphere.  Benchmarking showed that these optimisations produced a notable speedup, especially in scenes dominated by per‑pixel work.
+                        </p>
+
+                        <!-- Key Features -->
+                        <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">Key Features</h3>
+                        <ul class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.35s">
+                            <li><strong>Geometric Transformations:</strong> 4×4 matrix operations for translation, rotation, scaling and perspective projection.</li>
+                            <li><strong>Triangle Rasterisation:</strong> Z-buffered per‑pixel rasterisation with interpolation of normals, depth and colour attributes.</li>
+                            <li><strong>Simple Lighting Model:</strong> Ambient and diffuse reflection parameters (ka, kd) with a directional light source.</li>
+                            <li><strong>Scene Configurations:</strong> Multiple scenes, including a 40‑cube grid and a grid with a moving sphere.</li>
+                            <li><strong>Loop Unrolling & Branchless Logic:</strong> Optimisations to reduce loop overhead and eliminate branch mispredictions.</li>
+                            <li><strong>Optimised Vertex Processing:</strong> Batching faces to improve cache locality and reduce iteration overhead.</li>
+                            <li><strong>Incremental Barycentric Coordinates:</strong> Barycentric values calculated once and updated incrementally to avoid redundant calculations.</li>
+                            <li><strong>Performance Benchmarking:</strong> Timings collected over 100 cycles for each scene; results plotted to quantify speedup.</li>
+                            <li><strong>Multithreading Exploration:</strong> Attempted to parallelise rasterisation using <code class="inline">std::thread</code>, though race conditions in depth testing prevented deployment.</li>
+                        </ul>
+
+                        <!-- Technical Details -->
+                        <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.4s">Technical Details</h3>
+                        <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.45s">
+                            The renderer uses a perspective projection matrix, a Z‑buffer for depth management and a canvas for pixel output.  Scene objects are represented by <code class="inline">Mesh</code> structures comprising vertices, normals and triangle indices.  The rasterizer supports primitives such as cubes, rectangles and spheres, created via helper functions in <code class="inline">mesh.h</code>.  Lighting calculations apply ambient (ka) and diffuse (kd) reflection to vertex colours.
+                        </p>
+                        <ul class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.5s">
+                            <li>The <strong>render</strong> function multiplies each vertex by the combined projection‑camera‑world matrix, performs perspective division and maps coordinates to screen space.</li>
+                            <li>A <strong>Z-buffer</strong> ensures correct occlusion by comparing depth values before shading a pixel.</li>
+                            <li>Test scenes are implemented in <code class="inline">raster.cpp</code> via functions <code class="inline">scene1()</code>, <code class="inline">scene2()</code> and <code class="inline">scene3()</code> which assemble grids of cubes and spheres and animate them.</li>
+                        </ul>
+
+                        <!-- Optimisations -->
+                        <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.55s">Optimisation Strategies</h3>
+                        <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.6s">
+                            Several optimisations were implemented to improve the base rasteriser’s performance:
+                        </p>
+                        <ul class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.65s">
+                            <li><strong>Loop Unrolling & Branchless Logic:</strong>  Branchless barycentric checks using bitwise AND avoid branch mispredictions; rendering loops iterate four pixels or objects per iteration, reducing loop overhead.</li>
+                            <li><strong>Optimised Vertex Processing:</strong>  Two faces are processed per loop iteration when constructing cubes, improving cache locality and reducing memory latency.</li>
+                            <li><strong>Efficient Normalisation:</strong>  Vector normalisation uses a reciprocal multiplication instead of three divisions to reduce floating‑point cost.</li>
+                            <li><strong>Incremental Barycentric Coordinates:</strong>  Initial barycentric values are computed once at the bounding box’s top‑left pixel and updated by precomputed deltas across rows and columns, dramatically reducing per‑pixel computations.</li>
+                        </ul>
+
+                        <!-- Performance Results -->
+                        <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.7s">Performance Results</h3>
+                        <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.75s">
+                            Benchmarking across 100 cycles per scene revealed substantial speedups.  In <strong>Scene 1</strong> (a grid of 40 cubes), average frame time dropped from 6288 ms to 5827 ms—an improvement of 7.33%.  <strong>Scene 2</strong> (a grid plus a moving sphere) saw a smaller gain of 3.55%, reflecting its vertex‑bound nature.  <strong>Scene 3</strong> (a 10×10 grid with a high‑polygon sphere) gained 4.17%, as the heavy polygon count increased per‑pixel workload.  These results underscore that loop unrolling and branchless logic are most effective when rasterisation dominates, while vertex‑bound scenes benefit less.
+                        </p>
+
+                        <!-- Code Highlights -->
+                        <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.8s">Code Highlights</h3>
+                        <h4 class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.85s">Branchless Barycentric Check</h4>
+                        <pre class="code wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.9s">
+// Determine whether a pixel is inside a triangle using bitwise AND to avoid branches
+inline bool insideTriangle(float alpha, float beta, float gamma) {
+    return (alpha >= 0.f) & (beta >= 0.f) & (gamma >= 0.f);
+}
+                        </pre>
+                        <h4 class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.95s">Incremental Barycentric Update (pseudo‑code)</h4>
+                        <pre class="code wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="1.0s">
+// Compute initial barycentric coordinates at top-left of bounding box
+alpha0 = getCross(e0, p0 - v1) * invArea;
+beta0  = getCross(e1, p0 - v2) * invArea;
+gamma0 = getCross(e2, p0 - v0) * invArea;
+// Precompute horizontal and vertical deltas
+deltaAlphaX = -e0.y * invArea;   deltaAlphaY = e0.x * invArea;
+deltaBetaX  = -e1.y * invArea;   deltaBetaY  = e1.x * invArea;
+deltaGammaX = -e2.y * invArea;   deltaGammaY = e2.x * invArea;
+// For each pixel row:
+for y from minY to maxY:
+    alpha = alpha0; beta = beta0; gamma = gamma0;
+    for x from minX to maxX:
+        if ((alpha >= 0.f) & (beta >= 0.f) & (gamma >= 0.f))
+            shadePixel(x, y, alpha, beta, gamma);
+        alpha += deltaAlphaX;
+        beta  += deltaBetaX;
+        gamma += deltaGammaX;
+    alpha0 += deltaAlphaY;
+    beta0  += deltaBetaY;
+    gamma0 += deltaGammaY;
+                        </pre>
+                        <h4 class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="1.05s">Efficient Vector Normalisation</h4>
+                        <pre class="code wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="1.1s">
+// Avoid multiple divisions by computing reciprocal once
+void normalise(vec4& v) {
+    float invLength = 1.0f / std::sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+    v.x *= invLength;
+    v.y *= invLength;
+    v.z *= invLength;
+}
+                        </pre>
+                        <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="1.15s">
+                            These snippets illustrate how branchless operations, incremental updates and reciprocal multiplication improve performance at the lowest levels of the rendering pipeline.
+                        </p>
+
+                        <!-- Challenges & Lessons Learned -->
+                        <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">Challenges &amp; Lessons Learned</h3>
+                        <ul class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.25s">
+                            <li>The biggest bottleneck was per‑pixel barycentric coordinate computation; the incremental update strategy dramatically reduced this cost.</li>
+                            <li>Balancing optimisations for vertex processing and rasterisation required careful profiling: scenes dominated by vertex transformations showed smaller gains.</li>
+                            <li>Attempting to parallelise the rasteriser with C++ threads exposed race conditions in depth testing and pixel updates; further debugging is needed before multithreaded rendering can be used.</li>
+                        </ul>
+
+                        <!-- Demo & Instructions -->
+                        <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">Demo &amp; Instructions</h3>
+                        <p class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.35s"><strong>To build and run the rasterizer:</strong></p>
+                        <ol class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.4s">
+                            <li>Compile the project using a C++17‑compatible compiler (e.g., g++ or Visual Studio) on Windows.</li>
+                            <li>Run the executable. The renderer opens a 1024×768 window.</li>
+                            <li>Edit <code class="inline">raster.cpp</code> to call the desired scene function (<code class="inline">scene1()</code>, <code class="inline">scene2()</code> or <code class="inline">scene3()</code>) and recompile.</li>
+                            <li>Use keyboard controls (W/A/S/D/Q/E) to move objects or the camera. The program measures frame times and prints cycle timings to the console.</li>
+                            <li>To benchmark performance, run each scene for 100 cycles and record the average frame time. Compare against the baseline build to evaluate speedups.</li>
+                        </ol>
+                        <div class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.5s">
+                            <a class="btn btn-fill" href="../index.html#mh-portfolio"><i class="fa fa-arrow-left"></i> Back to Portfolio</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar / Project Info -->
+                <div class="col-sm-12 col-md-4">
+                    <div class="mh-about-inner">
+                        <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.1s">Project Info</h3>
+                        <ul class="mh-experience-deatils wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">
+                            <li><i class="fa fa-user"></i> Individual project</li>
+                            <li><i class="fa fa-calendar"></i> 2024</li>
+                            <li><i class="fa fa-code"></i> C++, Matrix math, Z-buffering</li>
+                            <li><i class="fa fa-tachometer"></i> Performance optimisation &amp; benchmarking</li>
+                        </ul>
+
+                        <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">Screenshots</h3>
+                        <div class="wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.35s">
+                            <!-- Scene 1 screenshot -->
+                            <a href="../assets/images/portfolio/PATH_TO_SCENE1_IMAGE" data-fancybox="gallery">
+                                <img src="../assets/images/portfolio/PATH_TO_SCENE1_IMAGE" alt="Scene 1: grid of rotating cubes" class="img-fluid rounded mb-3">
+                            </a>
+                            <!-- Scene 2 screenshot -->
+                            <a href="../assets/images/portfolio/PATH_TO_SCENE2_IMAGE" data-fancybox="gallery">
+                                <img src="../assets/images/portfolio/PATH_TO_SCENE2_IMAGE" alt="Scene 2: cube grid with moving sphere" class="img-fluid rounded mb-3">
+                            </a>
+                            <!-- Scene 3 screenshot -->
+                            <a href="../assets/images/portfolio/PATH_TO_SCENE3_IMAGE" data-fancybox="gallery">
+                                <img src="../assets/images/portfolio/PATH_TO_SCENE3_IMAGE" alt="Scene 3: 10×10 cube grid with high‑polygon sphere" class="img-fluid rounded mb-3">
+                            </a>
+                            <!-- Performance graph -->
+                            <a href="../assets/images/portfolio/PATH_TO_PERFORMANCE_GRAPH" data-fancybox="gallery">
+                                <img src="../assets/images/portfolio/PATH_TO_PERFORMANCE_GRAPH" alt="Performance comparison chart for Scenes 1–3" class="img-fluid rounded mb-3">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="mh-footer" id="mh-contact">
+        <div class="map-image image-bg">
+            <div class="container">
+                <div class="row section-separator">
+                    <div class="col-sm-12 section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">
+                        <h3>Contact Me</h3>
+                    </div>
+                    <div class="col-sm-12 mh-footer-address">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-4">
+                                <div class="mh-address-footer-item dark-bg shadow-1 wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">
+                                    <div class="each-icon">
+                                        <i class="fa fa-location-arrow"></i>
+                                    </div>
+                                    <div class="each-info">
+                                        <h4>Address</h4>
+                                        <address>
+                                            49 Queens Road, Coventry, <br>
+                                            England
+                                        </address>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="mh-address-footer-item dark-bg shadow-1 wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.5s">
+                                    <div class="each-icon">
+                                        <i class="fa fa-envelope-o"></i>
+                                    </div>
+                                    <div class="each-info">
+                                        <h4>Email</h4>
+                                        <a href="mailto:guilhermenoronha543@icloud.com">guilhermenoronha543@icloud.com</a><br>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="mh-address-footer-item dark-bg shadow-1 wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.7s">
+                                    <div class="each-icon">
+                                        <i class="fa fa-phone"></i>
+                                    </div>
+                                    <div class="each-info">
+                                        <h4>Phone</h4>
+                                        <a href="callto:+44 7751134587">+44 7751134587</a><br>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">
+                        <form id="contactForm" class="single-form quate-form wow fadeInUp" data-toggle="validator">
+                            <div id="msgSubmit" class="h3 text-center hidden"></div>
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12">
+                                    <input name="name" class="contact-name form-control" id="name" type="text" placeholder="First Name" required>
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <input name="name" class="contact-email form-control" id="L_name" type="text" placeholder="Last Name" required>
+                                </div>
+                                <div class="col-sm-12">
+                                    <input name="name" class="contact-subject form-control" id="email" type="email" placeholder="Your Email" required>
+                                </div>
+                                <div class="col-sm-12">
+                                    <textarea class="contact-message" id="message" rows="6" placeholder="Your Message" required></textarea>
+                                </div>
+                                <div class="btn-form col-sm-12">
+                                    <button type="submit" class="btn btn-fill btn-block" id="form-submit">Send Message</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-sm-12 col-md-6 wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.5s">
+                        <div class="mh-map">
+                            <div id="mh-map" class="shadow-1"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 mh-copyright wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="text-left text-xs-center">
+                                    <p><a href="templateshub.net">Templates Hub</a></p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <ul class="social-icon">
+                                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-github"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JS -->
+    <script src="../assets/plugins/js/jquery.min.js"></script>
+    <script src="../assets/plugins/js/popper.min.js"></script>
+    <script src="../assets/plugins/js/bootstrap.min.js"></script>
+    <script src="../assets/plugins/js/waypoints.min.js"></script>
+    <script src "../assets/plugins/js/owl.carousel.min.js"></script>
+    <script src="../assets/plugins/js/jquery.filterizr.min.js"></script>
+    <script src="../assets/plugins/js/jquery.fancybox.min.js"></script>
+    <script src="../assets/plugins/js/wow.min.js"></script>
+    <script src="../assets/js/custom-scripts.js"></script>
+    <script>new WOW().init();</script>
+</body>
+</html>
