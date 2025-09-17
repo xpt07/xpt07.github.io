@@ -2684,42 +2684,6 @@ BLOG Pagination
 
 /*# sourceMappingURL=styles.css.map */
 
-/* --- Skills as simple boxed chips --- */
-.mh-skills .candidatos {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* two columns */
-    gap: 12px;
-}
-
-@media (max-width: 576px) {
-    .mh-skills .candidatos {
-        grid-template-columns: 1fr;
-    }
-}
-
-.mh-skills .candidatos .parcial {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 10px;
-    padding: 14px 18px;
-    margin: 0; /* grid handles spacing */
-}
-
-    .mh-skills .candidatos .parcial .info {
-        display: block;
-    }
-
-    .mh-skills .candidatos .parcial .nome {
-        font-weight: 600;
-        letter-spacing: .2px;
-    }
-
-    /* hide the noisy stuff */
-    .mh-skills .candidatos .parcial .percentagem-num,
-    .mh-skills .candidatos .parcial .progressBar {
-        display: none !important;
-    }
-
 .skills-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
