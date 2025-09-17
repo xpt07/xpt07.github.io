@@ -2684,27 +2684,55 @@ BLOG Pagination
 
 /*# sourceMappingURL=styles.css.map */
 
+/* ========== Skills chips ========== */
+.mh-skills .section-heading {
+    margin-bottom: 24px;
+}
+
+.skills-group + .skills-group {
+    margin-top: 28px;
+}
+
+.skills-group__title {
+    margin: 0 0 12px;
+    font-weight: 700;
+}
+
 .skills-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 12px;
     margin: 0;
     padding: 0;
-    list-style: none;
 }
 
 .skill-chip {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 10px;
-    padding: 14px 18px;
+    list-style: none;
+    padding: 12px 14px;
+    border: 1px solid rgba(255,255,255,0.18);
+    background: rgba(255,255,255,0.04);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.35) inset;
+    border-radius: 4px; /* sharp corners; set to 0 for perfectly square */
     font-weight: 600;
+    letter-spacing: .2px;
 }
 
-@media (max-width: 576px) {
+    .skill-chip:hover {
+        border-color: #0bceaf;
+        background: rgba(11,206,175,0.07);
+        transform: translateY(-1px);
+        transition: all .15s ease;
+    }
+
+/* Tweak spacing on smaller screens */
+@media (max-width: 767px) {
+    .skills-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
     .skills-grid {
         grid-template-columns: 1fr;
     }
 }
-
-
