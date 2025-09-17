@@ -1628,49 +1628,6 @@ body {
     box-shadow: 0 0px 2px 0 rgba(255, 255, 255, 0.8), 0 0px 1px 1px rgba(255, 255, 255, 0.8);
     border-color: transparent; }
 
-
-/*
-    ==============
-      SKILL BOXES
-    ==============
-*/
-.mh-professional-skill .each-skills .candidatos {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-    gap: 12px;
-}
-
-.mh-professional-skill .parcial {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 10px;
-    padding: 14px 16px;
-    box-shadow: 0 4px 12px rgba(0,0,0,.25);
-}
-
-    .mh-professional-skill .parcial .progressBar,
-    .mh-professional-skill .parcial .percentagem-num,
-    .mh-professional-skill .parcial .percentagem {
-        display: none !important;
-    }
-
-    .mh-professional-skill .parcial .info {
-        display: block;
-    }
-
-        .mh-professional-skill .parcial .info .nome {
-            font-weight: 600;
-            letter-spacing: .2px;
-        }
-
-.mh-skills-inner .each-skills .candidatos {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-    gap: 12px;
-}
-
-
-
 /*
     ==============
        MAP
@@ -2726,3 +2683,40 @@ BLOG Pagination
   margin-bottom: 30px; }
 
 /*# sourceMappingURL=styles.css.map */
+
+/* --- Skills as simple boxed chips --- */
+.mh-skills .candidatos {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* two columns */
+    gap: 12px;
+}
+
+@media (max-width: 576px) {
+    .mh-skills .candidatos {
+        grid-template-columns: 1fr;
+    }
+}
+
+.mh-skills .candidatos .parcial {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 0; /* grid handles spacing */
+}
+
+    .mh-skills .candidatos .parcial .info {
+        display: block;
+    }
+
+    .mh-skills .candidatos .parcial .nome {
+        font-weight: 600;
+        letter-spacing: .2px;
+    }
+
+    /* hide the noisy stuff */
+    .mh-skills .candidatos .parcial .percentagem-num,
+    .mh-skills .candidatos .parcial .progressBar {
+        display: none !important;
+    }
+
