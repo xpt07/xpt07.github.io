@@ -1,42 +1,83 @@
 <!doctype html>
 <html lang="en">
-    
-<head>
-        <title>GuiCodes</title>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="description" content="Guilhermw Noronha Jardim's personal portfolio/CV'" />
-        <meta name="keywords" content="creative, cv, designer,  online cv, online resume, powerful portfolio, professional, professional resume, responsive, resume, vcard " />
-        <meta name="developer" content="Guilherme Noronha Jardim">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        
-        <!-- FAV AND ICONS   -->
-        <link rel="shortcut icon" href="assets/images/favicon.png">
-        <link rel="shortcut icon" href="assets/images/apple-icon.png">
-        <link rel="shortcut icon" sizes="72x72" href="assets/images/apple-icon-72x72.png">
-        <link rel="shortcut icon" sizes="114x114" href="assets/images/apple-icon-114x114.png">
-        
-        <!-- Google Font-->
-        <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-        <!-- Font Awesome -->
-        <link rel="stylesheet" href="assets/icons/font-awesome-4.7.0/css/font-awesome.min.css">
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="assets/plugins/css/bootstrap.min.css">
-        <!-- Animate CSS-->
-        <link rel="stylesheet" href="assets/plugins/css/animate.css">
-        <!-- Owl Carousel CSS-->
-        <link rel="stylesheet" href="assets/plugins/css/owl.css">
-        <!-- Fancybox-->
-        <link rel="stylesheet" href="assets/plugins/css/jquery.fancybox.min.css">
-        <!-- Custom CSS-->
-        <link rel="stylesheet" href="assets/css/styles.css">
-        <link rel="stylesheet" href="assets/css/responsive.css">
-        
-        <!-- Colors -->
-        <link rel="stylesheet" href="assets/css/colors/purple.css" title="purple">
 
-    </head>
+<head>
+    <title>GuiCodes</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Guilhermw Noronha Jardim's personal portfolio/CV'" />
+    <meta name="keywords" content="creative, cv, designer,  online cv, online resume, powerful portfolio, professional, professional resume, responsive, resume, vcard " />
+    <meta name="developer" content="Guilherme Noronha Jardim">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- FAV AND ICONS   -->
+    <link rel="shortcut icon" href="assets/images/favicon.png">
+    <link rel="shortcut icon" href="assets/images/apple-icon.png">
+    <link rel="shortcut icon" sizes="72x72" href="assets/images/apple-icon-72x72.png">
+    <link rel="shortcut icon" sizes="114x114" href="assets/images/apple-icon-114x114.png">
+
+    <!-- Google Font-->
+    <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="assets/icons/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="assets/plugins/css/bootstrap.min.css">
+    <!-- Animate CSS-->
+    <link rel="stylesheet" href="assets/plugins/css/animate.css">
+    <!-- Owl Carousel CSS-->
+    <link rel="stylesheet" href="assets/plugins/css/owl.css">
+    <!-- Fancybox-->
+    <link rel="stylesheet" href="assets/plugins/css/jquery.fancybox.min.css">
+    <!-- Custom CSS-->
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+
+    <!-- Colors -->
+    <link rel="stylesheet" href="assets/css/colors/purple.css" title="purple">
+
+</head>
+
+<script>
+    (function () {
+        const form = document.getElementById('contactForm');
+        if (!form) return;
+        const statusEl = document.getElementById('formStatus');
+
+        function setStatus(msg, ok = true) {
+            if (!statusEl) return;
+            statusEl.textContent = msg;
+            statusEl.style.color = ok ? '#61d095' : '#ff6b6b';
+        }
+
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            setStatus('Sending…', true);
+
+            try {
+                const res = await fetch(form.action, {
+                    method: 'POST',
+                    body: new FormData(form),
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (res.ok) {
+                    form.reset();
+                    setStatus('Thanks! Your message has been sent.', true);
+                } else {
+                    const data = await res.json().catch(() => ({}));
+                    const msg = (data && data.errors && data.errors[0] && data.errors[0].message)
+                        ? data.errors[0].message
+                        : 'Something went wrong. Please email me directly.';
+                    setStatus(msg, false);
+                }
+            } catch (err) {
+                setStatus('Network error. Please try again or email me directly.', false);
+            }
+        });
+    })();
+</script>
+
 <body class="dark-vertion black-bg">
     <!-- Start Loader -->
     <div class="section-loader">
@@ -671,80 +712,97 @@
                     <div class="col-sm-12 section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.2s">
                         <h3>Contact Me</h3>
                     </div>
+
                     <div class="col-sm-12 mh-footer-address">
                         <div class="row">
                             <div class="col-sm-12 col-md-4">
                                 <div class="mh-address-footer-item dark-bg shadow-1 wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">
-                                    <div class="each-icon">
-                                        <i class="fa fa-location-arrow"></i>
-                                    </div>
+                                    <div class="each-icon"><i class="fa fa-location-arrow"></i></div>
                                     <div class="each-info">
                                         <h4>Address</h4>
                                         <address>
-                                            49 Queens Road, Coventry, <br>
-                                            England
+                                            49 Queens Road, Coventry, <br> England
                                         </address>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-sm-12 col-md-4">
                                 <div class="mh-address-footer-item dark-bg shadow-1 wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.5s">
-                                    <div class="each-icon">
-                                        <i class="fa fa-envelope-o"></i>
-                                    </div>
+                                    <div class="each-icon"><i class="fa fa-envelope-o"></i></div>
                                     <div class="each-info">
                                         <h4>Email</h4>
                                         <a href="mailto:guilhermenoronha543@icloud.com">guilhermenoronha543@icloud.com</a><br>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="col-sm-12 col-md-4">
                                 <div class="mh-address-footer-item dark-bg shadow-1 wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.7s">
-                                    <div class="each-icon">
-                                        <i class="fa fa-phone"></i>
-                                    </div>
+                                    <div class="each-icon"><i class="fa fa-phone"></i></div>
                                     <div class="each-info">
                                         <h4>Phone</h4>
-                                        <a href="callto:+44 7751134587">+44 7751134587</a><br>
+                                        <a href="tel:+447751134587">+44 7751134587</a><br>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Contact form -->
                     <div class="col-sm-12 col-md-6 wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">
-                        <form id="contactForm" class="single-form quate-form wow fadeInUp" data-toggle="validator">
-                            <div id="msgSubmit" class="h3 text-center hidden"></div>
+                        <form id="contactForm"
+                              class="single-form quate-form wow fadeInUp"
+                              action="https://formspree.io/f/mzzaljkq"
+                              method="POST"
+                              novalidate>
+                            <!-- status / feedback -->
+                            <p id="formStatus" class="h6 text-center" aria-live="polite" style="min-height:1.2em;"></p>
+
+                            <!-- subject + honeypot -->
+                            <input type="hidden" name="_subject" value="Portfolio contact — xpt07.github.io">
+                            <input type="text" name="company" tabindex="-1" autocomplete="off"
+                                   style="position:absolute;left:-9999px;opacity:0;height:0;width:0;border:0;padding:0;">
+
                             <div class="row">
                                 <div class="col-md-6 col-sm-12">
-                                    <input name="name" class="contact-name form-control" id="name" type="text" placeholder="First Name" required>
+                                    <label for="firstName" class="sr-only">First Name</label>
+                                    <input name="firstName" class="contact-name form-control" id="firstName"
+                                           type="text" placeholder="First Name" required>
                                 </div>
                                 <div class="col-md-6 col-sm-12">
-                                    <input name="name" class="contact-email form-control" id="L_name" type="text" placeholder="Last Name" required>
+                                    <label for="lastName" class="sr-only">Last Name</label>
+                                    <input name="lastName" class="contact-email form-control" id="lastName"
+                                           type="text" placeholder="Last Name" required>
                                 </div>
                                 <div class="col-sm-12">
-                                    <input name="name" class="contact-subject form-control" id="email" type="email" placeholder="Your Email" required>
+                                    <label for="email" class="sr-only">Your Email</label>
+
+                                    <input name="_replyto" class="contact-subject form-control" id="email"
+                                           type="email" placeholder="Your Email" required>
                                 </div>
                                 <div class="col-sm-12">
-                                    <textarea class="contact-message" id="message" rows="6" placeholder="Your Message" required></textarea>
+                                    <label for="message" class="sr-only">Your Message</label>
+                                    <textarea class="contact-message form-control" name="message" id="message"
+                                              rows="6" placeholder="Your Message" required></textarea>
                                 </div>
-                                <!-- Subject Button -->
+
                                 <div class="btn-form col-sm-12">
                                     <button type="submit" class="btn btn-fill btn-block" id="form-submit">Send Message</button>
                                 </div>
                             </div>
                         </form>
                     </div>
+
+                    <!-- Map -->
                     <div class="col-sm-12 col-md-6 wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.5s">
-                        <div class="mh-map">
-                            <div id="mh-map" class="shadow-1"></div>
-                        </div>
+                        <div class="mh-map"><div id="mh-map" class="shadow-1"></div></div>
                     </div>
+
                     <div class="col-sm-12 mh-copyright wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.3s">
                         <div class="row">
                             <div class="col-sm-6">
-                                <div class="text-left text-xs-center">
-                                    <p><a href="templateshub.net">Templates Hub</a></p>
-                                </div>
+                                <div class="text-left text-xs-center"><p><a href="https://templateshub.net" rel="noopener" target="_blank">Templates Hub</a></p></div>
                             </div>
                             <div class="col-sm-6">
                                 <ul class="social-icon">
@@ -756,10 +814,12 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
     </footer>
+
 
     <!--
     ==============
