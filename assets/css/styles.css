@@ -2736,3 +2736,49 @@ BLOG Pagination
         grid-template-columns: 1fr;
     }
 }
+
+
+/* Hero polish */
+.hero-sub {
+    font-size: 1.25rem;
+    font-weight: 600;
+    opacity: .9;
+    margin-top: .25rem;
+}
+
+.hero-blurb {
+    margin: 1rem 0 1.25rem;
+    max-width: 48ch;
+    line-height: 1.6;
+}
+
+/* CTA row */
+.cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+}
+
+.btn-ghost {
+    border: 1.5px solid rgba(255,255,255,.2);
+    background: transparent;
+    color: inherit;
+}
+
+    .btn-ghost:hover {
+        border-color: rgba(255,255,255,.5);
+    }
+
+/* Quick contact line */
+.contact-quick {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+    display: grid;
+    gap: .35rem;
+}
+
+    .contact-quick i {
+        margin-right: .5rem;
+        opacity: .8;
+    }
