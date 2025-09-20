@@ -4,8 +4,9 @@
     <title>Custom Physics Engine — GuiCodes</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="2D Custom Physics Engine — C++ rigid body dynamics, collision detection and impulses with an OpenGL sandbox visualiser.">
+    <meta name="description" content="2D Custom Physics Engine — C++ rigid-body dynamics, narrow-phase collision detection (Circle–Circle, Circle–OBB, OBB–OBB) and impulse-based resolution with an OpenGL + ImGui sandbox.">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
     <link rel="shortcut icon" href="../assets/images/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="../assets/icons/font-awesome-4.7.0/css/font-awesome.min.css">
@@ -58,6 +59,10 @@
             overflow: auto;
         }
 
+        code.inline {
+            font-family: Menlo,Consolas,monospace;
+        }
+
         .badge-tech {
             display: inline-block;
             padding: .35rem .6rem;
@@ -67,15 +72,32 @@
             font-size: .8rem;
         }
 
+        .callout {
+            background: rgba(255,255,255,.06);
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin: 10px 0;
+        }
+
+        .keyline {
+            border-left: 3px solid #8a66ff;
+            padding-left: 12px;
+        }
+
         .mh-experience-deatils li {
             list-style: disc;
             margin-left: 1rem;
+        }
+
+        .mini {
+            opacity: .85;
+            font-size: .92rem
         }
     </style>
 </head>
 <body class="dark-vertion black-bg">
 
-    <!-- Header / Nav -->
     <header class="black-bg mh-header mh-fixed-nav nav-scroll mh-xs-mobile-nav">
         <div class="overlay"></div>
         <div class="container">
@@ -95,75 +117,128 @@
         </div>
     </header>
 
-    <!-- Hero -->
     <section class="project-hero mh-home" id="mh-home">
         <div class="container">
             <div class="row section-separator vertical-middle-content home-padding">
                 <div class="col-sm-8">
                     <div class="mh-header-info">
-                        <div class="mh-promo wow fadeInUp"><span>Project</span></div>
-                        <h2 class="wow fadeInUp">2D Custom Physics Engine</h2>
-                        <h4 class="wow fadeInUp">C++ rigid-body dynamics with collision detection and OpenGL sandbox</h4>
-                        <div class="mh-meta wow fadeInUp">
-                            <span class="badge-tech">C++</span>
-                            <span class="badge-tech">Physics</span>
-                            <span class="badge-tech">Collision Detection</span>
+                        <div class="mh-promo wow fadeInUp" data-wow-duration=".8s" data-wow-delay=".1s"><span>Project</span></div>
+                        <h2 class="wow fadeInUp" data-wow-duration=".8s" data-wow-delay=".2s">2D Custom Physics Engine</h2>
+                        <h4 class="wow fadeInUp" data-wow-duration=".8s" data-wow-delay=".3s">C++ rigid-body dynamics with collision detection and an OpenGL + ImGui sandbox</h4>
+                        <div class="mh-meta wow fadeInUp" data-wow-duration=".8s" data-wow-delay=".4s">
+                            <span class="badge-tech">C++17</span>
+                            <span class="badge-tech">Rigid Bodies</span>
+                            <span class="badge-tech">Impulse Solver</span>
                             <span class="badge-tech">OpenGL</span>
+                            <span class="badge-tech">GLFW/GLAD</span>
+                            <span class="badge-tech">Dear ImGui</span>
                             <span class="badge-tech">Premake</span>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-4 text-center wow fadeInUp">
+                <div class="col-sm-4 text-center wow fadeInUp" data-wow-duration=".8s" data-wow-delay=".4s">
                     <img src="../assets/images/portfolio/physics-thumb.png" alt="Physics engine demo" class="img-fluid rounded">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Content -->
     <main class="mh-about" id="content">
         <div class="container">
             <div class="row section-separator">
-                <!-- Main column -->
+
+                <!-- Main -->
                 <div class="col-sm-12 col-md-8">
                     <div class="mh-about-inner">
 
+                        <!-- Overview -->
                         <h3 class="mh-section-title wow fadeInUp">Overview</h3>
-                        <p class="wow fadeInUp">
-                            This project implements a 2D physics engine in C++, supporting rigid-body dynamics, collision detection, and impulse resolution.
-                            A real-time OpenGL sandbox visualiser was developed to demonstrate simulations of shapes interacting under gravity and user-applied forces.
-                            The engine was written from scratch to explore fundamental physics concepts, numerical stability, and efficient collision handling.
+                        <p class="wow fadeInUp mini">
+                            A lightweight 2D physics engine written from first principles in C++. It supports rigid-body dynamics
+                            and narrow-phase collision detection for <em>Circle–Circle</em>, <em>Circle–OBB</em>, and <em>OBB–OBB</em> pairs,
+                            with impulse-based resolution (restitution + friction) and positional correction. A real-time OpenGL
+                            sandbox—driven by Dear ImGui—provides scene management, live object editing, and on-the-fly creation of new bodies.
                         </p>
 
-                        <h3 class="mh-section-title wow fadeInUp">Key Features</h3>
-                        <ul class="wow fadeInUp">
-                            <li><strong>Rigid Body Dynamics:</strong> Support for linear and angular motion with configurable mass and inertia tensors.</li>
-                            <li><strong>Collision Detection:</strong> Broadphase and narrowphase algorithms for efficient shape intersection tests.</li>
-                            <li><strong>Impulse Resolution:</strong> Conservation of momentum and restitution handling for realistic responses.</li>
-                            <li><strong>Constraint Handling:</strong> Basic support for joints and contact persistence.</li>
-                            <li><strong>Sandbox Application:</strong> Interactive OpenGL-based visualiser for debugging and showcasing simulations.</li>
-                            <li><strong>Extensible Framework:</strong> Modular C++ design with clear separation of physics core and rendering.</li>
+                        
+                        <h3 class="mh-section-title wow fadeInUp">Summary</h3>
+                        <div class="callout keyline wow fadeInUp">
+                            <ul class="mb-0">
+                                <li><strong>Clear architecture:</strong> Engine core is decoupled from rendering and UI (scenes + physics vs. sandbox + ImGui). RAII (`std::unique_ptr`) and singletons used judiciously for lifecycle control.</li>
+                                <li><strong>Mathematically correct contact handling:</strong> Collision normals, relative velocities, clamped friction impulses, and Baumgarte-style positional correction, implemented and explained.</li>
+                                <li><strong>Practical tooling:</strong> Per-scene GUI editors to select bodies, edit materials/pose, and spawn new circles/OBBs at runtime—useful for both debugging and demonstrations.</li>
+                                <li><strong>Production-style build + docs:</strong> Premake→Visual Studio generation, precompiled headers, and Doxygen entrypoint prepared for API docs.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Architecture -->
+                        <h3 class="mh-section-title wow fadeInUp">Architecture at a glance</h3>
+                        <ul class="wow fadeInUp mini">
+                            <li><strong>Core:</strong> <code class="inline">Application</code> (main loop), <code class="inline">OpenGLWindow</code> (GLFW/GLAD), <code class="inline">Gui</code> host, and a custom <code class="inline">vector2</code>.</li>
+                            <li><strong>Physics:</strong> <code class="inline">RigidBody</code> with forces/impulses, <code class="inline">Material</code> (mass, restitution, friction), and shapes <code class="inline">Circle</code>, <code class="inline">OBB</code>.</li>
+                            <li><strong>Collisions:</strong> <code class="inline">CollisionUtility</code> implements circle-circle, circle-OBB (closest-point test), and OBB–OBB overlap using centers/extents; resolution applies normal/tangential impulses and positional correction.</li>
+                            <li><strong>Scenes:</strong> <code class="inline">Scene</code> (mixed), <code class="inline">CircleScene</code>, <code class="inline">OBBScene</code>, each with its own <code class="inline">onGui()</code> for object selection, editing, and creation.</li>
+                            <li><strong>Sandbox:</strong> OpenGL renderer + Dear ImGui; left sidebar switches scenes; right panel shows the active scene’s editor.</li>
                         </ul>
 
-                        <h3 class="mh-section-title wow fadeInUp">Technical Details</h3>
-                        <ul class="wow fadeInUp">
-                            <li>Written in modern C++17, using object-oriented design for bodies, shapes, and collision manifolds.</li>
-                            <li>Matrix and vector math implemented in-house to deepen understanding of transformations and rotations.</li>
-                            <li>Collision resolution uses impulses with positional correction to prevent sinking artifacts.</li>
-                            <li>Build system configured with <code>premake5.lua</code>, generating Visual Studio project files.</li>
+                        <!-- Technical Highlights -->
+                        <h3 class="mh-section-title wow fadeInUp">Technical highlights</h3>
+                        <ul class="wow fadeInUp mini">
+                            <li><strong>Impulse solver:</strong> Computes normal impulse from the relative velocity projected on the contact normal; restitution applied conditionally; tangential friction impulse clamped by <code class="inline">μ |J_n|</code>.</li>
+                            <li><strong>Positional correction:</strong> Penetration depth corrected with a small slop and a configurable percentage to avoid sinking and jitter.</li>
+                            <li><strong>Per-scene editors:</strong> Each scene exposes <code class="inline">onGui()</code> to: (i) select an existing body; (ii) adjust position, rotation, mass, restitution, friction, and static/dynamic type; (iii) spawn new objects.</li>
+                            <li><strong>Rendering path:</strong> Immediate-mode OpenGL for clarity; GLFW for windowing; GLAD for function loading.</li>
                         </ul>
 
-                        <h3 class="mh-section-title wow fadeInUp">Demo & Instructions</h3>
-                        <p class="wow fadeInUp"><strong>To build and run the engine:</strong></p>
-                        <ol class="wow fadeInUp">
-                            <li>Clone the repo: <code>git clone https://github.com/xpt07/Custom_Physics_Engine.git</code></li>
-                            <li>Run <code>buildVS2022Projects.bat</code> (or the 2019 script) to generate solution files.</li>
-                            <li>Open the solution in Visual Studio and build the <code>Sandbox</code> project.</li>
-                            <li>Run the executable to launch the interactive demo.</li>
+                        <!-- Code highlight: collision response -->
+                        <h4 class="wow fadeInUp">Code highlight — impulse with friction (simplified)</h4>
+                        <pre class="code wow fadeInUp">
+// Given contact normal n, relative velocity vrel, inverse masses invA, invB
+float vn = dot(vrel, n);
+float jn = -(1.f + restitution) * vn / (invA + invB);   // normal impulse
+vec2  impulseN = jn * n;
+
+// Apply normal impulse
+A.velocity -= invA * impulseN;
+B.velocity += invB * impulseN;
+
+// Tangential direction
+vec2 t = vrel - dot(vrel, n) * n;
+if (length(t) > 1e-6f) t /= length(t);
+
+// Friction impulse, clamped by μ|jn|
+float jt = -dot(vrel, t) / (invA + invB);
+float jt_clamped = clamp(jt, -mu * fabs(jn), mu * fabs(jn));
+vec2 impulseT = jt_clamped * t;
+
+// Apply friction impulse
+A.velocity -= invA * impulseT;
+B.velocity += invB * impulseT;
+                    </pre>
+
+                        <!-- What a reviewer can do quickly in the demo -->
+                        <h3 class="mh-section-title wow fadeInUp">Try it in the sandbox</h3>
+                        <div class="callout wow fadeInUp mini">
+                            <ul class="mb-0">
+                                <li>Switch to <strong>Circle Scene</strong> and drag positions; toggle <em>Static</em> and adjust restitution to observe bounciness changes on impact.</li>
+                                <li>Switch to <strong>OBB Scene</strong>, rotate a box and add a new OBB; watch normal vs. friction impulses affect sliding vs. sticking.</li>
+                                <li>Use the mixed <strong>Scene</strong> to test Circle–OBB interactions and positional correction (no interpenetration drift).</li>
+                            </ul>
+                        </div>
+
+                        <!-- Build -->
+                        <h3 class="mh-section-title wow fadeInUp">Build & Run</h3>
+                        <ol class="wow fadeInUp mini">
+                            <li>Clone: <code class="inline">git clone https://github.com/xpt07/Custom_Physics_Engine.git</code></li>
+                            <li>Generate projects: <code class="inline">buildVS2022Projects.bat</code></li>
+                            <li>Open solution → build <code class="inline">Sandbox</code> → run.</li>
                         </ol>
                         <p class="wow fadeInUp">
-                            Source available here:
-                            <a href="https://github.com/xpt07/Custom_Physics_Engine" target="_blank"><i class="fa fa-github"></i> GitHub Repository</a>
+                            <a class="btn btn-fill" href="https://github.com/xpt07/Custom_Physics_Engine" target="_blank" rel="noopener">
+                                <i class="fa fa-github"></i> Source on GitHub
+                            </a>
+
+                            <a class="btn btn-outline" href="/docs/" target="_blank" rel="noopener">API Docs</a>
                         </p>
 
                         <div class="wow fadeInUp">
@@ -179,34 +254,44 @@
                         <ul class="mh-experience-deatils wow fadeInUp">
                             <li><i class="fa fa-user"></i> Individual project</li>
                             <li><i class="fa fa-calendar"></i> 2024</li>
-                            <li><i class="fa fa-code"></i> C++, OpenGL, Premake</li>
-                            <li><i class="fa fa-cogs"></i> Physics simulation</li>
+                            <li><i class="fa fa-code"></i> C++17, OpenGL, GLFW/GLAD, Dear ImGui</li>
+                            <li><i class="fa fa-cogs"></i> Impulse-based collision response</li>
+                            <li><i class="fa fa-wrench"></i> Premake, precompiled headers, Doxygen ready</li>
                         </ul>
 
                         <h3 class="mh-section-title wow fadeInUp">Screenshots</h3>
                         <div class="wow fadeInUp">
                             <a href="../assets/images/portfolio/physics-demo1.png" data-fancybox="gallery">
-                                <img src="../assets/images/portfolio/physics-demo1.png" alt="Box stack simulation" class="img-fluid rounded mb-3">
+                                <img src="../assets/images/portfolio/physics-demo1.png" alt="Circle stack" class="img-fluid rounded mb-3">
                             </a>
                             <a href="../assets/images/portfolio/physics-demo2.png" data-fancybox="gallery">
-                                <img src="../assets/images/portfolio/physics-demo2.png" alt="Collision demo" class="img-fluid rounded mb-3">
+                                <img src="../assets/images/portfolio/physics-demo2.png" alt="Circle vs OBB" class="img-fluid rounded mb-3">
                             </a>
                             <a href="../assets/images/portfolio/physics-demo3.png" data-fancybox="gallery">
-                                <img src="../assets/images/portfolio/physics-demo3.png" alt="Impulse resolution test" class="img-fluid rounded mb-3">
+                                <img src="../assets/images/portfolio/physics-demo3.png" alt="OBB collisions" class="img-fluid rounded mb-3">
                             </a>
+                        </div>
+
+                        <h3 class="mh-section-title wow fadeInUp">Recruiter’s checklist</h3>
+                        <div class="callout wow fadeInUp mini">
+                            <ul class="mb-0">
+                                <li>Separation of concerns (engine ↔ UI ↔ rendering)</li>
+                                <li>Numerical stability (restitution thresholding, positional correction)</li>
+                                <li>Runtime tooling (per-scene editors, object spawning)</li>
+                                <li>Clean memory ownership (RAII, smart pointers)</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </main>
 
-    <!-- FOOTER -->
     <footer class="mh-footer" id="mh-contact">
         <!-- reuse same footer as rasterizer project -->
     </footer>
 
-    <!-- JS -->
     <script src="../assets/plugins/js/jquery.min.js"></script>
     <script src="../assets/plugins/js/popper.min.js"></script>
     <script src="../assets/plugins/js/bootstrap.min.js"></script>
