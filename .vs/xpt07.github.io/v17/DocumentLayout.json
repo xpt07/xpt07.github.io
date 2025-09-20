@@ -3,12 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\xpto7\\OneDrive\\Desktop\\Portfolio\\xpt07.github.io\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\xpto7\\OneDrive\\Desktop\\Portfolio\\xpt07.github.io\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\xpto7\\OneDrive\\Desktop\\Portfolio\\xpt07.github.io\\projects\\3d-game-demo.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:projects\\3d-game-demo.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\xpto7\\OneDrive\\Desktop\\Portfolio\\xpt07.github.io\\projects\\networked-chatroom.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:projects\\networked-chatroom.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\xpto7\\OneDrive\\Desktop\\Portfolio\\xpt07.github.io\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\xpto7\\OneDrive\\Desktop\\Portfolio\\xpt07.github.io\\projects\\rasterizer-optimisation.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:projects\\rasterizer-optimisation.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 256,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,28 +34,52 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "networked-chatroom.html",
-              "DocumentMoniker": "C:\\Users\\xpto7\\OneDrive\\Desktop\\Portfolio\\xpt07.github.io\\projects\\networked-chatroom.html",
-              "RelativeDocumentMoniker": "projects\\networked-chatroom.html",
-              "ToolTip": "C:\\Users\\xpto7\\OneDrive\\Desktop\\Portfolio\\xpt07.github.io\\projects\\networked-chatroom.html",
-              "RelativeToolTip": "projects\\networked-chatroom.html",
-              "ViewState": "AgIAABQBAAAAAAAAAAAAADcBAAAmAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "3d-game-demo.html",
+              "DocumentMoniker": "C:\\Users\\xpto7\\OneDrive\\Desktop\\Portfolio\\xpt07.github.io\\projects\\3d-game-demo.html",
+              "RelativeDocumentMoniker": "projects\\3d-game-demo.html",
+              "ToolTip": "C:\\Users\\xpto7\\OneDrive\\Desktop\\Portfolio\\xpt07.github.io\\projects\\3d-game-demo.html",
+              "RelativeToolTip": "projects\\3d-game-demo.html",
+              "ViewState": "AgIAAGUBAAAAAAAAAAAwwMABAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2025-09-10T19:42:37.238Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-16T17:12:35.298Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
+              "Title": "rasterizer-optimisation.html",
+              "DocumentMoniker": "C:\\Users\\xpto7\\OneDrive\\Desktop\\Portfolio\\xpt07.github.io\\projects\\rasterizer-optimisation.html",
+              "RelativeDocumentMoniker": "projects\\rasterizer-optimisation.html",
+              "ToolTip": "C:\\Users\\xpto7\\OneDrive\\Desktop\\Portfolio\\xpt07.github.io\\projects\\rasterizer-optimisation.html",
+              "RelativeToolTip": "projects\\rasterizer-optimisation.html",
+              "ViewState": "AgIAAJAAAAAAAAAAAAAswJgAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-09-16T14:19:04.183Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "index.html",
               "DocumentMoniker": "C:\\Users\\xpto7\\OneDrive\\Desktop\\Portfolio\\xpt07.github.io\\index.html",
               "RelativeDocumentMoniker": "index.html",
               "ToolTip": "C:\\Users\\xpto7\\OneDrive\\Desktop\\Portfolio\\xpt07.github.io\\index.html",
               "RelativeToolTip": "index.html",
-              "ViewState": "AgIAAJoCAAAAAAAAAAAAAOsCAAANAAAAAAAAAA==",
+              "ViewState": "AgIAAEMAAAAAAAAAAAAqwHAAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2025-09-08T16:18:31.047Z"
+              "WhenOpened": "2025-09-08T16:18:31.047Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "networked-chatroom.html",
+              "DocumentMoniker": "C:\\Users\\xpto7\\OneDrive\\Desktop\\Portfolio\\xpt07.github.io\\projects\\networked-chatroom.html",
+              "RelativeDocumentMoniker": "projects\\networked-chatroom.html",
+              "ToolTip": "C:\\Users\\xpto7\\OneDrive\\Desktop\\Portfolio\\xpt07.github.io\\projects\\networked-chatroom.html",
+              "RelativeToolTip": "projects\\networked-chatroom.html",
+              "ViewState": "AgIAABoBAAAAAAAAAAAswGkBAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-09-10T19:42:37.238Z"
             }
           ]
         }

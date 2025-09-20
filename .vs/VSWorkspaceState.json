@@ -1,7 +1,13 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\assets",
+    "\\assets\\css",
+    "\\assets\\css\\colors",
+    "\\assets\\images",
+    "\\assets\\js",
+    "\\projects"
   ],
-  "SelectedNode": "\\C:\\Users\\u5632744\\Desktop\\Portfolio",
+  "SelectedNode": "\\assets\\css\\styles.css",
   "PreviewInSolutionExplorer": false
 }
