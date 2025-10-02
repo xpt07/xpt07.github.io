@@ -67,52 +67,53 @@
                 <div class="col-md-8">
                     <div class="mh-about-inner">
                         <h3 class="mh-section-title">Overview</h3>
-                        <p>This project involved developing a physics-based sled controller and a dynamic audio system for a winter-themed mini-game. Implemented in Unreal Engine 5 using both C++ and Blueprints, the system features precise control, grounded and airborne physics, and contextual audio feedback for an immersive player experience.</p>
+                        <p>This mini-game features a physics-driven sled controller and a responsive sound system. Developed with Unreal Engine 5 using a combination of C++ and Blueprints, the sled simulates inertial drift, responsive turning, air control, and contextual audio, enhancing player immersion.</p>
 
                         <h4 class="mh-section-title">Sled Physics & Input</h4>
-                        <p>The sled was implemented as a custom <code>APawn</code> subclass in C++, giving full control over the physics without inheriting Character class limitations. The Enhanced Input system was used to process <code>pitch</code>, <code>yaw</code>, and <code>roll</code> actions with keyboard and gamepad bindings.</p>
-                        <img src="../assets/images/portfolio/input-mapping.png" class="img-fluid rounded mb-3" alt="Input mapping">
+                        <p>The sled is implemented as an <code>APawn</code> subclass. Input is handled using Unreal’s Enhanced Input system, combining three <code>InputAction</code> assets into one <code>InputMappingContext</code> supporting keyboard and gamepad. Physics logic is entirely in C++ and includes torque-based turning and friction damping.</p>
+                        <img src="../assets/images/portfolio/input-mapping.png" class="img-fluid rounded mb-3" alt="Input Mapping">
+                        <img src="../assets/images/portfolio/sled-figure4.png" class="img-fluid rounded mb-3" alt="Inputs Blueprint">
 
-                        <h5>Turning (Yaw Torque)</h5>
-                        <pre><code class="language-cpp">void ASledgeBase::ApplySteerTorque() {
+                        <h5>Turning</h5>
+<pre><code class="language-cpp">void ASledgeBase::ApplySteerTorque() {
     FVector Torque = SledgeMesh->GetUpVector() * sTorque * yaw;
     SledgeMesh->AddTorqueInRadians(Torque);
 }</code></pre>
 
-                        <h5>Air Control (Pitch & Roll)</h5>
-                        <pre><code class="language-cpp">void ASledgeBase::ApplyAirControl() {
+                        <h5>Air Control</h5>
+<pre><code class="language-cpp">void ASledgeBase::ApplyAirControl() {
     FVector Torque = (SledgeMesh->GetForwardVector() * sTorque) * roll;
     SledgeMesh->AddTorqueInRadians(Torque);
     Torque = (SledgeMesh->GetRightVector() * sTorque) * pitch;
     SledgeMesh->AddTorqueInRadians(Torque);
 }</code></pre>
 
-                        <h5>Lateral Friction (Drift Damping)</h5>
-                        <p>To simulate realistic drifting, sideways velocity is computed and a counter-force is applied, modulated by surface material type.</p>
-                        <pre><code class="language-cpp">void ASledgeBase::ApplyDirectionalFriction() {
+                        <h5>Lateral Friction (Drift)</h5>
+<pre><code class="language-cpp">void ASledgeBase::ApplyDirectionalFriction() {
     FVector velocity = SledgeMesh->GetComponentVelocity();
-    FVector sideVel = FVector::DotProduct(velocity, SledgeMesh->GetRightVector()) * SledgeMesh->GetRightVector();
+    FVector rightVector = SledgeMesh->GetRightVector();
+    FVector sideVel = FVector::DotProduct(velocity, rightVector) * rightVector;
     FVector sideFriction = -sideVel * (isGrounded ? matFriction : 0.3f) * 5.0f;
     SledgeMesh->AddForce(sideFriction);
 }</code></pre>
+                        <img src="../assets/images/portfolio/sled-figure6.png" class="img-fluid rounded mb-3" alt="Drift Explanation">
 
                         <h4 class="mh-section-title">Audio System</h4>
-                        <p>The sound system is implemented as a modular <code>UActorComponent</code> written in C++. It dynamically adjusts wind and sliding audio and plays impact sounds based on surface tags.</p>
+                        <p>All sound logic is encapsulated in a <code>UActorComponent</code> (USledSound). This class adjusts wind/slide audio based on speed and grounded state, and triggers collision sounds for rocks and trees using tags.</p>
 
                         <h5>Initialisation</h5>
-                        <pre><code class="language-cpp">void USledSound::InitSoundPlayer(UAudioComponent* rock, UAudioComponent* tree,
+<pre><code class="language-cpp">void USledSound::InitSoundPlayer(UAudioComponent* rock, UAudioComponent* tree,
                                  UAudioComponent* wind, UAudioComponent* slide) {
     RockHitAudioComponent = rock;
     TreeHitAudioComponent = tree;
     WindAudioComponent = wind;
     SlideAudioComponent = slide;
-
-    if (WindAudioComponent) WindAudioComponent->FadeIn(0.5f);
-    if (SlideAudioComponent) SlideAudioComponent->FadeIn(0.5f);
+    WindAudioComponent->FadeIn(0.5f);
+    SlideAudioComponent->FadeIn(0.5f);
 }</code></pre>
 
                         <h5>Dynamic Pitch and Activation</h5>
-                        <pre><code class="language-cpp">void USledSound::UpdateSounds(float speed, bool grounded) {
+<pre><code class="language-cpp">void USledSound::UpdateSounds(float speed, bool grounded) {
     float pitch = PitchMinimumThreshold + FMath::Clamp(speed / SoundPitchScaleMaxSpeed, 0.f, 1.f) * PitchMultiplierRange;
     WindAudioComponent->SetPitchMultiplier(pitch);
     SlideAudioComponent->SetPitchMultiplier(pitch);
@@ -120,7 +121,7 @@
 }</code></pre>
 
                         <h5>Collision Response</h5>
-                        <pre><code class="language-cpp">void USledSound::PlayHitSounds(TArray<FName> tags, float speed) {
+<pre><code class="language-cpp">void USledSound::PlayHitSounds(TArray<FName> tags, float speed) {
     if (speed < HitSoundMinSpeed) return;
     float time = GetWorld()->GetRealTimeSeconds();
     if (tags.Contains("Rock") && time > RockHitTime + HitSoundInterval)
@@ -128,14 +129,14 @@
     else if (tags.Contains("Tree") && time > TreeHitTime + HitSoundInterval)
         TreeHitAudioComponent->Play();
 }</code></pre>
+                        <img src="../assets/images/portfolio/sled-audio.png" class="img-fluid rounded mb-3" alt="Audio Setup">
 
-                        <h4 class="mh-section-title">Reflection & Improvements</h4>
-                        <p>Future improvements include adopting Sound Cues and Submix Effects for more layered soundscapes and replacing direct component references with interfaces for better modularity and cleaner Blueprint integration.</p>
+                        <h4 class="mh-section-title">Reflection</h4>
+                        <p>To improve modularity, future work could leverage Sound Cues and Submix Effects, replacing direct UAudioComponent references. Interfaces could also be used to decouple dependencies from specific component references.</p>
 
                         <a class="btn btn-fill mt-3" href="https://github.com/xpt07/SleddingGame" target="_blank"><i class="fa fa-github"></i> View Code on GitHub</a>
                     </div>
                 </div>
-
                 <div class="col-md-4">
                     <div class="mh-about-inner">
                         <h3 class="mh-section-title">Project Info</h3>
@@ -149,6 +150,9 @@
                         <h3 class="mh-section-title">Screenshots</h3>
                         <a href="../assets/images/portfolio/sled-figure5.png" data-fancybox="gallery">
                             <img src="../assets/images/portfolio/sled-figure5.png" class="img-fluid rounded mb-3">
+                        </a>
+                        <a href="../assets/images/portfolio/sled-figure6.png" data-fancybox="gallery">
+                            <img src="../assets/images/portfolio/sled-figure6.png" class="img-fluid rounded mb-3">
                         </a>
                         <a href="../assets/images/portfolio/sled-audio.png" data-fancybox="gallery">
                             <img src="../assets/images/portfolio/sled-audio.png" class="img-fluid rounded mb-3">
