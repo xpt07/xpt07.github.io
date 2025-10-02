@@ -37,7 +37,7 @@
         </div>
     </header>
 
-    <section class="project-hero mh-home" id="mh-home" style="background: url('../assets/images/portfolio/hero-raytracer.png') center/cover no-repeat;">
+    <section class="project-hero mh-home" id="mh-home" style="background: url('../assets/images/portfolio/cornell-box-PT.png') center/cover no-repeat;">
         <div class="container">
             <div class="row section-separator vertical-middle-content home-padding">
                 <div class="col-sm-8">
@@ -73,51 +73,74 @@
                             A physically-based renderer written in C++, implementing Monte Carlo path tracing with support for area lights, emissive materials, complex BSDFs, multiple importance sampling (MIS), and Open Image Denoise (OIDN) for final-frame filtering. The engine is modular and supports scene loading via a custom binary format.
                         </p>
 
-                        <h3 class="mh-section-title">Highlights</h3>
+                        <h3 class="mh-section-title">Key Achievements</h3>
                         <ul>
-                            <li>BVH acceleration structure with SAH-inspired layout</li>
-                            <li>Multiple importance sampling for efficient lighting</li>
-                            <li>Layered BSDF system supporting rough conductors and dielectrics</li>
-                            <li>Importance sampling of HDR environment maps via precomputed CDFs</li>
-                            <li>Tile-based multithreaded rendering and per-tile adaptive sampling</li>
-                            <li>Intel OIDN denoiser with albedo + normal auxiliaries</li>
+                            <li>BVH acceleration structure for fast ray-triangle tests</li>
+                            <li>Multiple Importance Sampling for efficient HDR environment lighting</li>
+                            <li>Glass BRDF and layered BSDF system</li>
+                            <li>Tile-based multithreaded rendering (59.7 s → 5 s)</li>
+                            <li>Intel OIDN denoiser integration</li>
+                            <li>Light tracing implemented for advanced light transport</li>
                         </ul>
 
+                        <h3 class="mh-section-title">Before / After Examples</h3>
+
+                        <!-- Denoising -->
+                        <h4>Denoising</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="../assets/images/portfolio/noD.png" data-fancybox="gallery">
+                                    <img src="../assets/images/portfolio/noD.png" class="img-fluid rounded mb-3" alt="Original Image">
+                                </a>
+                                <p class="text-center">Original Image</p>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="../assets/images/portfolio/yesD.png" data-fancybox="gallery">
+                                    <img src="../assets/images/portfolio/yesD.png" class="img-fluid rounded mb-3" alt="Denoised Image">
+                                </a>
+                                <p class="text-center">Denoised Image (OIDN)</p>
+                            </div>
+                        </div>
+
+                        <!-- MIS -->
+                        <h4>Environment Lighting & MIS</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img src="../assets/images/portfolio/mis-off.png" class="img-fluid rounded mb-3" alt="No MIS">
+                                <p class="text-center">Without Tabulated Distribution & MIS</p>
+                            </div>
+                            <div class="col-md-6">
+                                <img src="../assets/images/portfolio/mis-on.png" class="img-fluid rounded mb-3" alt="With MIS">
+                                <p class="text-center">With Tabulated Distribution & MIS</p>
+                            </div>
+                        </div>
+
+                        <!-- Light Tracer -->
+                        <h4>Light Tracing</h4>
+                        <a href="../assets/images/portfolio/light-tracer.png" data-fancybox="gallery">
+                            <img src="../assets/images/portfolio/light-tracer.png" class="img-fluid rounded mb-3" alt="Scene rendered with Light Tracer">
+                        </a>
+
                         <h3 class="mh-section-title">Architecture</h3>
-                        <p>
-                            The system follows a modular architecture:
-                        </p>
                         <ul>
                             <li><strong>Core:</strong> Vectors, rays, intersection tests, transforms</li>
                             <li><strong>Geometry:</strong> Triangles, AABBs, BVH</li>
-                            <li><strong>Materials:</strong> BSDF hierarchy with diffuse, mirror, conductor, coating layers</li>
-                            <li><strong>Lights:</strong> Area lights, emissive triangles, HDR environment</li>
+                            <li><strong>Materials:</strong> Diffuse, Mirror, Conductor, Glass</li>
+                            <li><strong>Lights:</strong> Area lights, HDR environment</li>
                             <li><strong>Integrator:</strong> Recursive path tracing with direct lighting and MIS</li>
                             <li><strong>Film:</strong> HDR accumulation, filters, tonemapping, denoising</li>
-                        </ul>
-
-                        <h3 class="mh-section-title">Performance</h3>
-                        <p>
-                            On a modern 6-core CPU, renders of 1920×1080 resolution with 8192 spp complete in under 10 minutes using multithreaded tile dispatch. Adaptive sampling showed limited gains in typical scenes.
-                        </p>
-
-                        <h3 class="mh-section-title">Challenges & Lessons</h3>
-                        <ul>
-                            <li>Balancing MIS weights to avoid bias when mixing delta and diffuse paths</li>
-                            <li>Stabilizing the OIDN denoiser with coherent normal/albedo buffers</li>
-                            <li>Debugging layered BSDF path interactions (e.g. coating + mirror)</li>
                         </ul>
 
                         <h3 class="mh-section-title">How to Run</h3>
                         <ol>
                             <li>Clone the repository from GitHub (link below)</li>
                             <li>Open the Visual Studio solution and build in Release mode</li>
-                            <li>Run with command line args: <code>-scene materials -spp 8192</code></li>
+                            <li>Run with: <code>-scene materials -spp 8192</code></li>
                             <li>Use WASD + EQ for camera; press <kbd>P</kbd> to save the image</li>
                         </ol>
 
                         <p>
-                            <a class="btn btn-fill" href="https://github.com/xpt07/path-tracer" target="_blank"><i class="fa fa-github"></i> View Code on GitHub</a>
+                            <a class="btn btn-fill" href="https://github.com/xpt07/RTBase.git" target="_blank"><i class="fa fa-github"></i> View Code on GitHub</a>
                         </p>
                     </div>
                 </div>
@@ -132,7 +155,7 @@
                             <li><i class="fa fa-cogs"></i> BVH, MIS, PBR</li>
                         </ul>
 
-                        <h3 class="mh-section-title">Screenshots</h3>
+                        <h3 class="mh-section-title">More Screenshots</h3>
                         <a href="../assets/images/portfolio/pt-render1.png" data-fancybox="gallery">
                             <img src="../assets/images/portfolio/pt-render1.png" class="img-fluid rounded mb-3">
                         </a>
