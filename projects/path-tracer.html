@@ -73,8 +73,8 @@
 
                         <h4 class="mh-section-title">1. BVH Acceleration</h4>
                         <p>The BVH accelerates ray-triangle intersection. Below is a visualisation of the spatial hierarchy traversal alongside source code from <code>Geometry.h</code>.</p>
-                        
-                        <pre><code>// BVH traversal logic
+
+                        <pre class="code wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.75s">
 if (ray.intersects(node.bounds)) {
     if (node.isLeaf()) {
         checkTriangles(node);
@@ -82,15 +82,15 @@ if (ray.intersects(node.bounds)) {
         traverse(node.left);
         traverse(node.right);
     }
-}</code></pre>
+}</pre>
 
                         <h4 class="mh-section-title">2. BSDF Layering</h4>
                         <p>The tracer supports multiple material models, including rough dielectric, conductor, and Fresnel blend layers. The diagram below shows a stack of BSDFs applied on an object’s surface.</p>
-                        
-    reflect();
-} else {
-    refract();
-}</code></pre>
+
+                        reflect();
+                        } else {
+                        refract();
+                        }</pre>
 
                         <h4 class="mh-section-title">3. Importance Sampling (MIS)</h4>
                         <p>For complex lighting environments, MIS combines BSDF and light sampling. The tabulated 2D distribution improves HDR environment convergence.</p>
@@ -121,8 +121,8 @@ if (ray.intersects(node.bounds)) {
                         <h4 class="mh-section-title">5. Light Tracing</h4>
                         <p>Light tracing paths are launched from lights to improve caustics. Connection attempts to the camera are weighted using sensor response.</p>
                         <img src="../assets/images/portfolio/LTstairs.jpg" class="img-fluid rounded mb-3">
-                        <pre><code>// Sensor weight in light tracing
-float we = 1 / (A_film * pow(cosTheta, 4));</code></pre>
+                        <pre class="code wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.75s">// Sensor weight in light tracing
+float we = 1 / (A_film * pow(cosTheta, 4));</pre>
 
                         <h4 class="mh-section-title">How to Run</h4>
                         <ol>
