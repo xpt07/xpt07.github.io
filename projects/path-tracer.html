@@ -68,117 +68,74 @@
             <div class="row section-separator">
                 <div class="col-md-8">
                     <div class="mh-about-inner">
-                        <h3 class="mh-section-title">Overview</h3>
-                        <p>
-                            This project extends a basic ray tracer into a physically-based, Monte Carlo path tracer implemented in C++ with DirectX integration. It includes a bounding volume hierarchy (BVH), multiple importance sampling (MIS), support for emissive and environment lighting, a layered BSDF system with a physically-based glass material, and denoising via Intel's Open Image Denoise (OIDN).
-                        </p>
+                        <h3 class="mh-section-title">How It Works</h3>
+                        <p>This project implements a CPU-based path tracer using BVH, MIS, OIDN, and layered BSDFs in a modular architecture. It delivers high-quality global illumination rendering while offering real-time interaction capabilities.</p>
 
-                        <h3 class="mh-section-title">Key Features</h3>
-                        <ul>
-                            <li><strong>BVH Acceleration:</strong> Recursive AABB tree using median split heuristics</li>
-                            <li><strong>Tile-based Multithreading:</strong> ~12× speedup over sequential rendering</li>
-                            <li><strong>Multiple Importance Sampling:</strong> Combines BSDF & light sampling</li>
-                            <li><strong>Glass BSDF:</strong> Fresnel-based specular reflection & refraction</li>
-                            <li><strong>Environment Lighting:</strong> Tabulated 2D distribution from HDR maps</li>
-                            <li><strong>Light Tracing:</strong> Simulates paths originating from light sources</li>
-                            <li><strong>Intel OIDN Denoising:</strong> Utilizes auxiliary normal & albedo buffers</li>
-                        </ul>
+                        <h4 class="mh-section-title">1. BVH Acceleration</h4>
+                        <p>The BVH accelerates ray-triangle intersection. Below is a visualisation of the spatial hierarchy traversal alongside source code from <code>Geometry.h</code>.</p>
+                        <img src="../assets/images/portfolio/bvh-diagram.png" class="img-fluid rounded mb-3" alt="BVH Layout">
+                        <pre><code>// BVH traversal logic
+if (ray.intersects(node.bounds)) {
+    if (node.isLeaf()) {
+        checkTriangles(node);
+    } else {
+        traverse(node.left);
+        traverse(node.right);
+    }
+}</code></pre>
 
-                        <h3 class="mh-section-title">Multithreaded Tile-Based Rendering</h3>
-                        <p>
-                            Pixels are rendered independently in tiles, dispatched to threads via an atomic queue. This reduces contention and scales well with modern multi-core CPUs. A sample scene that took <strong>~59.7s</strong> sequentially was reduced to <strong>~5s</strong> using this method.
-                        </p>
+                        <h4 class="mh-section-title">2. BSDF Layering</h4>
+                        <p>The tracer supports multiple material models, including rough dielectric, conductor, and Fresnel blend layers. The diagram below shows a stack of BSDFs applied on an object’s surface.</p>
+                        <img src="../assets/images/portfolio/bsdf-layers.png" class="img-fluid rounded mb-3" alt="BSDF Diagram">
+                        <pre><code>if (rand &lt; fresnel) {
+    reflect();
+} else {
+    refract();
+}</code></pre>
 
-                        <h3 class="mh-section-title">Adaptive Sampling (Experimental)</h3>
-                        <p>
-                            A variance-based strategy was used to allocate more samples to noisy tiles. Despite following best practices, the gains were minimal due to unstable variance estimates at low samples and tile management overhead.
-                        </p>
-
-                        <h3 class="mh-section-title">Denoising with Intel OIDN</h3>
-                        <p>
-                            The renderer outputs auxiliary normal and albedo buffers used by OIDN to generate clean images from noisy inputs. This is integrated into the film pipeline and allows saving denoised frames with tone mapping applied.
-                        </p>
-
-                        <h3 class="mh-section-title">Environment Lighting & MIS</h3>
-                        <p>
-                            Environment maps are sampled using a <strong>2D cumulative distribution function (CDF)</strong> built from texel luminance × sin(θ), improving energy conservation. <em>Multiple importance sampling</em> reduces noise by balancing light and BSDF sampling using the balance heuristic:
-                        </p>
-                        <pre><code>weight = lightPdf / (lightPdf + bsdfPdf)</code></pre>
-                        <p>
-                            MIS is applied both at light sampling and during light source hits in recursive paths.
-                        </p>
-
-                        <h3 class="mh-section-title">Physically-Based Glass BSDF</h3>
-                        <p>
-                            Implements specular reflection and transmission based on Snell’s Law and the Fresnel equations. Delta distributions are used, so the PDF returns 0. Importance sampling is based on the Fresnel term:
-                        </p>
-                        <pre><code>if (rand &lt; fresnel) reflect; else refract;</code></pre>
-                        <p>
-                            This enables realistic dielectrics and transparent surfaces like glass or water.
-                        </p>
-
-                        <h3 class="mh-section-title">Light Tracing</h3>
-                        <p>
-                            Light tracing simulates paths from the light source into the scene. A <strong>sensor importance function</strong> weights connection attempts to the camera based on angle and projected area:
-                        </p>
-                        <pre><code>we = 1 / (A_film × cos⁴(θ))</code></pre>
-                        <p>
-                            This improves accuracy of indirect lighting and caustics in challenging scenarios.
-                        </p>
-
-                        <h3 class="mh-section-title">Before / After Examples</h3>
-
-                        <!-- Denoising -->
-                        <h4>Denoising</h4>
+                        <h4 class="mh-section-title">3. Importance Sampling (MIS)</h4>
+                        <p>For complex lighting environments, MIS combines BSDF and light sampling. The tabulated 2D distribution improves HDR environment convergence.</p>
                         <div class="row">
                             <div class="col-md-6">
-                                <a href="../assets/images/portfolio/noD.png" data-fancybox="gallery">
-                                    <img src="../assets/images/portfolio/noD.png" class="img-fluid rounded mb-3" alt="Original Image">
-                                </a>
-                                <p class="text-center">Original</p>
+                                <img src="../assets/images/portfolio/beforeTD.png" class="img-fluid rounded mb-3">
+                                <p class="text-center">Without MIS</p>
                             </div>
                             <div class="col-md-6">
-                                <a href="../assets/images/portfolio/yesD.png" data-fancybox="gallery">
-                                    <img src="../assets/images/portfolio/yesD.png" class="img-fluid rounded mb-3" alt="Denoised Image">
-                                </a>
-                                <p class="text-center">Denoised (OIDN)</p>
+                                <img src="../assets/images/portfolio/afterTD.png" class="img-fluid rounded mb-3">
+                                <p class="text-center">With MIS + CDF</p>
                             </div>
                         </div>
 
-                        <!-- MIS -->
-                        <h4>Environment MIS</h4>
+                        <h4 class="mh-section-title">4. OIDN Denoising</h4>
+                        <p>Denoising is performed using Intel’s Open Image Denoise with auxiliary buffers (normals + albedo). Below: noisy vs. denoised output.</p>
                         <div class="row">
                             <div class="col-md-6">
-                                <img src="../assets/images/portfolio/beforeTD.png" class="img-fluid rounded mb-3" alt="Without MIS">
-                                <p class="text-center">No MIS or tabulated CDF</p>
+                                <img src="../assets/images/portfolio/noD.png" class="img-fluid rounded mb-3">
+                                <p class="text-center">Before</p>
                             </div>
                             <div class="col-md-6">
-                                <img src="../assets/images/portfolio/afterTD.png" class="img-fluid rounded mb-3" alt="With MIS">
-                                <p class="text-center">With MIS and 2D CDF sampling</p>
+                                <img src="../assets/images/portfolio/yesD.png" class="img-fluid rounded mb-3">
+                                <p class="text-center">After OIDN</p>
                             </div>
                         </div>
 
-                        <!-- Light Tracer -->
-                        <h4>Light Tracer</h4>
-                        <a href="../assets/images/portfolio/LTstairs.jpg" data-fancybox="gallery">
-                            <img src="../assets/images/portfolio/LTstairs.jpg" class="img-fluid rounded mb-3" alt="Scene rendered with Light Tracer">
-                        </a>
+                        <h4 class="mh-section-title">5. Light Tracing</h4>
+                        <p>Light tracing paths are launched from lights to improve caustics. Connection attempts to the camera are weighted using sensor response.</p>
+                        <img src="../assets/images/portfolio/LTstairs.jpg" class="img-fluid rounded mb-3">
+                        <pre><code>// Sensor weight in light tracing
+float we = 1 / (A_film * pow(cosTheta, 4));</code></pre>
 
-                        <h3 class="mh-section-title">How to Run</h3>
+                        <h4 class="mh-section-title">How to Run</h4>
                         <ol>
-                            <li>Clone from GitHub: <code>https://github.com/xpt07/RTBase.git</code></li>
-                            <li>Open Visual Studio and build in <strong>Release</strong> mode</li>
-                            <li>Run with args like: <code>-scene materials -spp 8192</code></li>
-                            <li>Use <kbd>WASD + EQ</kbd> to move camera, <kbd>P</kbd> to save images</li>
+                            <li>Clone: <code>https://github.com/xpt07/RTBase.git</code></li>
+                            <li>Open in Visual Studio (Release mode)</li>
+                            <li>Run: <code>-scene materials -spp 8192</code></li>
+                            <li>Controls: <kbd>WASD + EQ</kbd>, <kbd>P</kbd> to save image</li>
                         </ol>
 
-                        <p>
-                            <a class="btn btn-fill" href="https://github.com/xpt07/RTBase.git" target="_blank"><i class="fa fa-github"></i> View Code on GitHub</a>
-                        </p>
+                        <a class="btn btn-fill" href="https://github.com/xpt07/RTBase.git" target="_blank"><i class="fa fa-github"></i> View Code on GitHub</a>
                     </div>
                 </div>
-
-                <!-- Sidebar -->
                 <div class="col-md-4">
                     <div class="mh-about-inner">
                         <h3 class="mh-section-title">Project Info</h3>
@@ -201,7 +158,6 @@
             </div>
         </div>
     </main>
-
 
     <script src="../assets/plugins/js/jquery.min.js"></script>
     <script src="../assets/plugins/js/popper.min.js"></script>
