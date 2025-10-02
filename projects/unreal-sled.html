@@ -36,7 +36,7 @@
         </div>
     </header>
 
-    <section class="project-hero mh-home" id="mh-home" style="background: url('../assets/images/portfolio/sled-main.png') center/cover no-repeat;">
+    <section class="project-hero mh-home" id="mh-home" style="background: url('../assets/images/portfolio/intro.png') center/cover no-repeat;">
         <div class="container">
             <div class="row section-separator vertical-middle-content home-padding">
                 <div class="col-sm-8">
@@ -55,7 +55,7 @@
                     </div>
                 </div>
                 <div class="col-sm-4 text-center">
-                    <img src="../assets/images/portfolio/sled-figure1.png" alt="Sled preview" class="img-fluid rounded">
+                    <img src="../assets/images/portfolio/intro.png" alt="Sled preview" class="img-fluid rounded">
                 </div>
             </div>
         </div>
@@ -71,8 +71,8 @@
 
                         <h4 class="mh-section-title">Sled Physics & Input</h4>
                         <p>The sled is implemented as an <code>APawn</code> subclass. Input is handled using Unreal’s Enhanced Input system, combining three <code>InputAction</code> assets into one <code>InputMappingContext</code> supporting keyboard and gamepad. Physics logic is entirely in C++ and includes torque-based turning and friction damping.</p>
-                        <img src="../assets/images/portfolio/input-mapping.png" class="img-fluid rounded mb-3" alt="Input Mapping">
-                        <img src="../assets/images/portfolio/sled-figure4.png" class="img-fluid rounded mb-3" alt="Inputs Blueprint">
+                        <img src="../assets/images/portfolio/IMC.png" class="img-fluid rounded mb-3" alt="Input Mapping">
+                        <img src="../assets/images/portfolio/BP_Input.png" class="img-fluid rounded mb-3" alt="Inputs Blueprint">
 
                         <h5>Turning</h5>
 <pre><code class="language-cpp">void ASledgeBase::ApplySteerTorque() {
@@ -96,7 +96,7 @@
     FVector sideFriction = -sideVel * (isGrounded ? matFriction : 0.3f) * 5.0f;
     SledgeMesh->AddForce(sideFriction);
 }</code></pre>
-                        <img src="../assets/images/portfolio/sled-figure6.png" class="img-fluid rounded mb-3" alt="Drift Explanation">
+                        <img src="../assets/images/portfolio/inertia.png" class="img-fluid rounded mb-3" alt="Drift Explanation">
 
                         <h4 class="mh-section-title">Audio System</h4>
                         <p>All sound logic is encapsulated in a <code>UActorComponent</code> (USledSound). This class adjusts wind/slide audio based on speed and grounded state, and triggers collision sounds for rocks and trees using tags.</p>
@@ -129,7 +129,7 @@
     else if (tags.Contains("Tree") && time > TreeHitTime + HitSoundInterval)
         TreeHitAudioComponent->Play();
 }</code></pre>
-                        <img src="../assets/images/portfolio/sled-audio.png" class="img-fluid rounded mb-3" alt="Audio Setup">
+                        <img src="../assets/images/portfolio/initSound.png" class="img-fluid rounded mb-3" alt="Audio Setup">
 
                         <h4 class="mh-section-title">Reflection</h4>
                         <p>To improve modularity, future work could leverage Sound Cues and Submix Effects, replacing direct UAudioComponent references. Interfaces could also be used to decouple dependencies from specific component references.</p>
