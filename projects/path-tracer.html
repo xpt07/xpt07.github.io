@@ -227,17 +227,13 @@
                             <li><strong>Display:</strong> CPU writes to a GPU texture presented through a lightweight D3D11 pipeline.</li>
                         </ul>
 
-                        <h3 class="mh-section-title">Denoising (Before/After)</h3>
-
-                        <div class="ba-container" id="slider1">
-                            <img src="../assets/images/portfolio/noD.png" alt="Noisy image" class="ba-img">
-                            <div class="ba-overlay">
-                                <img src="../assets/images/portfolio/yesD.png" alt="Denoised image" class="ba-img">
-                            </div>
-                            <div class="ba-handle" id="slider1-handle"></div>
+                        <!-- Side-by-side Before/After Reveal -->
+                        <div class="ba-side-by-side" id="ba1" data-split="0">
+                            <img class="ba-img before" src="../assets/images/portfolio/pt-no-denoise.jpg" alt="Noisy render">
+                            <img class="ba-img after" src="../assets/images/portfolio/pt-denoised.jpg" alt="Denoised render">
                         </div>
+                        <input type="range" min="0" max="100" value="0" class="ba-range" data-target="#ba1">
 
-                        <input type="range" min="0" max="100" value="50" class="ba-range" data-target="slider1">
 
                         <!-- Performance Results (example figures; replace with your latest runs) -->
                         <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.6s">Performance Results</h3>
@@ -450,62 +446,30 @@ Vec3 sampleTriangle(const Vec3& a, const Vec3& b, const Vec3& c, float u1, float
     <script src="../assets/js/custom-scripts.js"></script>
     <script>new WOW().init();</script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            function initSlider(id) {
-                const container = document.getElementById(id);
-                const overlay = container.querySelector('.ba-overlay');
-                const handle = container.querySelector('.ba-handle');
-                const range = document.querySelector(`.ba-range[data-target="${id}"]`);
+        (function () {
+            function initSideBySideBA(wrapperId) {
+                const wrap = document.querySelector(wrapperId);
+                const afterImg = wrap.querySelector('.after');
+                const range = document.querySelector('input.ba-range[data-target="' + wrapperId + '"]');
 
                 function setSplit(pct) {
                     pct = Math.max(0, Math.min(100, pct));
-                    overlay.style.width = pct + '%';
-                    handle.style.left = pct + '%';
-                    if (range) range.value = pct;
+                    afterImg.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+                    wrap.setAttribute('data-split', pct.toFixed(1));
                 }
 
-                function updateFromEvent(e) {
-                    const rect = container.getBoundingClientRect();
-                    const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-                    const pct = (x / rect.width) * 100;
-                    setSplit(pct);
-                }
-
-                // Drag support
-                let dragging = false;
-                handle.addEventListener('mousedown', () => dragging = true);
-                handle.addEventListener('touchstart', () => dragging = true);
-
-                window.addEventListener('mousemove', (e) => {
-                    if (dragging) updateFromEvent(e);
-                });
-                window.addEventListener('touchmove', (e) => {
-                    if (dragging) updateFromEvent(e);
-                });
-                window.addEventListener('mouseup', () => dragging = false);
-                window.addEventListener('touchend', () => dragging = false);
-
-                // Click anywhere to move handle
-                container.addEventListener('click', (e) => {
-                    updateFromEvent(e);
-                });
-
-                // Range input
                 if (range) {
-                    range.addEventListener('input', () => {
-                        setSplit(range.value);
-                    });
+                    range.addEventListener('input', () => setSplit(parseFloat(range.value)));
                 }
 
-                // Initial state
-                setSplit(50);
+                // Initialize from default value
+                setSplit(parseFloat(range.value) || 0);
             }
 
-            initSlider("slider1");
-        });
+            // Call for each instance
+            initSideBySideBA('#ba1');
+        })();
     </script>
-
-
 
 </body>
 </html>

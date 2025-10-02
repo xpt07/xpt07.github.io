@@ -2724,43 +2724,34 @@ BLOG Pagination
         transition: all .15s ease;
     }
 
-.ba-container {
+.ba-side-by-side {
     position: relative;
     width: 100%;
-    max-width: 800px;
+    max-width: 100%;
     overflow: hidden;
-    margin: 1rem 0;
-    border-radius: 6px;
+    aspect-ratio: 16 / 9;
 }
 
-.ba-img {
-    width: 100%;
-    display: block;
-    pointer-events: none;
-    user-select: none;
-}
+    .ba-side-by-side .ba-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        pointer-events: none;
+        user-select: none;
+        transition: clip-path 0.1s ease-out;
+    }
 
-.ba-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50%;
-    height: 100%;
-    overflow: hidden;
-    transition: width 0.05s;
-}
+    .ba-side-by-side .before {
+        z-index: 1;
+    }
 
-.ba-handle {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 4px;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.8);
-    cursor: ew-resize;
-    z-index: 2;
-    transform: translateX(-2px);
-}
+    .ba-side-by-side .after {
+        z-index: 2;
+        clip-path: inset(0 100% 0 0); /* Initially hidden */
+    }
 
 .ba-range {
     width: 100%;
