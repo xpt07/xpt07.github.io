@@ -68,32 +68,34 @@
             <div class="row section-separator">
                 <div class="col-md-8">
                     <div class="mh-about-inner">
-                        <h3 class="mh-section-title">How It Works</h3>
-                        <p>This project implements a CPU-based path tracer using BVH, MIS, OIDN, and layered BSDFs in a modular architecture. It delivers high-quality global illumination rendering while offering real-time interaction capabilities.</p>
+                        <h3 class="mh-section-title">Technical Breakdown</h3>
+                        <p>This project is a CPU-based Monte Carlo path tracer implemented in C++ and DirectX. The architecture supports global illumination through features like BVH acceleration, multiple importance sampling, emissive/environment lighting, a layered BSDF system, light tracing, and denoising with Intel OIDN. It is based on modular code structure, aiming for realism and performance.</p>
 
-                        <h4 class="mh-section-title">1. BVH Acceleration</h4>
-                        <p>The BVH accelerates ray-triangle intersection. Below is a visualisation of the spatial hierarchy traversal alongside source code from <code>Geometry.h</code>.</p>
-
-                        <pre class="code wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.75s">
-if (ray.intersects(node.bounds)) {
-    if (node.isLeaf()) {
-        checkTriangles(node);
-    } else {
-        traverse(node.left);
-        traverse(node.right);
-    }
+                        <h4 class="mh-section-title">1. Bounding Volume Hierarchy (BVH)</h4>
+                        <p>The scene geometry is organized into a binary BVH using axis-aligned bounding boxes. Median splitting along the longest axis creates a recursive hierarchy until leaves contain ≤6 triangles or max depth is reached. This minimizes traversal cost and maximizes spatial coherence. Ray-AABB tests are performed top-down. Below: BVH visualization and simplified traversal code.</p>
+                   
+                        <pre><code>if (ray.intersects(node.bounds)) {
+  if (node.isLeaf()) {
+    checkTriangles(node);
+  } else {
+    traverse(node.left);
+    traverse(node.right);
+  }
 }</code></pre>
 
-                        <h4 class="mh-section-title">2. BSDF Layering</h4>
-                        <p>The tracer supports multiple material models, including rough dielectric, conductor, and Fresnel blend layers. The diagram below shows a stack of BSDFs applied on an object’s surface.</p>
+                        <h4 class="mh-section-title">2. Multithreaded Tile-Based Rendering</h4>
+                        <p>The image is split into tiles distributed to worker threads using an atomic job queue. This achieves up to 12× speedup on multi-core CPUs compared to sequential rendering.</p>
 
-                        reflect();
-                        } else {
-                        refract();
-                        }</code></pre>
+                        <h4 class="mh-section-title">3. Adaptive Sampling (Experimental)</h4>
+                        <p>A variance-based adaptive sampling strategy was implemented, assigning more samples to noisy tiles. However, limited gains were observed due to unstable low-sample variance and tile management overhead.</p>
 
-                        <h4 class="mh-section-title">3. Importance Sampling (MIS)</h4>
-                        <p>For complex lighting environments, MIS combines BSDF and light sampling. The tabulated 2D distribution improves HDR environment convergence.</p>
+                        <h4 class="mh-section-title">4. Layered BSDF & Glass Material</h4>
+                        <p>The BSDF system supports layering diffuse, reflective, and transmissive components. The physically-based glass model uses Fresnel equations and Snell’s Law. Since it’s delta-distributed, PDFs are zero. Sampling is weighted by Fresnel reflectance:</p>
+                        <pre><code>if (rand < fresnel) reflect(); else refract();</code></pre>
+
+                        <h4 class="mh-section-title">5. Environment Lighting & MIS</h4>
+                        <p>HDR environment maps are sampled using a 2D CDF based on luminance×sin(θ), supporting efficient importance sampling. Multiple importance sampling (MIS) combines BSDF and light sampling using the balance heuristic:</p>
+                        <pre><code>weight = lightPdf / (lightPdf + bsdfPdf);</code></pre>
                         <div class="row">
                             <div class="col-md-6">
                                 <img src="../assets/images/portfolio/beforeTD.png" class="img-fluid rounded mb-3">
@@ -105,8 +107,14 @@ if (ray.intersects(node.bounds)) {
                             </div>
                         </div>
 
-                        <h4 class="mh-section-title">4. OIDN Denoising</h4>
-                        <p>Denoising is performed using Intel’s Open Image Denoise with auxiliary buffers (normals + albedo). Below: noisy vs. denoised output.</p>
+                        <h4 class="mh-section-title">6. Light Tracing</h4>
+                        <p>Light paths are traced from emissive surfaces to the sensor, with connection attempts weighted by sensor response. This improves caustics and indirect illumination.</p>
+                        <img src="../assets/images/portfolio/LTstairs.jpg" class="img-fluid rounded mb-3">
+                        <pre><code>// Sensor weight for light tracing
+float we = 1 / (A_film * pow(cosTheta, 4));</code></pre>
+
+                        <h4 class="mh-section-title">7. Denoising with OIDN</h4>
+                        <p>Intel Open Image Denoise is integrated into the film pipeline. It leverages normal and albedo buffers to filter noisy outputs while preserving detail.</p>
                         <div class="row">
                             <div class="col-md-6">
                                 <img src="../assets/images/portfolio/noD.png" class="img-fluid rounded mb-3">
@@ -118,17 +126,14 @@ if (ray.intersects(node.bounds)) {
                             </div>
                         </div>
 
-                        <h4 class="mh-section-title">5. Light Tracing</h4>
-                        <p>Light tracing paths are launched from lights to improve caustics. Connection attempts to the camera are weighted using sensor response.</p>
-                        <img src="../assets/images/portfolio/LTstairs.jpg" class="img-fluid rounded mb-3">
-                        <pre><code>// Sensor weight in light tracing
-float we = 1 / (A_film * pow(cosTheta, 4));</code></pre>
+                        <h4 class="mh-section-title">8. Limitations & Future Work</h4>
+                        <p>Microfacet GGX BRDF and instant radiosity transport were not implemented due to time constraints. Future work may include these features for increased realism and sample efficiency.</p>
 
                         <h4 class="mh-section-title">How to Run</h4>
                         <ol>
-                            <li>Clone: <code>https://github.com/xpt07/RTBase.git</code></li>
+                            <li>Clone the project: <code>https://github.com/xpt07/RTBase.git</code></li>
                             <li>Open in Visual Studio (Release mode)</li>
-                            <li>Run: <code>-scene materials -spp 8192</code></li>
+                            <li>Run with: <code>-scene materials -spp 8192</code></li>
                             <li>Controls: <kbd>WASD + EQ</kbd>, <kbd>P</kbd> to save image</li>
                         </ol>
 
