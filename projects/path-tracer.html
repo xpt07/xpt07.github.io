@@ -227,14 +227,32 @@
                             <li><strong>Display:</strong> CPU writes to a GPU texture presented through a lightweight D3D11 pipeline.</li>
                         </ul>
 
-                        <!-- Before/After Denoise -->
-                        <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.45s">Denoising (Before/After)</h3>
-                        <div class="ba-wrap wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.5s" id="ba1">
-                            <img src="../assets/images/portfolio/noD.png" alt="No denoise">
-                            <div class="ba-top"><img src="../assets/images/portfolio/yesD.png" alt="Denoised"></div>
-                            <div class="ba-handle"><i class="fa fa-arrows-h"></i></div>
+                        <!-- Difference / Delta View -->
+                        <h3 class="mh-section-title">What the Denoiser Changed (Difference Overlay)</h3>
+
+                        <div class="delta-controls mb-2">
+                            <label class="mr-2">
+                                <input type="radio" name="deltaBase" value="noisy" checked>
+                                Base: Noisy
+                            </label>
+                            <label class="mr-2">
+                                <input type="radio" name="deltaBase" value="denoised">
+                                Base: Denoised
+                            </label>
+                            <span class="ml-3 text-muted">0% = hidden · 100% = full difference</span>
                         </div>
-                        <input type="range" min="0" max="100" value="50" class="ba-range wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.55s" data-target="#ba1">
+
+                        <div class="delta-wrap" id="delta1" data-opacity="50">
+                            <!-- Two possible bases; we flip visibility via JS -->
+                            <img class="delta-base delta-base-noisy" src="../assets/images/portfolio/pt-no-denoise.jpg" alt="Base: noisy render">
+                            <img class="delta-base delta-base-denoised" src="../assets/images/portfolio/pt-denoised.jpg" alt="Base: denoised render" aria-hidden="true">
+
+                            <!-- Difference / heatmap overlay (same dimensions as base) -->
+                            <img class="delta-overlay" src="../assets/images/portfolio/pt-diff-heatmap.png" alt="Difference heatmap overlay">
+                        </div>
+
+                        <input type="range" min="0" max="100" value="50" class="delta-range mt-2" data-target="#delta1" aria-label="Adjust difference overlay opacity">
+
 
                         <!-- Performance Results (example figures; replace with your latest runs) -->
                         <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.6s">Performance Results</h3>
@@ -446,94 +464,75 @@ Vec3 sampleTriangle(const Vec3& a, const Vec3& b, const Vec3& c, float u1, float
     <script src="../assets/plugins/js/wow.min.js"></script>
     <script src="../assets/js/custom-scripts.js"></script>
     <script>new WOW().init();</script>
-
     <!-- Before/After slider logic -->
     <script>
         (function () {
-            function clamp(v, min, max) { return v < min ? min : (v > max ? max : v); }
+            function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 
-            function initBA(selector) {
+            function initDelta(selector) {
                 var wrap = document.querySelector(selector);
                 if (!wrap) return;
-                var top = wrap.querySelector('.ba-top');
-                var handle = wrap.querySelector('.ba-handle');
-                var range = document.querySelector('input.ba-range[data-target="' + selector + '"]');
-                var split = parseFloat(wrap.getAttribute('data-split')) || 50;
-                var dragging = false;
 
-                function setSplit(pct) {
-                    pct = clamp(pct, 0, 100);
-                    top.style.width = pct + '%';
-                    handle.style.left = pct + '%';
-                    if (range) range.value = pct;
-                    wrap.setAttribute('data-split', pct.toFixed(1));
+                var overlay = wrap.querySelector('.delta-overlay');
+                var baseNoisy = wrap.querySelector('.delta-base-noisy');
+                var baseDenoised = wrap.querySelector('.delta-base-denoised');
+                var range = document.querySelector('input.delta-range[data-target="' + selector + '"]');
+                var radios = document.querySelectorAll('input[name="deltaBase"]');
+
+                function setOpacity(pct) {
+                    pct = clamp(+pct || 0, 0, 100);
+                    overlay.style.opacity = (pct / 100).toFixed(3);
+                    wrap.setAttribute('data-opacity', pct.toFixed(1));
                 }
 
-                function eventToPct(e) {
-                    var rect = wrap.getBoundingClientRect();
-                    var x = (e.touches && e.touches.length) ? e.touches[0].clientX : e.clientX;
-                    var pct = ((x - rect.left) / rect.width) * 100;
-                    return pct;
+                function setBase(which) {
+                    var noisy = (which === 'noisy');
+                    baseNoisy.style.display = noisy ? 'block' : 'none';
+                    baseDenoised.style.display = noisy ? 'none' : 'block';
+                    // mark aria-hidden for a11y
+                    baseNoisy.setAttribute('aria-hidden', noisy ? 'false' : 'true');
+                    baseDenoised.setAttribute('aria-hidden', noisy ? 'true' : 'false');
                 }
 
-                // Init
-                setSplit(split);
+                // init from defaults
+                setOpacity(wrap.getAttribute('data-opacity') || 50);
+                setBase(document.querySelector('input[name="deltaBase"]:checked').value);
 
-                // Click to set
-                wrap.addEventListener('click', function (e) {
-                    // prevent button click focusing from resetting via bubbling
-                    if (e.target === handle) return;
-                    setSplit(eventToPct(e));
-                });
-
-                // Drag start
-                function startDrag(e) {
-                    dragging = true;
-                    document.body.style.userSelect = 'none';
-                    setSplit(eventToPct(e));
-                }
-                // Drag move
-                function onMove(e) {
-                    if (!dragging) return;
-                    e.preventDefault();
-                    setSplit(eventToPct(e));
-                }
-                // Drag end
-                function endDrag() {
-                    dragging = false;
-                    document.body.style.userSelect = '';
-                }
-
-                handle.addEventListener('mousedown', startDrag);
-                document.addEventListener('mousemove', onMove);
-                document.addEventListener('mouseup', endDrag);
-
-                handle.addEventListener('touchstart', startDrag, { passive: false });
-                document.addEventListener('touchmove', onMove, { passive: false });
-                document.addEventListener('touchend', endDrag);
-
-                // Keyboard accessibility: left/right arrows
-                handle.addEventListener('keydown', function (e) {
-                    var step = (e.shiftKey ? 10 : 2);
-                    if (e.key === 'ArrowLeft') setSplit((parseFloat(wrap.getAttribute('data-split')) || 50) - step);
-                    if (e.key === 'ArrowRight') setSplit((parseFloat(wrap.getAttribute('data-split')) || 50) + step);
-                });
-
-                // Range input sync
+                // wire input range
                 if (range) {
-                    range.addEventListener('input', function () { setSplit(parseFloat(this.value) || 0); });
+                    range.addEventListener('input', function () {
+                        setOpacity(this.value);
+                    });
                 }
 
-                // Reapply on resize to keep handle aligned after layout changes
-                window.addEventListener('resize', function () {
-                    setSplit(parseFloat(wrap.getAttribute('data-split')) || 50);
+                // wire radios
+                radios.forEach(function (r) {
+                    r.addEventListener('change', function () {
+                        if (this.checked) setBase(this.value);
+                    });
                 });
+
+                // keep numeric state stable on resize (no layout dependency really, but consistent)
+                window.addEventListener('resize', function () {
+                    setOpacity(wrap.getAttribute('data-opacity') || 50);
+                });
+
+                // keyboard shortcuts while range focused: left/right ±2, shift for ±10
+                if (range) {
+                    range.addEventListener('keydown', function (e) {
+                        var step = e.shiftKey ? 10 : 2;
+                        var val = +range.value;
+                        if (e.key === 'ArrowLeft') { range.value = clamp(val - step, 0, 100); range.dispatchEvent(new Event('input')); }
+                        if (e.key === 'ArrowRight') { range.value = clamp(val + step, 0, 100); range.dispatchEvent(new Event('input')); }
+                    });
+                }
             }
 
-            // Initialize (use the #id from your HTML)
-            initBA('#ba1');
+            // init the widget
+            initDelta('#delta1');
         })();
     </script>
+
 
 </body>
 </html>

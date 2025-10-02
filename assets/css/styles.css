@@ -2724,56 +2724,44 @@ BLOG Pagination
         transition: all .15s ease;
     }
 
-.ba-wrap {
+/* Delta view styles */
+.delta-wrap {
     position: relative;
     max-width: 100%;
     overflow: hidden;
     border-radius: 6px;
 }
 
-    .ba-wrap img {
+    .delta-wrap img {
         display: block;
         width: 100%;
         height: auto;
         user-select: none;
-        pointer-events: none;
+        -webkit-user-drag: none;
     }
 
-.ba-top {
+.delta-base {
+    position: relative;
+    z-index: 0;
+}
+
+.delta-base-denoised {
+    display: none;
+}
+/* start with noisy as base */
+.delta-overlay {
     position: absolute;
     inset: 0;
-    width: 50%;
-    overflow: hidden;
-    border-right: 2px solid rgba(255,255,255,.7);
-    transition: none;
+    z-index: 1;
+    opacity: 0.5; /* will be controlled by JS */
+    mix-blend-mode: normal; /* typical; try 'screen' or 'overlay' if your heatmap expects it */
+    pointer-events: none;
+}
+/* Optional: small helper for controls */
+.delta-controls input[type="radio"] {
+    transform: translateY(1px);
 }
 
-.ba-handle {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: rgba(0,0,0,.55);
-    border: 2px solid #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: ew-resize;
-    z-index: 2;
-}
-
-    .ba-handle:focus {
-        outline: 2px solid #8a2be2;
-        outline-offset: 2px;
-    }
-
-.ba-range {
-    width: 100%;
-    margin-top: .75rem;
-}
 
 /* Tweak spacing on smaller screens */
 @media (max-width: 767px) {
