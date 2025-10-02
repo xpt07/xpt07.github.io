@@ -449,31 +449,91 @@ Vec3 sampleTriangle(const Vec3& a, const Vec3& b, const Vec3& c, float u1, float
 
     <!-- Before/After slider logic -->
     <script>
-        (function(){
-            function initBA(wrapper){
-                var $wrap = $(wrapper);
-                var $top = $wrap.find('.ba-top');
-                var $handle = $wrap.find('.ba-handle');
-                function setSplit(pct){
-                    pct = Math.max(0, Math.min(100, pct));
-                    $top.css('width', pct + '%');
-                    $handle.css({ left: pct + '%' });
+        (function () {
+            function clamp(v, min, max) { return v < min ? min : (v > max ? max : v); }
+
+            function initBA(selector) {
+                var wrap = document.querySelector(selector);
+                if (!wrap) return;
+                var top = wrap.querySelector('.ba-top');
+                var handle = wrap.querySelector('.ba-handle');
+                var range = document.querySelector('input.ba-range[data-target="' + selector + '"]');
+                var split = parseFloat(wrap.getAttribute('data-split')) || 50;
+                var dragging = false;
+
+                function setSplit(pct) {
+                    pct = clamp(pct, 0, 100);
+                    top.style.width = pct + '%';
+                    handle.style.left = pct + '%';
+                    if (range) range.value = pct;
+                    wrap.setAttribute('data-split', pct.toFixed(1));
                 }
-                // mouse / touch drag
-                $wrap.on('mousemove touchmove', function(e){
-                    if(e.buttons !== 1 && e.type !== 'touchmove') return;
-                    var pageX = e.pageX || (e.originalEvent.touches && e.originalEvent.touches[0].pageX);
-                    if(!pageX) return;
-                    var off = $wrap.offset().left, w = $wrap.width();
-                    setSplit(((pageX - off) / w) * 100);
+
+                function eventToPct(e) {
+                    var rect = wrap.getBoundingClientRect();
+                    var x = (e.touches && e.touches.length) ? e.touches[0].clientX : e.clientX;
+                    var pct = ((x - rect.left) / rect.width) * 100;
+                    return pct;
+                }
+
+                // Init
+                setSplit(split);
+
+                // Click to set
+                wrap.addEventListener('click', function (e) {
+                    // prevent button click focusing from resetting via bubbling
+                    if (e.target === handle) return;
+                    setSplit(eventToPct(e));
                 });
-                // range input support
-                $('input.ba-range[data-target="#'+$wrap.attr('id')+'"]').on('input change', function(){
-                    setSplit(this.value);
+
+                // Drag start
+                function startDrag(e) {
+                    dragging = true;
+                    document.body.style.userSelect = 'none';
+                    setSplit(eventToPct(e));
+                }
+                // Drag move
+                function onMove(e) {
+                    if (!dragging) return;
+                    e.preventDefault();
+                    setSplit(eventToPct(e));
+                }
+                // Drag end
+                function endDrag() {
+                    dragging = false;
+                    document.body.style.userSelect = '';
+                }
+
+                handle.addEventListener('mousedown', startDrag);
+                document.addEventListener('mousemove', onMove);
+                document.addEventListener('mouseup', endDrag);
+
+                handle.addEventListener('touchstart', startDrag, { passive: false });
+                document.addEventListener('touchmove', onMove, { passive: false });
+                document.addEventListener('touchend', endDrag);
+
+                // Keyboard accessibility: left/right arrows
+                handle.addEventListener('keydown', function (e) {
+                    var step = (e.shiftKey ? 10 : 2);
+                    if (e.key === 'ArrowLeft') setSplit((parseFloat(wrap.getAttribute('data-split')) || 50) - step);
+                    if (e.key === 'ArrowRight') setSplit((parseFloat(wrap.getAttribute('data-split')) || 50) + step);
+                });
+
+                // Range input sync
+                if (range) {
+                    range.addEventListener('input', function () { setSplit(parseFloat(this.value) || 0); });
+                }
+
+                // Reapply on resize to keep handle aligned after layout changes
+                window.addEventListener('resize', function () {
+                    setSplit(parseFloat(wrap.getAttribute('data-split')) || 50);
                 });
             }
-            $('#ba1').each(function(){ initBA(this); });
+
+            // Initialize (use the #id from your HTML)
+            initBA('#ba1');
         })();
     </script>
+
 </body>
 </html>
