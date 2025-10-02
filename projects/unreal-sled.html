@@ -55,7 +55,7 @@
                     </div>
                 </div>
                 <div class="col-sm-4 text-center">
-                    <img src="../assets/images/portfolio/sled-figure1.png" alt="Character Controller" class="img-fluid rounded">
+                    <img src="../assets/images/portfolio/intro.png" alt="Character Controller" class="img-fluid rounded">
                 </div>
             </div>
         </div>
@@ -76,10 +76,10 @@
                         <p>The goal of the sled movement system was to create a responsive, physics-based character controller that would feel dynamic on slopes while remaining intuitive for players across multiple input devices. Physics logic was centralised in C++ to maximise performance, control, and readability, while input handling was kept in Blueprints for rapid integration and modularity. The sled was treated as a Pawn to give full control over physics simulation without inheriting unwanted features from classes like Character.</p>
 
                         <h4>Input System Integration</h4>
-                        <img src="../assets/images/portfolio/sled-figure2.png" alt="Input Actions" class="img-fluid rounded mb-3">
-                        <img src="../assets/images/portfolio/sled-figure3.png" alt="Input Mapping" class="img-fluid rounded mb-3">
+                        <img src="../assets/images/portfolio/IA.png" alt="Input Actions" class="img-fluid rounded mb-3">
+                        <img src="../assets/images/portfolio/IMC.png" alt="Input Mapping" class="img-fluid rounded mb-3">
                         <p>Three <code>InputAction</code> assets (IA_Pitch, IA_Yaw, IA_Roll) were grouped under a single <code>InputMappingContext</code> (IMC_Sledge). Each action was mapped to keyboard keys and gamepad axes, ensuring cross-device compatibility. In Blueprint, input values were captured and written into float variables (yaw, pitch, roll), which were then used by the C++ physics logic every frame.</p>
-                        <img src="../assets/images/portfolio/sled-figure4.png" alt="Blueprint Inputs" class="img-fluid rounded mb-3">
+                        <img src="../assets/images/portfolio/BP_Input.png" alt="Blueprint Inputs" class="img-fluid rounded mb-3">
 
                         <h4>Physics Implementation in C++</h4>
                         <p>The physics system was built directly into the <code>ASledgeBase</code> class (a custom subclass of <code>APawn</code>). Each major mechanic was split into its own callable function to encourage modularity and easier debugging:</p>
@@ -94,7 +94,7 @@
     FVector Torque = SledgeMesh->GetUpVector() * sTorque * yaw;
     SledgeMesh->AddTorqueInRadians(Torque);
 }</code></pre>
-                        <img src="../assets/images/portfolio/sled-figure5.png" alt="Turning Illustration" class="img-fluid rounded mb-3">
+                        <img src="../assets/images/portfolio/turningImage.png" alt="Turning Illustration" class="img-fluid rounded mb-3">
 
                         <h5>Air Control — Pitch and Roll</h5>
 <pre><code class="language-cpp">void ASledgeBase::ApplyAirControl() {
@@ -103,8 +103,8 @@
     Torque = (SledgeMesh->GetRightVector() * sTorque) * pitch;
     SledgeMesh->AddTorqueInRadians(Torque);
 }</code></pre>
-                        <img src="../assets/images/portfolio/sled-figure6.png" alt="Pitch Control" class="img-fluid rounded mb-3">
-                        <img src="../assets/images/portfolio/sled-figure7.png" alt="Roll Control" class="img-fluid rounded mb-3">
+                        <img src="../assets/images/portfolio/pitch.png" alt="Pitch Control" class="img-fluid rounded mb-3">
+                        <img src="../assets/images/portfolio/roll.png" alt="Roll Control" class="img-fluid rounded mb-3">
 
                         <h5>Directional Friction — Lateral Damping</h5>
 <pre><code class="language-cpp">void ASledgeBase::ApplyDirectionalFriction() {
@@ -122,8 +122,8 @@
     FVector finalFriction = sideFriction * surfaceFriction;
     SledgeMesh->AddForce(finalFriction, NAME_None, true);
 }</code></pre>
-                        <img src="../assets/images/portfolio/sled-figure8.png" alt="Velocity and Forward Vector" class="img-fluid rounded mb-3">
-                        <img src="../assets/images/portfolio/sled-figure9.png" alt="Sideways Velocity Drift" class="img-fluid rounded mb-3">
+                        <img src="../assets/images/portfolio/inertia.png" alt="Velocity and Forward Vector" class="img-fluid rounded mb-3">
+                        <img src="../assets/images/portfolio/sidevel.png" alt="Sideways Velocity Drift" class="img-fluid rounded mb-3">
                         <p>This function simulates inertial drift and corrects it. When the player turns, the sled’s forward vector rotates immediately but its velocity vector still points in the original direction. This misalignment (drift) is reduced by applying an opposing force scaled by surface friction (supporting multiple materials like snow, ice, or gravel).</p>
 
                         <h3 class="mh-section-title">Sound System</h3>
@@ -147,7 +147,7 @@
     if (SlideAudioComponent)
         SlideAudioComponent->FadeIn(0.5f);
 }</code></pre>
-                        <img src="../assets/images/portfolio/sled-figure10.png" alt="Sound Initialisation in BP_SledPawn" class="img-fluid rounded mb-3">
+                        <img src="../assets/images/portfolio/InitSound.png" alt="Sound Initialisation in BP_SledPawn" class="img-fluid rounded mb-3">
 
                         <h5>Dynamic Audio Response — Pitch and State Adjustment</h5>
 <pre><code class="language-cpp">void USledSound::UpdateSounds(float speed, bool grounded) {
@@ -161,7 +161,7 @@
         SlideAudioComponent->Activate(grounded);
     }
 }</code></pre>
-                        <img src="../assets/images/portfolio/sled-figure11.png" alt="Sound Updated Inside BP_SledPawn" class="img-fluid rounded mb-3">
+                        <img src="../assets/images/portfolio/Updatesound.png" alt="Sound Updated Inside BP_SledPawn" class="img-fluid rounded mb-3">
                         <p>This gives the sensation of increasing speed through rising pitch, a common audio cue in racing games.</p>
 
                         <h5>Reactive Collision Audio for Rocks and Trees</h5>
@@ -204,14 +204,11 @@
                         </ul>
 
                         <h3 class="mh-section-title">Screenshots</h3>
-                        <a href="../assets/images/portfolio/sled-figure5.png" data-fancybox="gallery">
-                            <img src="../assets/images/portfolio/sled-figure5.png" class="img-fluid rounded mb-3" alt="Turning Illustration">
+                        <a href="../assets/images/portfolio/turningImage.png" data-fancybox="gallery">
+                            <img src="../assets/images/portfolio/turningImage.png" class="img-fluid rounded mb-3" alt="Turning Illustration">
                         </a>
-                        <a href="../assets/images/portfolio/sled-figure6.png" data-fancybox="gallery">
-                            <img src="../assets/images/portfolio/sled-figure6.png" class="img-fluid rounded mb-3" alt="Pitch Control">
-                        </a>
-                        <a href="../assets/images/portfolio/sled-figure10.png" data-fancybox="gallery">
-                            <img src="../assets/images/portfolio/sled-figure10.png" class="img-fluid rounded mb-3" alt="Audio Setup">
+                        <a href="../assets/images/portfolio/pitch.png" data-fancybox="gallery">
+                            <img src="../assets/images/portfolio/pitch.png" class="img-fluid rounded mb-3" alt="Pitch Control">
                         </a>
                     </div>
                 </div>
