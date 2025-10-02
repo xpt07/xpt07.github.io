@@ -2758,6 +2758,24 @@ BLOG Pagination
     margin-top: 0.75rem;
 }
 
+/* Better code block styling */
+pre.code {
+    background-color: #1e1e1e;
+    color: #dcdcdc;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    font-family: 'Courier New', Courier, monospace;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+    pre.code code {
+        color: inherit;
+        background: none;
+    }
+
 
 /* Tweak spacing on smaller screens */
 @media (max-width: 767px) {
