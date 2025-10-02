@@ -55,29 +55,51 @@
                     </div>
                 </div>
                 <div class="col-sm-4 text-center">
-                    <img src="../assets/images/portfolio/intro.png" alt="Character Controller" class="img-fluid rounded">
+                    <img src="../assets/images/portfolio/intro.png" alt="Character Controller" class="img-fluid rounded shadow">
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Project Info moved up -->
+    <section class="py-4 bg-dark text-light">
+        <div class="container text-center">
+            <h3 class="mh-section-title">Project Info</h3>
+            <ul class="list-inline">
+                <li class="list-inline-item mx-3"><i class="fa fa-user"></i> Group Project (Physics + Audio)</li>
+                <li class="list-inline-item mx-3"><i class="fa fa-calendar"></i> 2025</li>
+                <li class="list-inline-item mx-3"><i class="fa fa-code"></i> Unreal Engine 5, C++, Blueprints</li>
+                <li class="list-inline-item mx-3"><i class="fa fa-cogs"></i> Physics, Audio, Enhanced Input</li>
+            </ul>
         </div>
     </section>
 
     <main class="mh-about" id="content">
         <div class="container">
             <div class="row section-separator">
-                <div class="col-md-8">
+                <div class="col-lg-12">
                     <div class="mh-about-inner">
-                        <h3 class="mh-section-title">Introduction</h3>
+
+                        <h3 class="mh-section-title mt-5">Introduction</h3>
                         <p>For this project, my roles included designing and implementing the sled’s core movement and physics, as well as a sound system. The movement system was developed using a combination of Blueprint and C++, allowing both workflows to be utilised to their full extent. Blueprint enabled rapid merging and easy communication with the work of other team members, while C++ provided precise control over physics and movement logic.</p>
                         <p>The sled controller uses Unreal’s physics engine to apply forces and torque, simulating the grounded and airborne behaviour of a real sled. This includes directional friction, turning responsiveness, and air control. Player inputs—pitch, yaw, and roll—were handled using Unreal Engine’s Enhanced Input system. Separate <code>InputAction</code> assets were created for each control axis (IA_Pitch, IA_Yaw, IA_Roll), and mapped through an <code>InputMappingContext</code> (IMC_Sledge), supporting both keyboard and gamepad bindings.</p>
                         <p>The sled’s sound system was developed entirely in C++ as a self-contained component. It dynamically adjusts ambient sliding and wind audio based on movement speed and ground contact, and also handles contextual collision sounds (impacts with trees and rocks) using physical surface tags. The component is designed to be easily reusable and configurable via Blueprint.</p>
+
+                        <hr class="my-5">
 
                         <h3 class="mh-section-title">Sled Physics & Player Input Integration</h3>
                         <h4>Design Approach</h4>
                         <p>The goal of the sled movement system was to create a responsive, physics-based character controller that would feel dynamic on slopes while remaining intuitive for players across multiple input devices. Physics logic was centralised in C++ to maximise performance, control, and readability, while input handling was kept in Blueprints for rapid integration and modularity. The sled was treated as a Pawn to give full control over physics simulation without inheriting unwanted features from classes like Character.</p>
 
                         <h4>Input System Integration</h4>
-                        <img src="../assets/images/portfolio/IA.png" alt="Input Actions" class="img-fluid rounded mb-3">
-                        <img src="../assets/images/portfolio/IMC.png" alt="Input Mapping" class="img-fluid rounded mb-3">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img src="../assets/images/portfolio/IA.png" alt="Input Actions" class="img-fluid rounded mb-3">
+                            </div>
+                            <div class="col-md-6">
+                                <img src="../assets/images/portfolio/IMC.png" alt="Input Mapping" class="img-fluid rounded mb-3">
+                            </div>
+                        </div>
                         <p>Three <code>InputAction</code> assets (IA_Pitch, IA_Yaw, IA_Roll) were grouped under a single <code>InputMappingContext</code> (IMC_Sledge). Each action was mapped to keyboard keys and gamepad axes, ensuring cross-device compatibility. In Blueprint, input values were captured and written into float variables (yaw, pitch, roll), which were then used by the C++ physics logic every frame.</p>
                         <img src="../assets/images/portfolio/BP_Input.png" alt="Blueprint Inputs" class="img-fluid rounded mb-3">
 
@@ -89,24 +111,37 @@
                             <li><code>ApplyDirectionalFriction()</code> — Simulates and corrects inertial drift.</li>
                         </ul>
 
-                        <h5>Turning the Sled — Yaw Torque</h5>
+                        <div class="card bg-dark text-light mb-4">
+                            <div class="card-body">
 <pre><code class="language-cpp">void ASledgeBase::ApplySteerTorque() {
     FVector Torque = SledgeMesh->GetUpVector() * sTorque * yaw;
     SledgeMesh->AddTorqueInRadians(Torque);
 }</code></pre>
-                        <img src="../assets/images/portfolio/turningImage.png" alt="Turning Illustration" class="img-fluid rounded mb-3">
+                            </div>
+                        </div>
+                        <img src="../assets/images/portfolio/turningImage.png" alt="Turning Illustration" class="img-fluid rounded mb-4">
 
-                        <h5>Air Control — Pitch and Roll</h5>
+                        <div class="card bg-dark text-light mb-4">
+                            <div class="card-body">
 <pre><code class="language-cpp">void ASledgeBase::ApplyAirControl() {
     FVector Torque = (SledgeMesh->GetForwardVector() * sTorque) * roll;
     SledgeMesh->AddTorqueInRadians(Torque);
     Torque = (SledgeMesh->GetRightVector() * sTorque) * pitch;
     SledgeMesh->AddTorqueInRadians(Torque);
 }</code></pre>
-                        <img src="../assets/images/portfolio/pitch.png" alt="Pitch Control" class="img-fluid rounded mb-3">
-                        <img src="../assets/images/portfolio/roll.png" alt="Roll Control" class="img-fluid rounded mb-3">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img src="../assets/images/portfolio/pitch.png" alt="Pitch Control" class="img-fluid rounded mb-3">
+                            </div>
+                            <div class="col-md-6">
+                                <img src="../assets/images/portfolio/roll.png" alt="Roll Control" class="img-fluid rounded mb-3">
+                            </div>
+                        </div>
 
-                        <h5>Directional Friction — Lateral Damping</h5>
+                        <div class="card bg-dark text-light mb-4">
+                            <div class="card-body">
 <pre><code class="language-cpp">void ASledgeBase::ApplyDirectionalFriction() {
     velocity = SledgeMesh->GetComponentVelocity();
     if (velocity.IsNearlyZero()) return;
@@ -122,16 +157,28 @@
     FVector finalFriction = sideFriction * surfaceFriction;
     SledgeMesh->AddForce(finalFriction, NAME_None, true);
 }</code></pre>
-                        <img src="../assets/images/portfolio/inertia.png" alt="Velocity and Forward Vector" class="img-fluid rounded mb-3">
-                        <img src="../assets/images/portfolio/sidevel.png" alt="Sideways Velocity Drift" class="img-fluid rounded mb-3">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img src="../assets/images/portfolio/inertia.png" alt="Velocity and Forward Vector" class="img-fluid rounded mb-3">
+                            </div>
+                            <div class="col-md-6">
+                                <img src="../assets/images/portfolio/sidevel.png" alt="Sideways Velocity Drift" class="img-fluid rounded mb-3">
+                            </div>
+                        </div>
+
                         <p>This function simulates inertial drift and corrects it. When the player turns, the sled’s forward vector rotates immediately but its velocity vector still points in the original direction. This misalignment (drift) is reduced by applying an opposing force scaled by surface friction (supporting multiple materials like snow, ice, or gravel).</p>
+
+                        <hr class="my-5">
 
                         <h3 class="mh-section-title">Sound System</h3>
                         <h4>Design Approach</h4>
                         <p>The audio component was designed to be modular, self-contained, and reactive to the player’s in-game movement and interactions. It is tied closely with physics events (collisions) and gameplay conditions (sliding). Implemented within a custom C++ class derived from <code>UActorComponent</code>, the sound system can be attached to any actor without hardcoding logic into the player pawn Blueprint.</p>
 
                         <h4>Technical Implementation</h4>
-                        <p>The sound system is encapsulated in the class <code>USledSound</code>, which handles all real-time sled audio logic. It is initialised using the <code>InitSoundPlayer</code> function, which binds various <code>UAudioComponent</code> references to relevant sounds:</p>
+                        <div class="card bg-dark text-light mb-4">
+                            <div class="card-body">
 <pre><code class="language-cpp">void USledSound::InitSoundPlayer(UAudioComponent* rockHitAudioComponent,
                                 UAudioComponent* treeHitAudioComponent,
                                 UAudioComponent* windAudioComponent,
@@ -147,9 +194,12 @@
     if (SlideAudioComponent)
         SlideAudioComponent->FadeIn(0.5f);
 }</code></pre>
+                            </div>
+                        </div>
                         <img src="../assets/images/portfolio/InitSound.png" alt="Sound Initialisation in BP_SledPawn" class="img-fluid rounded mb-3">
 
-                        <h5>Dynamic Audio Response — Pitch and State Adjustment</h5>
+                        <div class="card bg-dark text-light mb-4">
+                            <div class="card-body">
 <pre><code class="language-cpp">void USledSound::UpdateSounds(float speed, bool grounded) {
     float newPitch = PitchMinimumThreshold + FMath::Clamp(speed / SoundPitchScaleMaxSpeed, 0.f, 1.f) * PitchMultiplierRange;
 
@@ -161,10 +211,12 @@
         SlideAudioComponent->Activate(grounded);
     }
 }</code></pre>
+                            </div>
+                        </div>
                         <img src="../assets/images/portfolio/Updatesound.png" alt="Sound Updated Inside BP_SledPawn" class="img-fluid rounded mb-3">
-                        <p>This gives the sensation of increasing speed through rising pitch, a common audio cue in racing games.</p>
 
-                        <h5>Reactive Collision Audio for Rocks and Trees</h5>
+                        <div class="card bg-dark text-light mb-4">
+                            <div class="card-body">
 <pre><code class="language-cpp">void USledSound::PlayHitSounds(TArray&lt;FName&gt; tags, float speed) {
     if (speed &lt; HitSoundMinSpeed) return;
     float time = GetWorld()->GetRealTimeSeconds();
@@ -178,38 +230,40 @@
         TreeHitTime = time;
     }
 }</code></pre>
+                            </div>
+                        </div>
+
                         <p>Tags are used to identify collision types and selectively play corresponding audio events. A cool-down interval prevents repetitive sound spam.</p>
 
                         <h5>Integration Into the Game</h5>
                         <p>The <code>USledSound</code> component is added directly to the sled Blueprint, giving it direct access to physical components like speed and grounded state. At runtime, the system is initialised via a Blueprint call to <code>InitSoundPlayer</code>, passing in the appropriate <code>UAudioComponent</code> references for wind, slide, and impact sounds. This integration strategy allows for sound logic to be handled in C++ while maintaining easy Blueprint linkage for component assignment.</p>
 
-                        <h3 class="mh-section-title">Potential Improvements</h3>
+                        <h3 class="mh-section-title mt-5">Potential Improvements</h3>
                         <p>The sound system could benefit from using Sound Cues or Submix effects rather than directly controlling individual <code>UAudioComponent</code> instances. This would allow more nuanced behaviour, such as pitch shifting based on material surface or blending layers of wind and slide audio. Also, much of the component communication currently relies on manually setting references via Blueprint or C++ initialisers; using interfaces could increase modularity.</p>
 
-                        <h3 class="mh-section-title">Conclusion</h3>
+                        <h3 class="mh-section-title mt-5">Conclusion</h3>
                         <p>This report has detailed the implementation of the sled’s movement and audio systems using Unreal Engine’s physics and component architecture. By integrating Enhanced Input, physics-based control, and context-sensitive audio playback, a responsive and immersive sled controller was developed. Though improvements are always possible, the system as it stands demonstrates a strong understanding of Unreal Engine’s features and an ability to design and integrate different subsystems into a larger game structure.</p>
 
-                        <a class="btn btn-fill mt-3" href="https://github.com/xpt07/SleddingGame" target="_blank"><i class="fa fa-github"></i> View Code on GitHub</a>
-                    </div>
-                </div>
+                        <div class="text-center">
+                            <a class="btn btn-fill mt-3" href="https://github.com/xpt07/SleddingGame" target="_blank"><i class="fa fa-github"></i> View Code on GitHub</a>
+                        </div>
 
-                <div class="col-md-4">
-                    <div class="mh-about-inner">
-                        <h3 class="mh-section-title">Project Info</h3>
-                        <ul class="mh-experience-deatils">
-                            <li><i class="fa fa-user"></i> Group Project (Physics + Audio)</li>
-                            <li><i class="fa fa-calendar"></i> 2025</li>
-                            <li><i class="fa fa-code"></i> Unreal Engine 5, C++, Blueprints</li>
-                            <li><i class="fa fa-cogs"></i> Physics, Audio, Enhanced Input</li>
-                        </ul>
+                        <hr class="my-5">
 
                         <h3 class="mh-section-title">Screenshots</h3>
-                        <a href="../assets/images/portfolio/turningImage.png" data-fancybox="gallery">
-                            <img src="../assets/images/portfolio/turningImage.png" class="img-fluid rounded mb-3" alt="Turning Illustration">
-                        </a>
-                        <a href="../assets/images/portfolio/pitch.png" data-fancybox="gallery">
-                            <img src="../assets/images/portfolio/pitch.png" class="img-fluid rounded mb-3" alt="Pitch Control">
-                        </a>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <a href="../assets/images/portfolio/turningImage.png" data-fancybox="gallery">
+                                    <img src="../assets/images/portfolio/turningImage.png" class="img-fluid rounded shadow" alt="Turning Illustration">
+                                </a>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <a href="../assets/images/portfolio/pitch.png" data-fancybox="gallery">
+                                    <img src="../assets/images/portfolio/pitch.png" class="img-fluid rounded shadow" alt="Pitch Control">
+                                </a>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
