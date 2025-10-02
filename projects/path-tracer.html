@@ -227,32 +227,17 @@
                             <li><strong>Display:</strong> CPU writes to a GPU texture presented through a lightweight D3D11 pipeline.</li>
                         </ul>
 
-                        <!-- Difference / Delta View -->
-                        <h3 class="mh-section-title">What the Denoiser Changed (Difference Overlay)</h3>
+                        <h3 class="mh-section-title">Denoising (Before/After)</h3>
 
-                        <div class="delta-controls mb-2">
-                            <label class="mr-2">
-                                <input type="radio" name="deltaBase" value="noisy" checked>
-                                Base: Noisy
-                            </label>
-                            <label class="mr-2">
-                                <input type="radio" name="deltaBase" value="denoised">
-                                Base: Denoised
-                            </label>
-                            <span class="ml-3 text-muted">0% = hidden · 100% = full difference</span>
+                        <div class="ba-container" id="slider1">
+                            <img src="../assets/images/portfolio/pt-no-denoise.jpg" alt="Noisy image" class="ba-img">
+                            <div class="ba-overlay">
+                                <img src="../assets/images/portfolio/pt-denoised.jpg" alt="Denoised image" class="ba-img">
+                            </div>
+                            <div class="ba-handle" id="slider1-handle"></div>
                         </div>
 
-                        <div class="delta-wrap" id="delta1" data-opacity="50">
-                            <!-- Two possible bases; we flip visibility via JS -->
-                            <img class="delta-base delta-base-noisy" src="../assets/images/portfolio/noD.png" alt="Base: noisy render">
-                            <img class="delta-base delta-base-denoised" src="../assets/images/portfolio/yesD.png" alt="Base: denoised render" aria-hidden="true">
-
-                            <!-- Difference / heatmap overlay (same dimensions as base) -->
-                            <img class="delta-overlay" src="../assets/images/portfolio/pt-diff-heatmap.png" alt="Difference heatmap overlay">
-                        </div>
-
-                        <input type="range" min="0" max="100" value="50" class="delta-range mt-2" data-target="#delta1" aria-label="Adjust difference overlay opacity">
-
+                        <input type="range" min="0" max="100" value="50" class="ba-range" data-target="slider1">
 
                         <!-- Performance Results (example figures; replace with your latest runs) -->
                         <h3 class="mh-section-title wow fadeInUp" data-wow-duration="0.8s" data-wow-delay="0.6s">Performance Results</h3>
@@ -464,74 +449,62 @@ Vec3 sampleTriangle(const Vec3& a, const Vec3& b, const Vec3& c, float u1, float
     <script src="../assets/plugins/js/wow.min.js"></script>
     <script src="../assets/js/custom-scripts.js"></script>
     <script>new WOW().init();</script>
-    <!-- Before/After slider logic -->
     <script>
-        (function () {
-            function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+        document.addEventListener("DOMContentLoaded", function () {
+            function initSlider(id) {
+                const container = document.getElementById(id);
+                const overlay = container.querySelector('.ba-overlay');
+                const handle = container.querySelector('.ba-handle');
+                const range = document.querySelector(`.ba-range[data-target="${id}"]`);
 
-            function initDelta(selector) {
-                var wrap = document.querySelector(selector);
-                if (!wrap) return;
-
-                var overlay = wrap.querySelector('.delta-overlay');
-                var baseNoisy = wrap.querySelector('.delta-base-noisy');
-                var baseDenoised = wrap.querySelector('.delta-base-denoised');
-                var range = document.querySelector('input.delta-range[data-target="' + selector + '"]');
-                var radios = document.querySelectorAll('input[name="deltaBase"]');
-
-                function setOpacity(pct) {
-                    pct = clamp(+pct || 0, 0, 100);
-                    overlay.style.opacity = (pct / 100).toFixed(3);
-                    wrap.setAttribute('data-opacity', pct.toFixed(1));
+                function setSplit(pct) {
+                    pct = Math.max(0, Math.min(100, pct));
+                    overlay.style.width = pct + '%';
+                    handle.style.left = pct + '%';
+                    if (range) range.value = pct;
                 }
 
-                function setBase(which) {
-                    var noisy = (which === 'noisy');
-                    baseNoisy.style.display = noisy ? 'block' : 'none';
-                    baseDenoised.style.display = noisy ? 'none' : 'block';
-                    // mark aria-hidden for a11y
-                    baseNoisy.setAttribute('aria-hidden', noisy ? 'false' : 'true');
-                    baseDenoised.setAttribute('aria-hidden', noisy ? 'true' : 'false');
+                function updateFromEvent(e) {
+                    const rect = container.getBoundingClientRect();
+                    const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+                    const pct = (x / rect.width) * 100;
+                    setSplit(pct);
                 }
 
-                // init from defaults
-                setOpacity(wrap.getAttribute('data-opacity') || 50);
-                setBase(document.querySelector('input[name="deltaBase"]:checked').value);
+                // Drag support
+                let dragging = false;
+                handle.addEventListener('mousedown', () => dragging = true);
+                handle.addEventListener('touchstart', () => dragging = true);
 
-                // wire input range
-                if (range) {
-                    range.addEventListener('input', function () {
-                        setOpacity(this.value);
-                    });
-                }
+                window.addEventListener('mousemove', (e) => {
+                    if (dragging) updateFromEvent(e);
+                });
+                window.addEventListener('touchmove', (e) => {
+                    if (dragging) updateFromEvent(e);
+                });
+                window.addEventListener('mouseup', () => dragging = false);
+                window.addEventListener('touchend', () => dragging = false);
 
-                // wire radios
-                radios.forEach(function (r) {
-                    r.addEventListener('change', function () {
-                        if (this.checked) setBase(this.value);
-                    });
+                // Click anywhere to move handle
+                container.addEventListener('click', (e) => {
+                    updateFromEvent(e);
                 });
 
-                // keep numeric state stable on resize (no layout dependency really, but consistent)
-                window.addEventListener('resize', function () {
-                    setOpacity(wrap.getAttribute('data-opacity') || 50);
-                });
-
-                // keyboard shortcuts while range focused: left/right ±2, shift for ±10
+                // Range input
                 if (range) {
-                    range.addEventListener('keydown', function (e) {
-                        var step = e.shiftKey ? 10 : 2;
-                        var val = +range.value;
-                        if (e.key === 'ArrowLeft') { range.value = clamp(val - step, 0, 100); range.dispatchEvent(new Event('input')); }
-                        if (e.key === 'ArrowRight') { range.value = clamp(val + step, 0, 100); range.dispatchEvent(new Event('input')); }
+                    range.addEventListener('input', () => {
+                        setSplit(range.value);
                     });
                 }
+
+                // Initial state
+                setSplit(50);
             }
 
-            // init the widget
-            initDelta('#delta1');
-        })();
+            initSlider("slider1");
+        });
     </script>
+
 
 
 </body>

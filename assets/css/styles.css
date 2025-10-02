@@ -2724,42 +2724,47 @@ BLOG Pagination
         transition: all .15s ease;
     }
 
-/* Delta view styles */
-.delta-wrap {
+.ba-container {
     position: relative;
-    max-width: 100%;
+    width: 100%;
+    max-width: 800px;
     overflow: hidden;
+    margin: 1rem 0;
     border-radius: 6px;
 }
 
-    .delta-wrap img {
-        display: block;
-        width: 100%;
-        height: auto;
-        user-select: none;
-        -webkit-user-drag: none;
-    }
-
-.delta-base {
-    position: relative;
-    z-index: 0;
-}
-
-.delta-base-denoised {
-    display: none;
-}
-/* start with noisy as base */
-.delta-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    opacity: 0.5; /* will be controlled by JS */
-    mix-blend-mode: normal; /* typical; try 'screen' or 'overlay' if your heatmap expects it */
+.ba-img {
+    width: 100%;
+    display: block;
     pointer-events: none;
+    user-select: none;
 }
-/* Optional: small helper for controls */
-.delta-controls input[type="radio"] {
-    transform: translateY(1px);
+
+.ba-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    transition: width 0.05s;
+}
+
+.ba-handle {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 4px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    cursor: ew-resize;
+    z-index: 2;
+    transform: translateX(-2px);
+}
+
+.ba-range {
+    width: 100%;
+    margin-top: 0.75rem;
 }
 
 
