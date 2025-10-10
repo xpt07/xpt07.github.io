@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="../assets/css/responsive.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-
     <link rel="stylesheet" href="../assets/css/colors/purple.css" title="purple">
 </head>
 <body class="dark-vertion black-bg">
@@ -71,34 +70,47 @@
             <div class="row section-separator">
                 <div class="col-md-8">
                     <div class="mh-about-inner">
+                        <h3 class="mh-section-title">Overview</h3>
+                        <p>This project extends a CPU-based ray tracer into a full-featured Monte Carlo path tracer. Key additions include multithreaded tile-based rendering, environment lighting with multiple importance sampling (MIS), physically-based glass materials, denoising using Intel’s OIDN, and light tracing. The aim was to improve both physical accuracy and render performance. Although not all features were fully realized (e.g., GGX BRDF and instant radiosity), the final renderer achieves notable image quality and interactive performance.</p>
                         <h3 class="mh-section-title">Technical Breakdown</h3>
-                        <p>This project is a CPU-based Monte Carlo path tracer implemented in C++ and DirectX. The architecture supports global illumination through features like BVH acceleration, multiple importance sampling, emissive/environment lighting, a layered BSDF system, light tracing, and denoising with Intel OIDN. It is based on modular code structure, aiming for realism and performance.</p>
 
-                        <h4 class="mh-section-title">1. Bounding Volume Hierarchy (BVH)</h4>
-                        <p>The scene geometry is organized into a binary BVH using axis-aligned bounding boxes. Median splitting along the longest axis creates a recursive hierarchy until leaves contain ≤6 triangles or max depth is reached. This minimizes traversal cost and maximizes spatial coherence. Ray-AABB tests are performed top-down. Below: BVH visualization and simplified traversal code.</p>
-                   
+                        <h4>1. Code Structure</h4>
+                        <p>The project is structured modularly across separate components: scene loading, materials, acceleration structures, integrators, and sampling. Integrators follow a shared interface for extensibility. Rendering backends can be swapped easily, and the BSDF system supports layer stacking (diffuse + specular + transmission). All geometry is stored in a global triangle buffer using pretransformed vertex data.</p>
+
+                        <h4>2. BVH Acceleration Structure</h4>
+                        <p>A binary BVH (Bounding Volume Hierarchy) is constructed recursively by splitting primitives along the longest axis of their bounding box. The split point is the median of centroids. Construction halts at a max depth or when a node contains 6 or fewer triangles. During traversal, rays perform top-down AABB intersection checks:</p>
                         <pre><code class="language-cpp">if (ray.intersects(node.bounds)) {
-  if (node.isLeaf()) {
-    checkTriangles(node);
-  } else {
-    traverse(node.left);
-    traverse(node.right);
-  }
+    if (node.isLeaf()) {
+        checkTriangles(node);
+    } else {
+        traverse(node.left);
+        traverse(node.right);
+    }
 }</code></pre>
+                        <p>This yields dramatic improvements over brute-force intersection (up to 20×), especially for large scenes like Sponza.</p>
 
-                        <h4 class="mh-section-title">2. Multithreaded Tile-Based Rendering</h4>
-                        <p>The image is split into tiles distributed to worker threads using an atomic job queue. This achieves up to 12× speedup on multi-core CPUs compared to sequential rendering.</p>
+                        <h4>3. Möller–Trumbore Intersection</h4>
+                        <p>For ray-triangle intersection, the Möller–Trumbore algorithm was used for its speed and precision. Backface culling is disabled for two-sided materials.</p>
 
-                        <h4 class="mh-section-title">3. Adaptive Sampling (Experimental)</h4>
-                        <p>A variance-based adaptive sampling strategy was implemented, assigning more samples to noisy tiles. However, limited gains were observed due to unstable low-sample variance and tile management overhead.</p>
+                        <h4>4. Multi-threaded Tile-Based Rendering</h4>
+                        <p>The renderer is parallelized using a thread pool and atomic tile queue. The image is divided into fixed-size tiles (e.g. 32×32), and each worker pulls a tile job atomically. This leads to effective load balancing and near-linear scaling on 8–12 core CPUs. OpenMP was avoided in favour of manual control.</p>
 
-                        <h4 class="mh-section-title">4. Layered BSDF & Glass Material</h4>
-                        <p>The BSDF system supports layering diffuse, reflective, and transmissive components. The physically-based glass model uses Fresnel equations and Snell’s Law. Since it’s delta-distributed, PDFs are zero. Sampling is weighted by Fresnel reflectance:</p>
-                        <pre><code class="language-cpp">if (rand < fresnel) reflect(); else refract();</code></pre>
+                        <h4>5. Environment Lighting & Importance Sampling</h4>
+                        <p>Environment maps are sampled using a 2D importance sampling strategy based on the luminance of texels × sin(θ), where θ is latitude. A cumulative distribution function (CDF) is precomputed for both marginal and conditional axes (rows and columns):</p>
+<pre><code class="language-cpp">// Convert envmap to CDFs
+for (int y = 0; y &lt; H; ++y) {
+    for (int x = 0; x &lt; W; ++x) {
+        luminance[y][x] *= sin(pi * (y + 0.5) / H);
+    }
+}
+// build 2D CDF from this luminance map
+</code></pre>
+                        <p>Sampling is done via binary search on the marginal CDF (rows), then conditional CDF (columns). This allows focusing samples toward bright regions like sun discs or light poles.</p>
 
-                        <h4 class="mh-section-title">5. Environment Lighting & MIS</h4>
-                        <p>HDR environment maps are sampled using a 2D CDF based on luminance×sin(θ), supporting efficient importance sampling. Multiple importance sampling (MIS) combines BSDF and light sampling using the balance heuristic:</p>
-                        <pre><code class="language-cpp">>weight = lightPdf / (lightPdf + bsdfPdf);</code></pre>
+                        <h4>6. Multiple Importance Sampling (MIS)</h4>
+                        <p>MIS blends the probability of BSDF sampling with light sampling using the balance heuristic:</p>
+                        <pre><code class="language-cpp">weight = lightPdf / (lightPdf + bsdfPdf);</code></pre>
+                        <p>This reduces variance and bright fireflies caused by mismatched PDFs. It’s especially important when sampling glossy surfaces under point or environment lights.</p>
                         <div class="row">
                             <div class="col-md-6">
                                 <img src="../assets/images/portfolio/beforeTD.png" class="img-fluid rounded mb-3">
@@ -110,72 +122,11 @@
                             </div>
                         </div>
 
-                        <h4 class="mh-section-title">6. Light Tracing</h4>
-                        <p>Light paths are traced from emissive surfaces to the sensor, with connection attempts weighted by sensor response. This improves caustics and indirect illumination.</p>
+                        <h4>7. Light Tracing</h4>
+                        <p>To better simulate caustics and light paths from small emitters, a unidirectional light tracing strategy was implemented. Light rays are spawned from emissive surfaces (including environment map) and traced toward the camera. A film importance function is used to weight samples by sensor relevance:</p>
+                        <pre><code class="language-cpp">float we = 1 / (filmArea * pow(cosTheta, 4));</code></pre>
+                        <p>Only rays that land near the film center contribute significantly. This approach captures indirect light paths that standard path tracing misses, such as specular-diffuse-specular chains.</p>
                         <img src="../assets/images/portfolio/LTstairs.jpg" class="img-fluid rounded mb-3">
-                        <pre><code class="language-cpp">// Sensor weight for light tracing
-float we = 1 / (A_film * pow(cosTheta, 4));</code></pre>
 
-                        <h4 class="mh-section-title">7. Denoising with OIDN</h4>
-                        <p>Intel Open Image Denoise is integrated into the film pipeline. It leverages normal and albedo buffers to filter noisy outputs while preserving detail.</p>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <img src="../assets/images/portfolio/noD.png" class="img-fluid rounded mb-3">
-                                <p class="text-center">Before</p>
-                            </div>
-                            <div class="col-md-6">
-                                <img src="../assets/images/portfolio/yesD.png" class="img-fluid rounded mb-3">
-                                <p class="text-center">After OIDN</p>
-                            </div>
-                        </div>
-
-                        <h4 class="mh-section-title">8. Limitations & Future Work</h4>
-                        <p>Microfacet GGX BRDF and instant radiosity transport were not implemented due to time constraints. Future work may include these features for increased realism and sample efficiency.</p>
-
-                        <h4 class="mh-section-title">How to Run</h4>
-                        <ol>
-                            <li>Clone the project: <code>https://github.com/xpt07/RTBase.git</code></li>
-                            <li>Open in Visual Studio (Release mode)</li>
-                            <li>Run with: <code>-scene materials -spp 8192</code></li>
-                            <li>Controls: <kbd>WASD + EQ</kbd>, <kbd>P</kbd> to save image</li>
-                        </ol>
-
-                        <a class="btn btn-fill" href="https://github.com/xpt07/RTBase.git" target="_blank"><i class="fa fa-github"></i> View Code on GitHub</a>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="mh-about-inner">
-                        <h3 class="mh-section-title">Project Info</h3>
-                        <ul class="mh-experience-deatils">
-                            <li><i class="fa fa-user"></i> Individual project</li>
-                            <li><i class="fa fa-calendar"></i> 2025</li>
-                            <li><i class="fa fa-code"></i> C++, DirectX, OIDN</li>
-                            <li><i class="fa fa-cogs"></i> BVH, MIS, PBR</li>
-                        </ul>
-
-                        <h3 class="mh-section-title">Screenshots</h3>
-                        <a href="../assets/images/portfolio/cornell-box-PT.png" data-fancybox="gallery">
-                            <img src="../assets/images/portfolio/cornell-box-PT.png" class="img-fluid rounded mb-3">
-                        </a>
-                        <a href="../assets/images/portfolio/afterTD-clipped.png" data-fancybox="gallery">
-                            <img src="../assets/images/portfolio/afterTD-clipped.png" class="img-fluid rounded mb-3">
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <script src="../assets/plugins/js/jquery.min.js"></script>
-    <script src="../assets/plugins/js/popper.min.js"></script>
-    <script src="../assets/plugins/js/bootstrap.min.js"></script>
-    <script src="../assets/plugins/js/waypoints.min.js"></script>
-    <script src="../assets/plugins/js/owl.carousel.min.js"></script>
-    <script src="../assets/plugins/js/jquery.filterizr.min.js"></script>
-    <script src="../assets/plugins/js/jquery.fancybox.min.js"></script>
-    <script src="../assets/plugins/js/wow.min.js"></script>
-    <script src="../assets/js/custom-scripts.js"></script>
-    <script>new WOW().init();</script>
-
-</body>
-</html>
+                        <h4>8. Adaptive Sampling (Experimental)</h4>
+                        <p>A variance-based adaptive sampling system was tested, where high-noise tiles would receive additional samples. However, variance estimates were unstable at low spp, and managing per-tile buffers introduced threading overhead. It remains disabled by default but is modular.</p>
