@@ -130,3 +130,106 @@ for (int y = 0; y &lt; H; ++y) {
 
                         <h4>8. Adaptive Sampling (Experimental)</h4>
                         <p>A variance-based adaptive sampling system was tested, where high-noise tiles would receive additional samples. However, variance estimates were unstable at low spp, and managing per-tile buffers introduced threading overhead. It remains disabled by default but is modular.</p>
+                        <h4>9. Layered BSDFs & Glass Transmission</h4>
+                        <p>The BSDF system supports layered materials where diffuse, specular, and transmission components are combined. This allows creation of complex surfaces like plastic, coated metal, and glass. The glass model is physically based, obeying Fresnel reflection and Snell’s Law:</p>
+                        <pre><code class="language-cpp">float fresnel = FresnelDielectric(cosTheta, etaI, etaT);
+if (rand &lt; fresnel) {
+    // Reflect ray
+} else {
+    // Refract ray using Snell's law
+}</code></pre>
+                        <p>Since reflection/refraction are delta events, their PDFs are zero except at sampled directions. This makes MIS difficult, so heuristic weight is set to 1 when matching samples, 0 otherwise.</p>
+                        <img src="../assets/images/portfolio/glass.png" class="img-fluid rounded mb-3" alt="Glass with Caustics">
+
+                        <h4>10. Denoising with Intel OIDN</h4>
+                        <p>The renderer integrates Intel’s Open Image Denoise library (OIDN) to reduce noise while preserving edge sharpness and detail. Auxiliary buffers like normal and albedo are passed into the denoiser to improve quality. The filter is applied after accumulation using the following pipeline:</p>
+                        <ol>
+                            <li>Each render sample contributes to radiance, normal, and albedo buffers</li>
+                            <li>After rendering, OIDN processes the image using all three</li>
+                            <li>Final denoised image is saved as EXR and PNG</li>
+                        </ol>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img src="../assets/images/portfolio/noD.png" class="img-fluid rounded mb-3">
+                                <p class="text-center">Before</p>
+                            </div>
+                            <div class="col-md-6">
+                                <img src="../assets/images/portfolio/yesD.png" class="img-fluid rounded mb-3">
+                                <p class="text-center">After OIDN</p>
+                            </div>
+                        </div>
+
+                        <h4>11. Evaluation Results</h4>
+                        <p>The renderer was tested on multiple complex scenes, including the Sponza Atrium and Cornell Box with caustics and environment lighting. With 4096 samples per pixel and 8–12 threads, interactive performance was achieved with real-time tile previews. OIDN produced clean output at 2–4× fewer samples. MIS and light tracing significantly improved convergence time and quality.</p>
+                        <img src="../assets/images/portfolio/sponza.png" class="img-fluid rounded mb-3" alt="Sponza with Environment Lighting">
+                        <img src="../assets/images/portfolio/causticMirror.png" class="img-fluid rounded mb-3" alt="Mirror Caustics in Cornell Box">
+
+                        <h4 class="mh-section-title">12. Limitations & Future Work</h4>
+                        <ul>
+                            <li>Microfacet GGX BRDF is not yet implemented</li>
+                            <li>Instant Radiosity and photon mapping were explored but not integrated</li>
+                            <li>Specular-diffuse-specular chains are poorly handled without bidirectional techniques</li>
+                            <li>No explicit Russian roulette path termination (instead capped max depth)</li>
+                        </ul>
+                        <p>In future, these could be addressed via BDPT (bidirectional path tracing), advanced BRDFs, and temporal reuse strategies.</p>
+
+                        <h4 class="mh-section-title">How to Run</h4>
+                        <ol>
+                            <li>Clone the repo: <code>git clone https://github.com/xpt07/RTBase.git</code></li>
+                            <li>Open in Visual Studio (Release x64)</li>
+                            <li>Run with command-line args: <code>-scene cornell -spp 2048</code></li>
+                            <li>Controls: <kbd>WASD</kbd> to move, <kbd>E/Q</kbd> to ascend/descend, <kbd>P</kbd> to save</li>
+                        </ol>
+
+                        <a class="btn btn-fill mt-3" href="https://github.com/xpt07/RTBase" target="_blank">
+                            <i class="fa fa-github"></i> View Code on GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="col-md-4">
+                    <div class="mh-about-inner">
+                        <h3 class="mh-section-title">Project Info</h3>
+                        <ul class="mh-experience-deatils">
+                            <li><i class="fa fa-user"></i> Individual Project</li>
+                            <li><i class="fa fa-calendar"></i> 2025</li>
+                            <li><i class="fa fa-code"></i> C++, DirectX, OIDN</li>
+                            <li><i class="fa fa-cogs"></i> BVH, MIS, PBR</li>
+                        </ul>
+
+                        <h3 class="mh-section-title">Screenshots</h3>
+                        <a href="../assets/images/portfolio/cornell-box-PT.png" data-fancybox="gallery">
+                            <img src="../assets/images/portfolio/cornell-box-PT.png" class="img-fluid rounded mb-3">
+                        </a>
+                        <a href="../assets/images/portfolio/afterTD-clipped.png" data-fancybox="gallery">
+                            <img src="../assets/images/portfolio/afterTD-clipped.png" class="img-fluid rounded mb-3">
+                        </a>
+                        <a href="../assets/images/portfolio/sponza.png" data-fancybox="gallery">
+                            <img src="../assets/images/portfolio/sponza.png" class="img-fluid rounded mb-3">
+                        </a>
+                        <a href="../assets/images/portfolio/causticMirror.png" data-fancybox="gallery">
+                            <img src="../assets/images/portfolio/causticMirror.png" class="img-fluid rounded mb-3">
+                        </a>
+                        <a href="../assets/images/portfolio/glass.png" data-fancybox="gallery">
+                            <img src="../assets/images/portfolio/glass.png" class="img-fluid rounded mb-3">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../assets/plugins/js/jquery.min.js"></script>
+    <script src="../assets/plugins/js/popper.min.js"></script>
+    <script src="../assets/plugins/js/bootstrap.min.js"></script>
+    <script src="../assets/plugins/js/waypoints.min.js"></script>
+    <script src="../assets/plugins/js/owl.carousel.min.js"></script>
+    <script src="../assets/plugins/js/jquery.filterizr.min.js"></script>
+    <script src="../assets/plugins/js/jquery.fancybox.min.js"></script>
+    <script src="../assets/plugins/js/wow.min.js"></script>
+    <script src="../assets/js/custom-scripts.js"></script>
+    <script>new WOW().init();</script>
+
+</body>
+</html>
